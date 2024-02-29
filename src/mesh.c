@@ -142,7 +142,7 @@ void LoadUnstructMeshData(void) {
 	/* Read number of nodes */
 	if(fread(&Vel_MeshNumNodes, sizeof(int), 1, Mesh_BinFileID) < 1) 
 		FatalError("Could not read number of mesh nodes from %s", Mesh_BinFilePath);
-	
+	printf("DEBUG Mesh File Path: %s", Mesh_BinFilePath);
 	printf("Loading coordinate data for %d nodes...", Vel_MeshNumNodes);  
 	fflush(stdout);
 	
@@ -173,7 +173,7 @@ void LoadUnstructMeshData(void) {
 	/* Read number of elements */
 	if(fread(&Vel_MeshNumElements, sizeof(int), 1, Mesh_BinFileID) < 1)
 		FatalError("Could not read number of mesh elements from %s", Mesh_BinFilePath);
-	
+	printf("DEBUG Mesh_Bin_FilePath", Mesh_BinFilePath);
 	printf("Loading connectivity and adjacency data for %d elements...", Vel_MeshNumElements); 
 	fflush(stdout);
 	

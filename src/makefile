@@ -28,7 +28,7 @@ endif
 	@echo "Building in "$(mode)" mode..."
 
 $(EXE): $(OBJ)
-	$(CC) $(LFLAGS) $(OBJ) -o $@
+	$(CC)  $(OBJ) -o $@ $(LFLAGS)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@

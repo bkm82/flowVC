@@ -154,6 +154,6 @@ extern char Path_Data[LONGSTRING];
 extern char Path_Output[LONGSTRING];
 
 /* Globally defined arrays */
-double UnitSphere[32][3];
+extern double UnitSphere[32][3];
 
 #endif

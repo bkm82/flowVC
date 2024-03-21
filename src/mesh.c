@@ -322,10 +322,18 @@ int Get_Element_Global_Search(const double *X) {
 	i = 0;
 	while(i < Vel_MeshNumElements) { /* Search over all elements */
 		if(Dimensions == 3) {
+		  
 			/* Physical coordinates of nodes of the test element */
 			x0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][0];
 			y0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][1];
 			z0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][2];
+		  
+			/* Check if any coordinate is further than the tolerance away */
+			if (fabs(x0 - x) > 0.5 || fabs(y0 - y) > 0.5 || fabs(z0 - z) > 0.5) {
+			  return(-1); // Break early if any coordinate is further away than the tolerance
+			}
+
+			
 			x1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][0];
 			y1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][1];
 			z1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][2];

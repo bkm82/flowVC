@@ -8,12 +8,11 @@
 # pts all over the domain, released once, outputTres increased
 # Path_Data: String, Directory containing data files
 # Can be set to pwd (i.e. present working directory)
-Path_Data = /media/share/ECMO/Data/CFD-Solutions/Bin-File-Series/input
-#Path_Data = ../../../../Data/CFD-Solutions/Bin-File-Series/
+Path_Data = /scratch/bkm82/ECMO/input
 # Path_Output: String, Directory where output files will be written
 # Can be set to pwd (i.e. present working directory)
-#Path_Output = ../../../../Data/CFD-Solutions/Bin-File-Series/
-Path_Output = /media/share/ECMO/Data/CFD-Solutions/Bin-File-Series/med_mesh_size
+Path_Output = /scratch/bkm82/ECMO/med_back/ftle_data/output/med_b1
+
 # Dimensions: Integer, Specifies if velocity data is 2D or 3D
 Dimensions = 3
 
@@ -36,7 +35,7 @@ Data_SuffixTMin = 1200
 Data_SuffixTDelta = 5
 
 # Data_SuffixTRes: Integer, number of velocity data files
-Data_TRes = 20
+Data_TRes = 21
 
 # Data_TDelta: (Positive) Float, "Real" time spacing between successive velocity data files
 # Assumes time spacing between velocity data files is constant
@@ -45,12 +44,12 @@ Data_TDelta = 0.05
 # Data_TMin: Float, Absolute time assigned to first velocity data file
 # Choice is arbitrary, but it usually makes sense to set this to zero, which in that case
 # would mean that the first velocity data file specifies the velocity at time zero
-Data_TMin = 0.00
+Data_TMin = 0.0
 
 # Data_TPeriodic: Binary flag, Specifies if data is periodic
 # 0: Not periodic
 # 1: Periodic (make sure first and last data file correspond to same point in cycle)
-Data_TPeriodic = 0
+Data_TPeriodic = 1
 
 #adding this to see if it resolves the issue of not reading the
 Data_XPeriodic = 0
@@ -74,12 +73,12 @@ Fluid_Viscosity = 1.81e-4
 # Output_TStart: Float, initial time to start simulation and begin writing output
 # If FTLE_Compute: Specifies time at which first FTLE field is generated
 # If Trace_Compute: Specifies start time to begin integrating tracer trajectories and outputing position to file
-Output_TStart = 0.95
+Output_TStart = 0.0
 
 # Output_TRes: (Positive) Integer, Desired number of output times
 # If FTLE_Compute: Specifies number of time instances when the FTLE field will be computed and output
 # If Trace_Compute: Specifies number of time instances that tracer positions will be written to file
-Output_TRes = 19
+Output_TRes = 21
 
 # Output_TDelta: (Positive) Float, Desired time between successive output
 # If FTLE_Compute: How often the FTLE field will be computed and output
@@ -213,7 +212,7 @@ FTLE_MeshBounds.ZRes = 690
 
 # FTLE_IntTLength: (Positive) Float, Integration time used to compute FTLE
 # Valid only if FTLE_Compute = 1
-FTLE_IntTLength = 0.95 #cardiac cycle duration
+FTLE_IntTLength = 1.0 #cardiac cycle duration
 
 # FTLE_ComputeVariation: Binary flag
 # 0: Compute FTLE at each output time with integration time set to FTLE_IntTimeLength
@@ -232,7 +231,7 @@ FTLE_VariationOutFreq = 1
 # FTLE_OutFilePrefix: String, Filename prefix where FTLE output data is written
 # A separate file is generated for each output time
 # Valid only if FTLE_Compute = 1
-FTLE_OutFilePrefix = FTLEbwd__
+FTLE_OutFilePrefix = FTLEbwd_
 
 # Trace_Compute: Binary flag
 # 0: Do not compute tracer trajectories
@@ -401,5 +400,3 @@ VelOut_CartMesh.ZMax = 0.0
 VelOut_CartMesh.XRes = 91
 VelOut_CartMesh.YRes = 32
 VelOut_CartMesh.ZRes = 1
-
-# Test 4

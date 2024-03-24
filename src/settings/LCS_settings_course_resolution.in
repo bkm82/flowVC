@@ -9,10 +9,11 @@
 # Path_Data: String, Directory containing data files
 # Can be set to pwd (i.e. present working directory)
 #Path_Data = ~/masters/ECMO/Data/CFD-Solutions/Bin-File-Series/
-Path_Data = ../../../../Data/CFD-Solutions/Bin-File-Series/
+#Path_Data = ../../../../Data/CFD-Solutions/Bin-File-Series/
+Path_Data = /home/bray/Documents/masters/ftle_data/input
 # Path_Output: String, Directory where output files will be written
 # Can be set to pwd (i.e. present working directory)
-Path_Output = ../../../../Data/CFD-Solutions/Bin-File-Series/
+Path_Output = /home/bray/Documents/masters/ftle_data/output/course_b1
 
 # Dimensions: Integer, Specifies if velocity data is 2D or 3D
 Dimensions = 3

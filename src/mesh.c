@@ -10,14 +10,18 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "exposuretime.h"
 #include "globals.h"
 #include "io.h"
 #include "macros.h"
 #include "memory.h"
 #include "mesh.h"
+#define DEBUG
 
+int check_bounds(int  *i, int *stop_flag, double x, int coord);
 
+  
 void LoadMeshData(void) {
 	
 	printf("Loading mesh data...");
@@ -142,7 +146,6 @@ void LoadUnstructMeshData(void) {
 	/* Read number of nodes */
 	if(fread(&Vel_MeshNumNodes, sizeof(int), 1, Mesh_BinFileID) < 1) 
 		FatalError("Could not read number of mesh nodes from %s", Mesh_BinFilePath);
-	printf("DEBUG Mesh File Path: %s", Mesh_BinFilePath);
 	printf("Loading coordinate data for %d nodes...", Vel_MeshNumNodes);  
 	fflush(stdout);
 	
@@ -173,7 +176,7 @@ void LoadUnstructMeshData(void) {
 	/* Read number of elements */
 	if(fread(&Vel_MeshNumElements, sizeof(int), 1, Mesh_BinFileID) < 1)
 		FatalError("Could not read number of mesh elements from %s", Mesh_BinFilePath);
-	printf("DEBUG Mesh_Bin_FilePath", Mesh_BinFilePath);
+	
 	printf("Loading connectivity and adjacency data for %d elements...", Vel_MeshNumElements); 
 	fflush(stdout);
 	
@@ -314,64 +317,93 @@ int Get_Element_Global_Search(const double *X) {
 	double a11, a12, a13, a21, a22, a23, a31, a32, a33;
 	double r, s, t, d;
 	double V;
-	
+	double x_min, x_max, y_min, y_max, z_min, z_max;
 	x = X[0];
 	y = X[1];
 	z = X[2];
 	
 	i = 0;
+	int stop_flag;
+	#ifdef DEBUG
+	//clock_t tic = clock();
+	//printf("DEBUG: starting global search \n");
+        #endif
+	//int fist_pt_debug = 0;
+	//double point_check;
 	while(i < Vel_MeshNumElements) { /* Search over all elements */
+	  
 		if(Dimensions == 3) {
-		  
-			/* Physical coordinates of nodes of the test element */
-			x0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][0];
-			y0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][1];
-			z0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][2];
-		  
+		  // Check to ensure we are not outside the boudning rectangle
+		  // First check if x < x_min or x>x_max. If so stop early
+		  stop_flag = 0;
+		  check_bounds(&i, &stop_flag, x, 0);
+		  // check if y < y_min or y>y_max. If so stop early
+		  if(stop_flag==0){
+		    check_bounds(&i, &stop_flag, y, 1);
+		  }
+		  // check if z < z_min or z>z_max. If so stop early
+		  if(stop_flag==0){
+		    check_bounds(&i, &stop_flag, z, 2);
+		  }
+
+		  // If we are inside the boudning rectangle, check if we are inside the tetrahedron
+		  if(stop_flag==0){
+                     #ifdef DEBUG
+		    //    printf("DEBUG: checking tetrahedron \n");
+		    //    printf("x_min %f, x_max %f, x %f \n",x_min, x_max, x);
+		    //	  printf("y_min %f, y_max %f, y %f \n",y_min, y_max, y);
+		    //	  printf("z_min %f, z_max %f, z %f \n",z_min, z_max, z);
+                    #endif
 			/* Check if any coordinate is further than the tolerance away */
-			if (fabs(x0 - x) > 0.5 || fabs(y0 - y) > 0.5 || fabs(z0 - z) > 0.5) {
-			  return(-1); // Break early if any coordinate is further away than the tolerance
+			//if (!((fabs(x0 - x) > 0.01 || fabs(y0 - y) > 0.01 || fabs(z0 - z) > 0.01))){
+			  x0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][0];
+			  y0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][1];
+			  z0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][2];
+			  x1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][0];
+			  y1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][1];
+			  z1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][2];
+			  x2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][0];
+			  y2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][1];
+			  z2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][2];
+			  x3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][0];
+			  y3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][1];
+			  z3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][2];
+			
+			  /* Entries for mapping of physical to natural coordinates of test element */
+			  a11 = (z3 - z0) * (y2 - y3) - (z2 - z3) * (y3 - y0);
+			  a21 = (z3 - z0) * (y0 - y1) - (z0 - z1) * (y3 - y0);
+			  a31 = (z1 - z2) * (y0 - y1) - (z0 - z1) * (y1 - y2);
+			  a12 = (x3 - x0) * (z2 - z3) - (x2 - x3) * (z3 - z0);
+			  a22 = (x3 - x0) * (z0 - z1) - (x0 - x1) * (z3 - z0);
+			  a32 = (x1 - x2) * (z0 - z1) - (x0 - x1) * (z1 - z2);
+			  a13 = (y3 - y0) * (x2 - x3) - (y2 - y3) * (x3 - x0);
+			  a23 = (y3 - y0) * (x0 - x1) - (y0 - y1) * (x3 - x0);
+			  a33 = (y1 - y2) * (x0 - x1) - (y0 - y1) * (x1 - x2);			 
+			
+			  /* Determinant of mapping from natural to physical coordinates of test element */
+			  V = (x1 - x0) * ((y2 - y0) * (z3 - z0) - (z2 - z0) * (y3 - y0)) + 
+			    (x2 - x0) * ((y0 - y1) * (z3 - z0) - (z0 - z1) * (y3 - y0)) +
+			    (x3 - x0) * ((y1 - y0) * (z2 - z0) - (z1 - z0) * (y2 - y0));
+			
+			  /* Natural coordinates of point to be interpolated */
+			  r = (a11 * (x - x0) + a12 * (y - y0) + a13 * (z - z0)) / V;
+			  s = (a21 * (x - x0) + a22 * (y - y0) + a23 * (z - z0)) / V;
+			  t = (a31 * (x - x0) + a32 * (y - y0) + a33 * (z - z0)) / V;
+			  
+			  d = fmin(r, fmin(s, fmin(t, 1 - r - s - t)));
+			  
+			  if(d > -TINY){ /* Point inside test element */
+                            #ifdef DEBUG
+			    printf("DEBUG: global search sucessful \n");
+                            #endif
+			    return(i);
+			  }
+			  else /* Check next element */
+			    i++;
 			}
 
-			
-			x1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][0];
-			y1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][1];
-			z1 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[1]][2];
-			x2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][0];
-			y2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][1];
-			z2 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[2]][2];
-			x3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][0];
-			y3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][1];
-			z3 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[3]][2];
-			
-			/* Entries for mapping of physical to natural coordinates of test element */
-			a11 = (z3 - z0) * (y2 - y3) - (z2 - z3) * (y3 - y0);
-			a21 = (z3 - z0) * (y0 - y1) - (z0 - z1) * (y3 - y0);
-			a31 = (z1 - z2) * (y0 - y1) - (z0 - z1) * (y1 - y2);
-			a12 = (x3 - x0) * (z2 - z3) - (x2 - x3) * (z3 - z0);
-			a22 = (x3 - x0) * (z0 - z1) - (x0 - x1) * (z3 - z0);
-			a32 = (x1 - x2) * (z0 - z1) - (x0 - x1) * (z1 - z2);
-			a13 = (y3 - y0) * (x2 - x3) - (y2 - y3) * (x3 - x0);
-			a23 = (y3 - y0) * (x0 - x1) - (y0 - y1) * (x3 - x0);
-			a33 = (y1 - y2) * (x0 - x1) - (y0 - y1) * (x1 - x2);			 
-			
-			/* Determinant of mapping from natural to physical coordinates of test element */
-			V = (x1 - x0) * ((y2 - y0) * (z3 - z0) - (z2 - z0) * (y3 - y0)) + 
-			(x2 - x0) * ((y0 - y1) * (z3 - z0) - (z0 - z1) * (y3 - y0)) +
-			(x3 - x0) * ((y1 - y0) * (z2 - z0) - (z1 - z0) * (y2 - y0));
-			
-			/* Natural coordinates of point to be interpolated */
-			r = (a11 * (x - x0) + a12 * (y - y0) + a13 * (z - z0)) / V;
-			s = (a21 * (x - x0) + a22 * (y - y0) + a23 * (z - z0)) / V;
-			t = (a31 * (x - x0) + a32 * (y - y0) + a33 * (z - z0)) / V;
-			
-			d = fmin(r, fmin(s, fmin(t, 1 - r - s - t)));
-			
-			if(d > -TINY) /* Point inside test element */
-				return(i);
-			else /* Check next element */
-				i++;
-		} 
+
+		}	
 		else { /* Dimensions == 2 */
 			/* Physical coordinates of nodes of the test element */
 			x0 = Vel_MeshNodeArray[Vel_MeshElementArray[i].Nodes[0]][0];
@@ -396,13 +428,18 @@ int Get_Element_Global_Search(const double *X) {
 			
 			d = fmin(r, fmin(s, 1 - r - s));
 			
-			if(d > -TINY) /* Point inside test element */
+			if(d > -TINY) {/* Point inside test element */
+
 				return(i);
+			}
 			else /* Check next element */
 				i++;
 		}
+		  
 	}
-	
+	#ifdef DEBUG
+	//printf("global search did not return \n");
+	#endif
 	return -1;
 	
 }
@@ -512,10 +549,13 @@ int Get_Element_Local_Search(const double *X, int guess) {
 	double a11, a12, a13, a21, a22, a23, a31, a32, a33;
 	double r, s, t, d;
 	double V;
-	
+
 	x = X[0];
 	y = X[1];
 	z = X[2];
+        #ifdef DEBUG
+	printf("DEBUG: starting local search \n");
+        #endif
 	
 	while(1) {
 		if(Dimensions == 3) {
@@ -556,8 +596,12 @@ int Get_Element_Local_Search(const double *X, int guess) {
 			
 			d = fmin(r, fmin(s, fmin(t, 1 - r - s - t)));
             
-			if(d > -TINY) /* Point inside test element */
-				return(guess);
+			if(d > -TINY){ /* Point inside test element */
+                          #ifdef DEBUG
+			  printf("DEBUG: Local Search Successful \n");
+                          #endif
+			  return(guess);
+			}
 			else { /* Reset test element to neighbor */	
 				if(fabs(r - d) < TINY) 
 					guess = Vel_MeshElementArray[guess].NeighborIndex[0];
@@ -735,4 +779,35 @@ int Get_Element_Local_Search_Aux(const double *X, int guess) {
 	}
 	
 }
+
+
+int check_bounds(int  *i, int *stop_flag, double x, int coord){
+  double x0, x1, x2, x3;
+  double x_max, x_min;
+  //define x_points and store the max
+  x0 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[0]][coord];
+  x1 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[1]][coord];
+  x2 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[2]][coord];
+  x3 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[3]][coord];
+  x_min = fmin(x0, fmin(x1, fmin(x2,x3)));
+  x_max = fmax(x0, fmax(x1, fmax(x2,x3)));
+  // If we are not in y range, move to next element
+  if(x> x_max || x< x_min){
+    *i =*i+1;
+    *stop_flag = 1;
+    #ifdef DEBUG
+    if(coord ==0){
+      //printf("DEBUG: stop at x \n");
+    }
+    else if (coord ==1){
+      //printf("DEBUG: stop at y \n");
+    }
+    else{
+      //printf("DEBUG: stop at z \n");
+    }
+
+    #endif
+  }
+}
+
 

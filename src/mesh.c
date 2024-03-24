@@ -17,7 +17,7 @@
 #include "macros.h"
 #include "memory.h"
 #include "mesh.h"
-#define DEBUG
+//#define DEBUG
 
 int check_bounds(int  *i, int *stop_flag, double x, int coord);
 
@@ -784,7 +784,16 @@ int Get_Element_Local_Search_Aux(const double *X, int guess) {
 int check_bounds(int  *i, int *stop_flag, double x, int coord){
   double x0, x1, x2, x3;
   double x_max, x_min;
-  //define x_points and store the max
+  // Function to determine if a points value (either x, y or z) is between an elements min and max of that cordinate
+  // Arguments
+  //   *i : a pointer to the i counter wich is the element of interest
+  //   *stop_flag: a pointer to the stop flag. If the cordinate cannot possibly be in the element the value stored in this location will be set to 1
+  //   *x: the cordinate value that you are checking (either the x, y or z value)
+  //   coord: (0 = x , 1= y, 2 = z)
+  //   
+  
+  // 
+  //get the value of the cordinate (
   x0 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[0]][coord];
   x1 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[1]][coord];
   x2 = Vel_MeshNodeArray[Vel_MeshElementArray[*i].Nodes[2]][coord];

@@ -103,7 +103,7 @@ void InitializeFTLEArray(void) {
 				fflush(stdout);
 				guess = seed;
 			}
-			// Bray Re-write
+			// Bray Re-write/////////////////////////////////////////////////////////////////////////////////////////////////////
 			// Loop through all FTLE Cartesian mesh
 			for(i = 0; i <FTLE_CartMesh.XRes; i++){
 			  iguess = -1;
@@ -168,153 +168,86 @@ void InitializeFTLEArray(void) {
 			    }
 			  }
 			}
+			///////////////////////////////////////////////////////////////////////////////
 
 			/* // BRAY RE_WRITE COMMENT START */
-			/* /\* Search over all the points *\/ */
-			/* for(i = 0; i < FTLE_CartMesh.XRes; i++) { */
-			/* 	iguess = -1; */
-			/* 	for(j = 0; j < FTLE_CartMesh.YRes; j++) { */
-			/* 		jguess = -1; */
-			/* 		for(k = 0; k < FTLE_CartMesh.ZRes; k++) { */
-			/* 			if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {  */
-			/* 				if(seed < 0) { */
-			/* 					seed = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X); */
+			/* Search over all the points */
+			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
+				iguess = -1;
+				for(j = 0; j < FTLE_CartMesh.YRes; j++) {
+					jguess = -1;
+					for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+						if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
+							if(seed < 0) {
+								seed = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
 							
-			/* 					if(seed < 0) { */
-			/* 						FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1; */
-			/* 						FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0; */
-			/* 						/\* No need to calculate FTLE for this point *\/ */
-			/* 						FTLE_MeshPt[i][j][k].HaveFTLE = 1; */
-			/* 						FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside; */
-			/* 						FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside; */
-			/* 						/\* Or its neighbors *\/ */
-			/* 						if(i > 0)  */
-			/* 							FTLE_MeshPt[i-1][j][k].HaveFTLE = 1; */
-			/* 						if(i < FTLE_CartMesh.XRes - 1) */
-			/* 							FTLE_MeshPt[i+1][j][k].HaveFTLE = 1; */
-			/* 						if(j > 0)  */
-			/* 							FTLE_MeshPt[i][j-1][k].HaveFTLE = 1; */
-			/* 						if(j < FTLE_CartMesh.YRes - 1) */
-			/* 							FTLE_MeshPt[i][j+1][k].HaveFTLE = 1; */
-			/* 						if(k > 0)  */
-			/* 							FTLE_MeshPt[i][j][k-1].HaveFTLE = 1; */
-			/* 						if(k < FTLE_CartMesh.ZRes - 1) */
-			/* 							FTLE_MeshPt[i][j][k+1].HaveFTLE = 1; */
-			/* 					} */
-			/* 					else { */
-			/* 						printf("  Using first located element seed.\n"); */
-			/* 						fflush(stdout); */
-			/* 						FTLE_MeshPt[i][j][k].Pt.ElementIndex = seed; */
-			/* 						found++; */
-			/* 						guess  = seed; */
-			/* 						jguess = seed; */
-			/* 						iguess = seed; */
-			/* 					} */
-			/* 				} */
-			/* 				else { */
-			/* 					count++; */
-			/* 					if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
-			/* 						printf("  %d%%", percentage); */
-			/* 						fflush(stdout); */
-			/* 						percentage = percentage + 10; */
-			/* 					} */
-			/* 					index = -1; */
+								if(seed < 0) {
+								        FTLE_dont_compute(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes);
+								}
+								else {
+									printf("  Using first located element seed.\n");
+									fflush(stdout);
+									FTLE_MeshPt[i][j][k].Pt.ElementIndex = seed;
+									found++;
+									guess  = seed;
+									jguess = seed;
+									iguess = seed;
+								}
+							}
+							else {
+							  count++;
+							  if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) {
+							    printf("  %d%%", percentage);
+							    fflush(stdout);
+							    percentage = percentage + 10;
+							  }
 
-			/* 					index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess); */
 
-			/* 					if(index < 0) {  */
-			/* 						/\* An element not found, try searching from seed location *\/  */
-			/* 						index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed); */
-			/* 						if(index < 0) { */
-			/* 							/\* If an element still not found, do global search if local search checking requested *\/ */
-			/* 							if(LocalSearchChecking) { */
-			/* 							  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X); */
-			/* 								if(index < 0) { /\* Point is definitely not in any element *\/ */
-			/* 									FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1; */
-			/* 									FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0; */
-			/* 									/\* No need to calculate FTLE for this point or its neighbors *\/ */
-			/* 									FTLE_MeshPt[i][j][k].HaveFTLE = 1; */
-			/* 									FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside; */
-			/* 									FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside; */
-			/* 									if(i > 0)  */
-			/* 										FTLE_MeshPt[i-1][j][k].HaveFTLE = 1; */
-			/* 									if(i < FTLE_CartMesh.XRes - 1) */
-			/* 										FTLE_MeshPt[i+1][j][k].HaveFTLE = 1; */
-			/* 									if(j > 0)  */
-			/* 										FTLE_MeshPt[i][j-1][k].HaveFTLE = 1; */
-			/* 									if(j < FTLE_CartMesh.YRes - 1) */
-			/* 										FTLE_MeshPt[i][j+1][k].HaveFTLE = 1; */
-			/* 									if(k > 0)  */
-			/* 										FTLE_MeshPt[i][j][k-1].HaveFTLE = 1; */
-			/* 									if(k < FTLE_CartMesh.ZRes - 1) */
-			/* 										FTLE_MeshPt[i][j][k+1].HaveFTLE = 1; */
-			/* 								} */
-			/* 								else { */
-			/* 									FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;	 */
-			/* 									foundGS++; */
-			/* 									found++; */
-			/* 									guess = index; */
-			/* 									if(jguess < 0) */
-			/* 										jguess = index; */
-			/* 									if(iguess < 0) */
-			/* 										iguess = index; */
-			/* 								} */
-			/* 							} */
-			/* 							else { */
-			/* 								FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1; */
-			/* 								FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0; */
-			/* 								/\* No need to calculate FTLE for this point or its neighbors *\/ */
-			/* 								FTLE_MeshPt[i][j][k].HaveFTLE = 1; */
-			/* 								FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside; */
-			/* 								FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside; */
-			/* 								if(i > 0)  */
-			/* 									FTLE_MeshPt[i-1][j][k].HaveFTLE = 1; */
-			/* 								if(i < FTLE_CartMesh.XRes - 1) */
-			/* 									FTLE_MeshPt[i+1][j][k].HaveFTLE = 1; */
-			/* 								if(j > 0)  */
-			/* 									FTLE_MeshPt[i][j-1][k].HaveFTLE = 1; */
-			/* 								if(j < FTLE_CartMesh.YRes - 1) */
-			/* 									FTLE_MeshPt[i][j+1][k].HaveFTLE = 1; */
-			/* 								if(k > 0)  */
-			/* 									FTLE_MeshPt[i][j][k-1].HaveFTLE = 1; */
-			/* 								if(k < FTLE_CartMesh.ZRes - 1) */
-			/* 									FTLE_MeshPt[i][j][k+1].HaveFTLE = 1; */
-			/* 							} */
-			/* 						} */
-			/* 						else { */
-			/* 							FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;	 */
-			/* 							found++; */
-			/* 							guess = index; */
-			/* 							if(jguess < 0) */
-			/* 								jguess = index; */
-			/* 							if(iguess < 0) */
-			/* 								iguess = index; */
-			/* 						} */
-			/* 					} */
-			/* 					else { */
-			/* 						FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; */
-			/* 						found++; */
-			/* 						guess = index; */
-			/* 						if(jguess < 0) */
-			/* 							jguess = index; */
-			/* 						if(iguess < 0) */
-			/* 							iguess = index; */
-			/* 					} */
-			/* 				}   */
-			/* 			} */
-			/* 		} */
-			/* 	} */
-			/* 	if(jguess >= 0) */
-			/* 		guess = jguess; */
-			/* } */
-			/* if(iguess >= 0) */
-			/* 	guess = iguess; */
-			
-			
-			if(LocalSearchChecking) 
-				printf("  %d of %d located in domain (%d caught by local search checking)\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes, foundGS);
-			else
-				printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
+							  index = -1;
+							  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
+							  
+							  if(index < 0) {
+							    /* An element not found, try searching from seed location */
+							    index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
+
+							  }
+							  
+							    
+							  if(index < 0) {
+							    /* If an element still not found, do global search if local search checking requested */
+							      if(LocalSearchChecking) {
+								index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
+							      }
+							  }
+							  // if we still have not found the index 
+							  if(index < 0) { /* Point is definitely not in any element */
+								  FTLE_dont_compute(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes);
+							  }
+							  else {
+							    FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
+							    foundGS++;
+							    found++;
+							    guess = index;
+							    if(jguess < 0)
+							      jguess = index;
+							    if(iguess < 0)
+							      iguess = index;
+							  }
+
+							}
+
+						} //pt left domain close
+						if(jguess >= 0)
+						  guess = jguess;
+					} //k loop close
+					if(iguess >= 0)
+					  guess = iguess;
+				}// j loop close
+			}// i loop close
+			//if(LocalSearchChecking) 
+			//	printf("  %d of %d located in domain (%d caught by local search checking)\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes, foundGS);
+			//else
+			printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
 			fflush(stdout);
 		}		
 		

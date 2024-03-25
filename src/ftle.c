@@ -258,16 +258,16 @@ void InitializeFTLEArray(void) {
 			
 			int top, left, right, bottom, front, back, outside, me, global_count_total, global_count, stop, loops, max_loops;
 
-			count_report = 0;
+			//count_report = 0;
 			global_count_total =0;
 			stop = 0;
-			max_loops = 10;
+			max_loops = 100;
 			loops = 0;
 			while (stop==0){
 			  global_count = 0;
 			  loops++;
 			  count = 0;
-			  
+			  count_report = 0;
 			  for(i = 1; i < FTLE_CartMesh.XRes-1; i++) {
 			    for(j = 1; j < FTLE_CartMesh.YRes-1; j++) {
 			      for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) {
@@ -303,7 +303,7 @@ void InitializeFTLEArray(void) {
 				  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
 				  global_search_success[i][j][k].searched =1; // record that this point saw a global search
 				  if(index >= 0){
-				    global_search_success[i][j][k].searched =1;
+				    global_search_success[i][j][k].found =1;
 				    
 				    //Set index and reset other settings that were zeroed
 				    FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
@@ -341,7 +341,9 @@ void InitializeFTLEArray(void) {
 			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
 			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
 			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+			      if(global_search_success[i][j][k].found != 1){
 			      FTLE_dont_compute_neighbors(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes);
+			      }
 			    }
 			  }
 			}

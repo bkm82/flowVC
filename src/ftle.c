@@ -95,167 +95,103 @@ void InitializeFTLEArray(void) {
 				fflush(stdout);
 				guess = seed;
 			}
-			/* // Bray Re-write///////////////////////////////////////////////////////////////////////////////////////////////////// */
-			/* // Loop through all FTLE Cartesian mesh */
-			/* for(i = 0; i <FTLE_CartMesh.XRes; i++){ */
-			/*   iguess = -1; */
-			/*   for(j = 0; j<FTLE_CartMesh.YRes; j++){ */
-			/*     jguess = -1; */
-			/*     for(k = 0; k < FTLE_CartMesh.ZRes; k++) { */
-			/*       // If a point is within the domain (i.e. .LeftDomain not = true) */
-			/*       if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) { */
-
-			/* 	// Reset the index */
-			/* 	index = -1; */
-
-			/* 	// If we still dont have a seed, do global searching until a point if found */
-			/* 	if(seed < 0) { */
-			/* 	  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess); */
-			/* 	  //Once we find a point set the seed */
-			/* 	  if (index>= 0){ */
-			/* 	    seed = index */
-			/* 	  } */
-			/* 	} */
-
-			/* 	// Try finding using local search */
-			/* 	index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess); */
-
-			/* 	// If unsucessful try using local search using seed */
-			/* 	if (index < 0){ */
-				  
-			/* 	} */
-
-			/* 	// If unsuccessful try using global search */
-			/* 	//if (index < 0 && LocalSearchChecking) */
-				
-
-				
-			/* 	//printf("searching for a point"); */
-			/* 	//index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X); */
-			/* 	// If a point is not found */
-			/* 	if(index < 0) {  */
-			/* 	  FTLE_dont_compute(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes); */
-
-			/* 	} */
-			/* 	else { */
-			/* 	  //printf("point found"); */
-			/* 	  FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;	 */
-			/* 	  foundGS++; */
-			/* 	  found++; */
-			/* 	} */
-			/* 	count++; */
-			/* 	//printf("count %d \n", count); */
-			/* 	if (count>count_report){ */
-			/* 	  printf( */
-			/* 		 "found: %d, searched:%d total to search %d \n", */
-			/* 		 found, */
-			/* 		 count, */
-			/* 		 FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes); */
-			/* 	  fflush(stdout); */
-			/* 	  count_report+=100; */
-			/* 	} */
-
-
-			/*       } */
-			/*     } */
-			/*   } */
-			/* } */
-			///////////////////////////////////////////////////////////////////////////////
 
 			/* // BRAY RE_WRITE COMMENT START */
 			/* Search over all the points */
 			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
-				iguess = -1;
-				for(j = 0; j < FTLE_CartMesh.YRes; j++) {
-					jguess = -1;
-					for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
-						if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
-							  count++;
+			  iguess = -1;
+			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
+			    jguess = -1;
+			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+			      if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
+				count++;
 
-							  if (count>count_report){
-							    printf(
-								   "found: %d, searched:%d total to search %d \n",
-								   found,
-								   count,
-								   FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
-							    fflush(stdout);
-							    count_report+=100;
-							  }
-							  /* if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
-							  /*   printf("  %d%%", percentage); */
-							  /*   fflush(stdout); */
-							  /*   percentage = percentage + 10; */
-							  /* } */
+				//todo wrap this into a #ifdef DEBUG_3
+				if (count>count_report){
+				  printf(
+					 "found: %d, searched:%d total to search %d \n",
+					 found,
+					 count,
+					 FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
+				  fflush(stdout);
+				  count_report+=100;
+				}
 
-							  
-
-
-							  index = -1;
-							  //if we dont have a seed yet, try a global search
-							  if(seed < 0) {
-							    index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-							    if (index >= 0){
-							      // record the index as seed and best guess
-							      printf("  Using first located element seed.\n");
-							      fflush(stdout);
-							      seed = index;
-							      guess  = index;
-							      jguess = index;
-							      iguess = index;
-							      
-							    }
-							  }
-
-							  // If we do have a seed, but we did not find an index yet try a local search
-							  if(index < 0 && seed >=0) {
-							    index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
-							  }
-							  
-							  if(index < 0 && seed >=0) {
-							    /* An element not found, try searching from seed location */
-							    index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
-
-							  }
-							  
-							    
-							  //if(index < 0) {
-							    /* If an element still not found, do global search if local search checking requested */
-							  //    if(LocalSearchChecking) {
-							  //	index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-							  //    }
-							  //}
-							  
-							  // if we did not find an element for the point
-							  if(index < 0) {
-								  FTLE_dont_compute(i,j,k);
-							  }
-							  else {
-							    global_search_success[i][j][k].searched = 1;
-							    global_search_success[i][j][k].found = 1;
-							    FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
-							    found++;
-							    guess = index;
-							    if(jguess < 0)
-							      jguess = index;
-							    if(iguess < 0)
-							      iguess = index;
-							  }
-
-							
-
-						} //pt left domain close
-
-					} //k loop close
-
-				}// j loop close
-				if(jguess >= 0)
-				  guess = jguess;
+				// Original report in 10% increments
+				/* if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
+				/*   printf("  %d%%", percentage); */
+				/*   fflush(stdout); */
+				/*   percentage = percentage + 10; */
+				/* } */
+				// 
+				
+				index = -1;
+				//if we dont have a seed yet, try a global search
+				if(seed < 0) {
+				  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
+				  if (index >= 0){
+				    // record the index as seed and best guess
+				    printf("  Using first located element seed.\n");
+				    fflush(stdout);
+				    seed = index;
+				    guess  = index;
+				    jguess = index;
+				    iguess = index;
+				    
+				  }
+				}
+				
+				// If we do have a seed, but we did not find an index yet try a local search
+				if(index < 0 && seed >=0) {
+				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
+				}
+				// If we do have a seed, but did not find an index yet, try a local search from seed
+				if(index < 0 && seed >=0) {
+				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
+				}
+				
+				
+				//if(index < 0) {
+				/* If an element still not found, do global search if local search checking requested */
+				//    if(LocalSearchChecking) {
+				//	index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
+				//    }
+				//}
+				
+				// if we did not find an element for the point, set the FTLE to dont compute
+				if(index < 0) {
+				  FTLE_dont_compute(i,j,k);
+				}
+				//otherwise record
+				else {
+				  global_search_success[i][j][k].searched = 1; // mark the point as searched
+				  global_search_success[i][j][k].found = 1; // mark the point as found
+				  FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; // record the element the pont was found in
+				  found++;
+				  guess = index;
+				  
+				  if(jguess < 0)
+				    jguess = index;
+				  if(iguess < 0)
+				    iguess = index;
+				}
+				
+				
+				
+			      } //pt left domain close
+			      
+			    } //k loop close
+			    
+			  }// j loop close
+			  if(jguess >= 0)
+			    guess = jguess;
 			}// i loop close
 			if(iguess >= 0)
 			  guess = iguess;
-
-			// Try a global search for points next to found points
 			
+			// Try a global search for points next to found points
+			// Todo create a function for this
+			// perform a global_search for any points directly next to a found point
 			int top, left, right, bottom, front, back, outside, me, global_count_total, global_count, stop, loops, max_loops;
 
 			//count_report = 0;

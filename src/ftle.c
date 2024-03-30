@@ -160,7 +160,8 @@ void InitializeFTLEArray(void) {
 				
 				// if we did not find an element for the point, set the FTLE to dont compute
 				if(index < 0) {
-				  FTLE_dont_compute(i,j,k);
+				  global_search_success[i][j][k].found = 0;
+				  //FTLE_dont_compute(i,j,k);
 				}
 				//otherwise record
 				else {
@@ -197,7 +198,7 @@ void InitializeFTLEArray(void) {
 			//count_report = 0;
 			global_count_total =0;
 			stop = 0;
-			max_loops = 100;
+			max_loops = 10000;
 			loops = 0;
 			while (stop==0){
 			  global_count = 0;
@@ -278,7 +279,8 @@ void InitializeFTLEArray(void) {
 			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
 			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
 			      if(global_search_success[i][j][k].found != 1){
-			      FTLE_dont_compute_neighbors(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes);
+				FTLE_dont_compute(i,j,k);
+				FTLE_dont_compute_neighbors(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes);
 			      }
 			    }
 			  }

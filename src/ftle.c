@@ -23,7 +23,7 @@
 
 // Define global variable
 //Search ***global_search_success = NULL;
-void global_search_check(int max_loops, int count_report_interval, int *found, Search ***global_search_success);
+
 
 
 void InitializeFTLEArray(void) {

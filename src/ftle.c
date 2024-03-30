@@ -68,6 +68,9 @@ void InitializeFTLEArray(void) {
 					FTLE_MeshPt[i][j][k].HaveFTLE = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomain = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = 0.0;
+
+					global_search_success.searched = 0;
+					global_search_success.found = 0;
 				}
 			}
 		}    
@@ -141,7 +144,7 @@ void InitializeFTLEArray(void) {
 				  }
 				}
 				
-				// If we do have a seed, but we did not find an index yet try a local search
+				// If we do have a seed try a local search
 				if(index < 0 && seed >=0) {
 				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
 				}
@@ -150,24 +153,12 @@ void InitializeFTLEArray(void) {
 				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
 				}
 				
-				
-				//if(index < 0) {
-				/* If an element still not found, do global search if local search checking requested */
-				//    if(LocalSearchChecking) {
-				//	index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-				//    }
-				//}
-				
-				// if we did not find an element for the point, set the FTLE to dont compute
-				if(index < 0) {
-				  global_search_success[i][j][k].found = 0;
-				  //FTLE_dont_compute(i,j,k);
-				}
-				//otherwise record
-				else {
+		
+				//If we found a point
+				if (index >= 0){
 				  global_search_success[i][j][k].searched = 1; // mark the point as searched
 				  global_search_success[i][j][k].found = 1; // mark the point as found
-				  FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; // record the element the pont was found in
+				  FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; // record the element the pont was found inside
 				  found++;
 				  guess = index;
 				  
@@ -238,26 +229,23 @@ void InitializeFTLEArray(void) {
 				if((me == 0) && (top == 1 || bottom == 1 || front == 1 || back ==1 || left == 1 || right == 1) && (outside != 1) ){
 
 				  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-				  global_search_success[i][j][k].searched =1; // record that this point saw a global search
+				  global_search_success[i][j][k].searched = 1; // record that this point saw a global search
 				  if(index >= 0){
 				    global_search_success[i][j][k].found =1;
 				    
 				    //Set index and reset other settings that were zeroed
 				    FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
-				    
-				    FTLE_MeshPt[i][j][k].FTLEwT = 0.0;
-				    FTLE_MeshPt[i][j][k].FTLEwoT = 0.0;
-				    FTLE_MeshPt[i][j][k].HaveFTLE = 0;
-				    FTLE_MeshPt[i][j][k].Pt.LeftDomain = 0;
-				    FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = 0.0;
 
-				    //counter to check for this loop
+
+				    // Increment counters
+				    // pts found this while loop
 				    global_count++;
+				    
 				    // total number found by global counting
 				    global_count_total++;
+				    // Total found overall
 				    found++;
-				    
-				    //printf("Global check found a ponit \n");
+
 				  }
 				}
 			      }
@@ -273,7 +261,7 @@ void InitializeFTLEArray(void) {
 
 			}//End while loop
 
-			// If a point was not in the mesh, the neighboring points dont need ftle
+			// If a point was not found
 			//
 			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
 			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {

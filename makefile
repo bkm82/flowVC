@@ -1,13 +1,13 @@
 # Generic makefile for flowVC
 ifeq ($(OS),Windows_NT)
-  ifeq ($(shell uname -s),) # not in a bash-like shell
+	ifeq ($(shell uname -s),) # not in a bash-like shell
 	CLEANUP = del /F /Q
 	MKDIR = mkdir
-  else # in a bash-like shell, like msys
+else # in a bash-like shell, like msys
 	CLEANUP = rm -f
 	MKDIR = mkdir -p
-  endif
-	TARGET_EXTENSION=exe
+endif
+TARGET_EXTENSION=exe
 else
 	CLEANUP = rm -f
 	MKDIR = mkdir -p
@@ -18,15 +18,13 @@ endif
 .PHONY: test
 .PHONY: all
 
-
 PATHU = unity/src/
 PATHS = src/
 PATHT = test/
 PATHB = build/
-PATHD = build/depends/
-PATHO = build/objs/$(mode)
-PATHR = build/results/
-
+PATHD = $(PATHB)depends/
+PATHO = $(PATHB)objs/$(mode)/
+PATHR = $(PATHB)results/
 
 BUILD_PATHS = $(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
@@ -36,17 +34,17 @@ SRCT = $(wildcard $(PATHT)*.c)
 COMPILE=gcc -c
 LINK=gcc
 DEPEND=gcc -MM -MG -MF
-#CFLAGS=-I. -I$(PATHU) -I$(PATHS) -DTEST
+
 
 
 LFLAGS = -lm
 CC = gcc
 
 ifeq ($(mode),debug)
-   CFLAGS = -g -Wall -O0 -I. -I$(PATHU) -I$(PATHS) -DTEST
+	CFLAGS = -g -Wall -O0 -I. -I$(PATHU) -I$(PATHS) -DTEST
 else
-   mode = release
-   CFLAGS = -Wall -O3 -I. -I$(PATHU) -I$(PATHS) -DTEST
+	mode = release
+	CFLAGS = -Wall -O3 -I. -I$(PATHU) -I$(PATHS) -DTEST
 endif
 
 EXE = flowVC
@@ -60,7 +58,6 @@ PASSED = `grep -s PASS $(PATHR)*.txt`
 FAIL = `grep -s FAIL $(PATHR)*.txt`
 IGNORE = `grep -s IGNORE $(PATHR)*.txt`
 
-
 test: $(BUILD_PATHS) $(RESULTS)
 	@echo "-----------------------\nIGNORES:\n-----------------------"
 	@echo "$(IGNORE)"
@@ -70,38 +67,28 @@ test: $(BUILD_PATHS) $(RESULTS)
 	@echo "$(PASSED)"
 	@echo "\nDONE"
 
-#In the results
-
-RESULTS = $(patsubst $(PATHT)Test%.c,$(PATHR)Test%.txt,$(SRCT) )
-
+RESULTS = $(patsubst $(PATHT)Test%.c,$(PATHR)Test%.txt,$(SRCT))
+# In the results
 $(PATHR)%.txt: $(PATHB)%.$(TARGET_EXTENSION)
 	-./$< > $@ 2>&1
 
-
-
-
-#$(EXE): $(OBJ)
-#	$(CC) $(OBJ) -o $@ $(LFLAGS)
-
-
-#Create the object files from the source path
-$(PATHO)%.o: $(PATHS)/%.c | $(PATHO)
+# Create object files from the source path
+$(PATHO)%.o: $(PATHS)%.c | $(PATHO)
 	$(COMPILE) $(CFLAGS) $< -o $@
 
-#Create object files from the test path
-$(PATHO)%.o: $(PATHT)/%.c | $(PATHO)
+# Create object files from the test path
+$(PATHO)%.o: $(PATHT)%.c | $(PATHO)
 	$(COMPILE) $(CFLAGS) $< -o $@
 
-#Create the object files from the unity path
-$(PATHO)%.o:: $(PATHU)%.c $(PATHU)%.h
-	$(COMPILE) $(CFLAGS) $< -o $@ 
+# Create object files from the unity path
+$(PATHO)%.o: $(PATHU)%.c $(PATHU)%.h | $(PATHO)
+	$(COMPILE) $(CFLAGS) $< -o $@
 
-#Create the test dependency file
-$(PATHD)%.d:: $(PATHT)%.c
+# Create the test dependency file
+$(PATHD)%.d: $(PATHT)%.c
 	$(DEPEND) $@ $<
 
-
-#Make directories if they do not exist
+# Make directories if they do not exist
 $(PATHB):
 	$(MKDIR) $(PATHB)
 
@@ -110,13 +97,13 @@ $(PATHD):
 
 $(PATHO):
 	$(MKDIR) $(PATHO)
+
 $(PATHR):
 	$(MKDIR) $(PATHR)
 
-
-$(EXE): $(PATHO)/%.o
+# Link object files to create the executable
+$(EXE): $(PATHO)*.o
 	$(LINK) -o $@ $^ $(LFLAGS)
-
 
 clean:
 	$(CLEANUP) $(PATHO)*.o
@@ -128,7 +115,6 @@ clean:
 .PRECIOUS: $(PATHD)%.d
 .PRECIOUS: $(PATHO)%.o
 .PRECIOUS: $(PATHR)%.txt
-
 
 info:
 ifneq ($(mode),release)

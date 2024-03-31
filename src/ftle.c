@@ -187,102 +187,9 @@ void InitializeFTLEArray(void) {
 			  guess = iguess;
 			
 			/* // Try a global search for points next to found points */
-			global_search_check(10000, 100, &found,global_search_success);
-			/* // Todo create a function for this */
-			/* // perform a global_search for any points directly next to a found point */
-			/* int top, left, right, bottom, front, back, outside, me, global_count_total, global_count, stop, loops, max_loops; */
-
-			/* //count_report = 0; */
-			/* global_count_total =0; */
-			/* stop = 0; */
-			/* max_loops = 10000; */
-			/* loops = 0; */
-			/* while (stop==0){ */
-			/*   global_count = 0; */
-			/*   loops++; */
-			/*   count = 0; */
-			/*   count_report = 0; */
-			/*   for(i = 1; i < FTLE_CartMesh.XRes-1; i++) { */
-			/*     for(j = 1; j < FTLE_CartMesh.YRes-1; j++) { */
-			/*       for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) { */
-			/* 	count++; */
-			/* 	if (count>count_report){ */
-			/* 	  printf( */
-			/* 		 "found: %d, from local: %d: this loop: %d, searched:%d total to search %d \n", */
-			/* 		 found, */
-			/* 		 global_count_total, */
-			/* 		 global_count, */
-			/* 		 count, */
-			/* 		 (FTLE_CartMesh.XRes-2) * (FTLE_CartMesh.YRes-2) * (FTLE_CartMesh.ZRes-2)); */
-			/* 	  fflush(stdout); */
-			/* 	  count_report+=100; */
-			/* 	} */
-
-			/* 	//If my point has not had a global search */
-			/* 	me = global_search_success[i][j][k].searched; */
-			/* 	//But i am next to a point that has been found */
-			/* 	left = global_search_success[i-1][j][k].found; */
-			/* 	right = global_search_success[i+1][j][k].found; */
-			/* 	top = global_search_success[i][j+1][k].found; */
-			/* 	bottom = global_search_success[i][j-1][k].found; */
-			/* 	front = global_search_success[i][j][k+1].found; */
-			/* 	back = global_search_success[i][j][k-1].found; */
-			/* 	// And i am not outside the domain */
-			/* 	outside = TestOutsideDomain(FTLE_MeshPt[i][j][k].Pt.X); */
-			      
-			/* 	index = -1; */
-			/* 	// Try searching using a global search */
-			/* 	if((me == 0) && (top == 1 || bottom == 1 || front == 1 || back ==1 || left == 1 || right == 1) && (outside != 1) ){ */
-
-			/* 	  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X); */
-			/* 	  global_search_success[i][j][k].searched = 1; // record that this point saw a global search */
-			/* 	  if(index >= 0){ */
-			/* 	    global_search_success[i][j][k].found =1; */
-				    
-			/* 	    //Set index and reset other settings that were zeroed */
-			/* 	    FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; */
-
-
-			/* 	    // Increment counters */
-			/* 	    // pts found this while loop */
-			/* 	    global_count++; */
-				    
-			/* 	    // total number found by global counting */
-			/* 	    global_count_total++; */
-			/* 	    // Total found overall */
-			/* 	    found++; */
-
-			/* 	  } */
-			/* 	} */
-			/*       } */
-			/*     } // end  */
-			/*   }//End i loop */
-
-
-			/*   //If no points were found */
-			/*   // Or we have reached our max loops */
-			/*   if(global_count == 0 || loops>=max_loops){ */
-			/*     stop = 1; */
-			/*   } */
-
-			/* }//End while loop */
-
-			/* // If a point was not found */
-			/* // */
-			/* for(i = 0; i < FTLE_CartMesh.XRes; i++) { */
-			/*   for(j = 0; j < FTLE_CartMesh.YRes; j++) { */
-			/*     for(k = 0; k < FTLE_CartMesh.ZRes; k++) { */
-			/*       if(global_search_success[i][j][k].found != 1){ */
-			/* 	FTLE_dont_compute(i,j,k); */
-			/* 	FTLE_dont_compute_neighbors(i,j,k, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes, FTLE_CartMesh.ZRes); */
-			/*       } */
-			/*     } */
-			/*   } */
-			/* } */
-			/* //todo get the memory free to work :/ */
-			//free_global_search_success(global_search_success, FTLE_CartMesh.XRes, FTLE_CartMesh.YRes);
-
-
+			if(LocalSearchChecking){
+			  global_search_check(10000, 100, &found,global_search_success);
+			}
 
 			//else
 			printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
@@ -881,9 +788,25 @@ LagrangianPoint Advect_FTLEPoint(int i, int j, int k, double t1, double t2) {
 }
 
 void global_search_check(int max_loops, int count_report_interval, int *found, Search ***global_search_success) {
-
-  // Loop through all of the data points
-  // do a global search on every point next to a found point
+  /**
+   * Perform a global search on all points next to a found point 
+   *
+   * Loop through all of the data points max_loops times,
+   * performing a global search on every point that is next to a found point
+   * stopping if no points are found in a full loop or if max_loops is reached
+   * 
+   * 
+   * max_loops: The maximum number of times to loop through the data
+   * count_report_interval:
+   *   number of itterations to do before printing the status
+   * *found: a pointer to the global found counter
+   * ***global_search_success: a pointer to a 3d array that stores the following
+   *      global_search_success[i][j][k].found:
+   *         1 if a point has been found (else 0)
+   *      global_search_success[i][j][k].searched:
+   *         1 if a point has already been searched using a global search, else 0
+   *
+  */
   
   // perform a global_search for any points directly next to a found point
   int i, j, k,index,top, left, right, bottom, front, back, outside, me,count,count_report, global_count_total, global_count, stop, loops;

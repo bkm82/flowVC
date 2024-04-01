@@ -54,7 +54,11 @@ dkms.conf
 # Build directory
 /build/
 
+
 # temp
 *tmp*
+
+#settings file
+settings_script_controlled.in
 
 

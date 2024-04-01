@@ -75,4 +75,9 @@ typedef struct _CETE {
 	int Encounters;
 } CETE;
 
+typedef struct _Search {
+	int searched;
+	int found;
+} Search;
+
 #endif

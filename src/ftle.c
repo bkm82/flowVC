@@ -20,11 +20,18 @@
 #include "structs.h"
 #include "velocity.h"
 
+
+// Define global variable
+//Search ***global_search_success = NULL;
+
+
+
 void InitializeFTLEArray(void) {
 	
-	int ss, i, j, k, seed = -1, index = -1, found = 0, guess = -1, iguess = -1, jguess = -1, count = 0, foundGS = 0, percentage = 0;
+  int ss, i, j, k, seed = -1, index = -1, found = 0, guess = -1, iguess = -1, jguess = -1, count = 0 ,count_report =0;
+  //int foundGS = 0, percentage = 0 ;
 	double Xseed[3];
-	double FTLE_outside = -1.0; /* Used to mask FTLE values outside of domain */
+	//double FTLE_outside = -1.0; /* Used to mask FTLE values outside of domain */
 	FILE *FTLE_BinFileID;
 	char FTLE_BinFilePath[LONGSTRING];
 	
@@ -43,6 +50,16 @@ void InitializeFTLEArray(void) {
 				if((FTLE_MeshPt[i][j] = (FTLEPoint *)malloc(FTLE_CartMesh.ZRes * sizeof(FTLEPoint))) == NULL)
 					FatalError("Malloc failed for FTLE[%d][%d]", i, j);
 		}
+
+		//int i,j,k;
+		Search *** global_search_success = (Search ***)malloc(FTLE_CartMesh.XRes*sizeof(Search**));
+		for (i = 0; i< FTLE_CartMesh.XRes; i++) {
+		  global_search_success[i] = (Search **) malloc(FTLE_CartMesh.YRes*sizeof(Search *));
+		  for (j = 0; j < FTLE_CartMesh.ZRes; j++) {
+		    global_search_success[i][j] = (Search *)malloc(FTLE_CartMesh.ZRes*sizeof(Search));
+		  }
+		}
+
 		
 		/* Initialize FTLE_MeshPt */
 		for(i = 0; i < FTLE_CartMesh.XRes; i++) {
@@ -56,6 +73,9 @@ void InitializeFTLEArray(void) {
 					FTLE_MeshPt[i][j][k].HaveFTLE = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomain = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = 0.0;
+
+					global_search_success[i][j][k].searched = 0;
+					global_search_success[i][j][k].found = 0;
 				}
 			}
 		}    
@@ -65,25 +85,7 @@ void InitializeFTLEArray(void) {
 			for(j = 0; j < FTLE_CartMesh.YRes; j++) {
 				for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
 					if(TestOutsideDomain(FTLE_MeshPt[i][j][k].Pt.X)) {
-						FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1;
-						FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0;
-						FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside;
-						FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside;
-						/* No need to calculate FTLE for this point */
-						FTLE_MeshPt[i][j][k].HaveFTLE = 1;	    
-						/* Or neighboring points */
-						if(i > 0) 
-							FTLE_MeshPt[i-1][j][k].HaveFTLE = 1;
-						if(i < FTLE_CartMesh.XRes - 1)
-							FTLE_MeshPt[i+1][j][k].HaveFTLE = 1;
-						if(j > 0) 
-							FTLE_MeshPt[i][j-1][k].HaveFTLE = 1;
-						if(j < FTLE_CartMesh.YRes - 1)
-							FTLE_MeshPt[i][j+1][k].HaveFTLE = 1;
-						if(k > 0) 
-							FTLE_MeshPt[i][j][k-1].HaveFTLE = 1;
-						if(k < FTLE_CartMesh.ZRes - 1)
-							FTLE_MeshPt[i][j][k+1].HaveFTLE = 1;
+					  FTLE_dont_compute(i,j,k);
 					}
 				}
 			}
@@ -101,150 +103,99 @@ void InitializeFTLEArray(void) {
 				fflush(stdout);
 				guess = seed;
 			}
-			
+
+			/* // BRAY RE_WRITE COMMENT START */
 			/* Search over all the points */
 			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
-				iguess = -1;
-				for(j = 0; j < FTLE_CartMesh.YRes; j++) {
-					jguess = -1;
-					for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
-						if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) { 
-							if(seed < 0) {
-								seed = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-								if(seed < 0) {
-									FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1;
-									FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0;
-									/* No need to calculate FTLE for this point */
-									FTLE_MeshPt[i][j][k].HaveFTLE = 1;
-									FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside;
-									FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside;
-									/* Or its neighbors */
-									if(i > 0) 
-										FTLE_MeshPt[i-1][j][k].HaveFTLE = 1;
-									if(i < FTLE_CartMesh.XRes - 1)
-										FTLE_MeshPt[i+1][j][k].HaveFTLE = 1;
-									if(j > 0) 
-										FTLE_MeshPt[i][j-1][k].HaveFTLE = 1;
-									if(j < FTLE_CartMesh.YRes - 1)
-										FTLE_MeshPt[i][j+1][k].HaveFTLE = 1;
-									if(k > 0) 
-										FTLE_MeshPt[i][j][k-1].HaveFTLE = 1;
-									if(k < FTLE_CartMesh.ZRes - 1)
-										FTLE_MeshPt[i][j][k+1].HaveFTLE = 1;
-								}
-								else {
-									printf("  Using first located element seed.\n");
-									fflush(stdout);
-									FTLE_MeshPt[i][j][k].Pt.ElementIndex = seed;
-									found++;
-									guess  = seed;
-									jguess = seed;
-									iguess = seed;
-								}
-							}
-							else {
-								count++;
-								if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) {
-									printf("  %d%%", percentage);
-									fflush(stdout);
-									percentage = percentage + 10;
-								}  
-								index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
-								if(index < 0) { 
-									/* An element not found, try searching from seed location */ 
-									index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
-									if(index < 0) {
-										/* If an element still not found, do global search if local search checking requested */
-										if(LocalSearchChecking) {
-											index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
-											if(index < 0) { /* Point is definitely not in any element */
-												FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1;
-												FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0;
-												/* No need to calculate FTLE for this point or its neighbors */
-												FTLE_MeshPt[i][j][k].HaveFTLE = 1;
-												FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside;
-												FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside;
-												if(i > 0) 
-													FTLE_MeshPt[i-1][j][k].HaveFTLE = 1;
-												if(i < FTLE_CartMesh.XRes - 1)
-													FTLE_MeshPt[i+1][j][k].HaveFTLE = 1;
-												if(j > 0) 
-													FTLE_MeshPt[i][j-1][k].HaveFTLE = 1;
-												if(j < FTLE_CartMesh.YRes - 1)
-													FTLE_MeshPt[i][j+1][k].HaveFTLE = 1;
-												if(k > 0) 
-													FTLE_MeshPt[i][j][k-1].HaveFTLE = 1;
-												if(k < FTLE_CartMesh.ZRes - 1)
-													FTLE_MeshPt[i][j][k+1].HaveFTLE = 1;
-											}
-											else {
-												FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;	
-												foundGS++;
-												found++;
-												guess = index;
-												if(jguess < 0)
-													jguess = index;
-												if(iguess < 0)
-													iguess = index;
-											}
-										}
-										else {
-											FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1;
-											FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0;
-											/* No need to calculate FTLE for this point or its neighbors */
-											FTLE_MeshPt[i][j][k].HaveFTLE = 1;
-											FTLE_MeshPt[i][j][k].FTLEwT = FTLE_outside;
-											FTLE_MeshPt[i][j][k].FTLEwoT = FTLE_outside;
-											if(i > 0) 
-												FTLE_MeshPt[i-1][j][k].HaveFTLE = 1;
-											if(i < FTLE_CartMesh.XRes - 1)
-												FTLE_MeshPt[i+1][j][k].HaveFTLE = 1;
-											if(j > 0) 
-												FTLE_MeshPt[i][j-1][k].HaveFTLE = 1;
-											if(j < FTLE_CartMesh.YRes - 1)
-												FTLE_MeshPt[i][j+1][k].HaveFTLE = 1;
-											if(k > 0) 
-												FTLE_MeshPt[i][j][k-1].HaveFTLE = 1;
-											if(k < FTLE_CartMesh.ZRes - 1)
-												FTLE_MeshPt[i][j][k+1].HaveFTLE = 1;
-										}
-									}
-									else {
-										FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;	
-										found++;
-										guess = index;
-										if(jguess < 0)
-											jguess = index;
-										if(iguess < 0)
-											iguess = index;
-									}
-								}
-								else {
-									FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
-									found++;
-									guess = index;
-									if(jguess < 0)
-										jguess = index;
-									if(iguess < 0)
-										iguess = index;
-								}
-							}  
-						}
-					}
+			  iguess = -1;
+			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
+			    jguess = -1;
+			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+			      if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
+				count++;
+
+				//todo wrap this into a #ifdef DEBUG_3
+				if (count>count_report){
+				  printf(
+					 "found: %d, searched:%d total to search %d \n",
+					 found,
+					 count,
+					 FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
+				  fflush(stdout);
+				  count_report+=100;
 				}
-				if(jguess >= 0)
-					guess = jguess;
-			}
+
+				// Original report in 10% increments
+				/* if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
+				/*   printf("  %d%%", percentage); */
+				/*   fflush(stdout); */
+				/*   percentage = percentage + 10; */
+				/* } */
+				// 
+				
+				index = -1;
+				//if we dont have a seed yet, try a global search
+				if(seed < 0) {
+				  index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
+				  if (index >= 0){
+				    // record the index as seed and best guess
+				    printf("  Using first located element seed.\n");
+				    fflush(stdout);
+				    seed = index;
+				    guess  = index;
+				    jguess = index;
+				    iguess = index;
+				    
+				  }
+				}
+				
+				// If we do have a seed try a local search
+				if(index < 0 && seed >=0) {
+				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, guess);
+				}
+				// If we do have a seed, but did not find an index yet, try a local search from seed
+				if(index < 0 && seed >=0) {
+				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
+				}
+				
+		
+				//If we found a point
+				if (index >= 0){
+				  global_search_success[i][j][k].searched = 1; // mark the point as searched
+				  global_search_success[i][j][k].found = 1; // mark the point as found
+				  FTLE_MeshPt[i][j][k].Pt.ElementIndex = index; // record the element the pont was found inside
+				  found++;
+				  guess = index;
+				  
+				  if(jguess < 0)
+				    jguess = index;
+				  if(iguess < 0)
+				    iguess = index;
+				}
+				
+				
+				
+			      } //pt left domain close
+			      
+			    } //k loop close
+			    
+			  }// j loop close
+			  if(jguess >= 0)
+			    guess = jguess;
+			}// i loop close
 			if(iguess >= 0)
-				guess = iguess;
+			  guess = iguess;
 			
-			
-			if(LocalSearchChecking) 
-				printf("  %d of %d located in domain (%d caught by local search checking)\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes, foundGS);
-			else
-				printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
+			/* // Try a global search for points next to found points */
+			if(LocalSearchChecking){
+			  global_search_check(10000, 100, &found,global_search_success);
+			}
+
+			//else
+			printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
 			fflush(stdout);
-		}		
+		}
+
 		
 		/* Open bin file to store FTLE_MeshPt initialization data */
 		sprintf(FTLE_BinFilePath, "%s%s", Path_Data, FTLE_ICFile);
@@ -836,6 +787,134 @@ LagrangianPoint Advect_FTLEPoint(int i, int j, int k, double t1, double t2) {
 	
 }
 
+void global_search_check(int max_loops, int count_report_interval, int *found, Search ***global_search_success) {
+  /**
+   * Perform a global search on all points next to a found point 
+   *
+   * Loop through all of the data points max_loops times,
+   * performing a global search on every point that is next to a found point
+   * stopping if no points are found in a full loop or if max_loops is reached
+   * 
+   * 
+   * max_loops: The maximum number of times to loop through the data
+   * count_report_interval:
+   *   number of itterations to do before printing the status
+   * *found: a pointer to the global found counter
+   * ***global_search_success: a pointer to a 3d array that stores the following
+   *      global_search_success[i][j][k].found:
+   *         1 if a point has been found (else 0)
+   *      global_search_success[i][j][k].searched:
+   *         1 if a point has already been searched using a global search, else 0
+   *
+  */
+  
+  // perform a global_search for any points directly next to a found point
+  int i, j, k,index,top, left, right, bottom, front, back, outside, me,count,count_report, global_count_total, global_count, stop, loops;
+  global_count_total =0;
+  stop = 0;
+  loops = 0;
+
+  
+  while (stop==0){
+    global_count = 0;
+    loops++;
+    count = 0;
+    count_report = 0;
+    for(i = 1; i < FTLE_CartMesh.XRes-1; i++) {
+      for(j = 1; j < FTLE_CartMesh.YRes-1; j++) {
+	for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) {
+	  count++;
+	  if (count>count_report){
+	    printf(
+		   "found: %d, from local: %d: this loop: %d, searched:%d total to search %d \n",
+		   *found,
+		   global_count_total,
+		   global_count,
+		   count,
+		   (FTLE_CartMesh.XRes-2) * (FTLE_CartMesh.YRes-2) * (FTLE_CartMesh.ZRes-2));
+	    fflush(stdout);
+	    count_report+=count_report_interval;
+	  }
+	  
+	  //If my point has not had a global search
+	  me = global_search_success[i][j][k].searched;
+	  //But i am next to a point that has been found
+	  left = global_search_success[i-1][j][k].found;
+	  right = global_search_success[i+1][j][k].found;
+	  top = global_search_success[i][j+1][k].found;
+	  bottom = global_search_success[i][j-1][k].found;
+	  front = global_search_success[i][j][k+1].found;
+	  back = global_search_success[i][j][k-1].found;
+	  // And i am not outside the domain
+	  outside = TestOutsideDomain(FTLE_MeshPt[i][j][k].Pt.X);
+	  
+	  index = -1;
+	  // Try searching using a global search
+	  if((me == 0) && (top == 1 || bottom == 1 || front == 1 || back ==1 || left == 1 || right == 1) && (outside != 1) ){
+	    
+	    index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
+	    global_search_success[i][j][k].searched = 1; // record that this point saw a global search
+	    if(index >= 0){
+	      global_search_success[i][j][k].found =1;
+	      
+	      //Set index and reset other settings that were zeroed
+	      FTLE_MeshPt[i][j][k].Pt.ElementIndex = index;
+	      
+	      
+	      // Increment counters
+	      // pts found this while loop
+	      global_count++;
+	      
+	      // total number found by global counting
+	      global_count_total++;
+	      // Total found overall
+	      *found = *found + 1;
+	      
+	    }
+	  }
+	}
+      } // end 
+    }//End i loop
+
+    
+    //If no points were found
+    // Or we have reached our max loops
+    if(global_count == 0 || loops>=max_loops){
+      stop = 1;
+    }
+    
+  }
+}
+
+void FTLE_dont_compute(int i, int j, int k) {
+  // For a point and its neighbors, set the values to indicate that the FTLE doesnt need to be computed
+
+  //printf("point not found");
+  FTLE_MeshPt[i][j][k].Pt.LeftDomain = 1;
+  FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = -1.0;
+  /* No need to calculate FTLE for this point */
+  FTLE_MeshPt[i][j][k].HaveFTLE = 1;
+  FTLE_MeshPt[i][j][k].FTLEwT = -1.0;
+  FTLE_MeshPt[i][j][k].FTLEwoT = -1.0;
+}
+void FTLE_dont_compute_neighbors(int i, int j, int k, int i_max, int j_max, int k_max){ 
+ //Dont compute FTLE for neighbors
+  if(i > 0)
+    FTLE_MeshPt[i-1][j][k].HaveFTLE = 1;
+  if(i < i_max - 1)
+    FTLE_MeshPt[i+1][j][k].HaveFTLE = 1;
+  if(j > 0)
+    FTLE_MeshPt[i][j-1][k].HaveFTLE = 1;
+  if(j < j_max - 1)
+    FTLE_MeshPt[i][j+1][k].HaveFTLE = 1;
+  if(k > 0)
+    FTLE_MeshPt[i][j][k-1].HaveFTLE = 1;
+  if(k < k_max - 1)
+    FTLE_MeshPt[i][j][k+1].HaveFTLE = 1;
+}
+
+   
+
 void UpdateFTLELocations(void) {     
 	/* Copies contents of FTLE_NewArray to FTLE_MeshPt */
 	int i, j, k;
@@ -955,15 +1034,30 @@ void FreeFTLEData(void) {
 			FTLE_NewArray[i][j] = NULL;
 			free(FTLE_MeshPt[i][j]);
 			FTLE_MeshPt[i][j] = NULL;
+
 		}
 		free(FTLE_NewArray[i]);
 		FTLE_NewArray[i] = NULL;
 		free(FTLE_MeshPt[i]);
 		FTLE_MeshPt[i] = NULL;
+
 	}
 	free(FTLE_NewArray);
 	FTLE_NewArray = NULL;
 	free(FTLE_MeshPt);
 	FTLE_MeshPt = NULL;
+
 	
+}
+
+
+void free_global_search_success (Search ***global_search_success, int l, int m){
+
+  for (int i = 0;i<l;i++){
+    for (int j = 0;j<m;i++){
+      free(global_search_success[i][j]);
+    }
+    free(global_search_success[i]);
+  }
+  free(global_search_success);
 }

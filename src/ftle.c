@@ -853,7 +853,7 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
       for(j = 1; j < FTLE_CartMesh.YRes-1; j++) {
 	for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) {
 	  count++;
-	  #ifdef Debug_1
+	  #ifdef DEBUG_1
 	  if (count>count_report){
 	    printf(
 		   "found: %d, from local: %d: this loop: %d, searched:%d total to search %d \n",

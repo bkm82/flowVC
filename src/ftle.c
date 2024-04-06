@@ -195,7 +195,7 @@ void InitializeFTLEArray(void) {
 			
 			/* // Try a global search for points next to found points */
 			if(LocalSearchChecking){
-			  global_search_check(10000, 100, &found,global_search_success);
+			  global_search_check(100000, 100000, &found,global_search_success);
 			  
 			}
 			//

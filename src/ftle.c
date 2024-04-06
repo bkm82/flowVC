@@ -29,6 +29,7 @@
 void InitializeFTLEArray(void) {
 	
   int ss, i, j, k, seed = -1, index = -1, found = 0, guess = -1, iguess = -1, jguess = -1, count = 0 ,count_report =0;
+  int percentage = 0;
   //int foundGS = 0, percentage = 0 ;
 	double Xseed[3];
 	//double FTLE_outside = -1.0; /* Used to mask FTLE values outside of domain */
@@ -73,6 +74,7 @@ void InitializeFTLEArray(void) {
 					FTLE_MeshPt[i][j][k].HaveFTLE = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomain = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = 0.0;
+					FTLE_MeshPt[i][j][k].Pt.ElementIndex = -1;
 
 					global_search_success[i][j][k].searched = 0;
 					global_search_success[i][j][k].found = 0;
@@ -114,7 +116,8 @@ void InitializeFTLEArray(void) {
 			      if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
 				count++;
 
-				//todo wrap this into a #ifdef DEBUG_3
+				#ifdef DEBUG_1
+				// If debugging, print the status every 1000 points 
 				if (count>count_report){
 				  printf(
 					 "found: %d, searched:%d total to search %d \n",
@@ -122,16 +125,17 @@ void InitializeFTLEArray(void) {
 					 count,
 					 FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
 				  fflush(stdout);
-				  count_report+=100;
+				  count_report+=1000;
 				}
+				#endif
 
 				// Original report in 10% increments
-				/* if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
-				/*   printf("  %d%%", percentage); */
-				/*   fflush(stdout); */
-				/*   percentage = percentage + 10; */
-				/* } */
-				// 
+				if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) {
+				  printf("  %d%%", percentage);
+				  fflush(stdout);
+				  percentage = percentage + 10;
+				}
+				
 				
 				index = -1;
 				//if we dont have a seed yet, try a global search
@@ -157,7 +161,10 @@ void InitializeFTLEArray(void) {
 				if(index < 0 && seed >=0) {
 				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
 				}
-				
+
+				if (index < -1){
+				  FatalError("Incorrect Index (likely overflow): Index = %d \n", index);
+				};
 		
 				//If we found a point
 				if (index >= 0){

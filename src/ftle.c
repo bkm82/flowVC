@@ -842,8 +842,8 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
   global_count_total =0;
   stop = 0;
   loops = 0;
-
-  
+  printf("Starting Global Search Checking \n");
+    
   while (stop==0){
     global_count = 0;
     loops++;
@@ -853,6 +853,7 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
       for(j = 1; j < FTLE_CartMesh.YRes-1; j++) {
 	for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) {
 	  count++;
+	  #ifdef Debug_1
 	  if (count>count_report){
 	    printf(
 		   "found: %d, from local: %d: this loop: %d, searched:%d total to search %d \n",
@@ -864,6 +865,7 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
 	    fflush(stdout);
 	    count_report+=count_report_interval;
 	  }
+	  #endif
 	  
 	  //If my point has not had a global search
 	  me = global_search_success[i][j][k].searched;

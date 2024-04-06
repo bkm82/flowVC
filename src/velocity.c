@@ -481,9 +481,7 @@ void GetVelocity_Unstructured(const double tq, LagrangianPoint *pt, double *dXdt
     double V;
     double tloc;
 
-    #ifdef DEBUG_1
-    printf("DEBUG:1 velocity.c:GetVelocity_Unstructured ElementIndex = %d \n", pt->ElementIndex);
-    #endif
+
     if(pt->ElementIndex == -1)
         FatalError("Attempting to interpolate velocity at point with Element_Index = -1");
     

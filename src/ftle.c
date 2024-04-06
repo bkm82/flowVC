@@ -196,7 +196,29 @@ void InitializeFTLEArray(void) {
 			/* // Try a global search for points next to found points */
 			if(LocalSearchChecking){
 			  global_search_check(10000, 100, &found,global_search_success);
+			  
 			}
+			//
+
+			//Dont compute the FTLE for any points (or neighbors) that were not found
+			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
+			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
+			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+			      if(global_search_success[i][j][k].found != 1) {
+				FTLE_dont_compute(i,j,k);
+				FTLE_dont_compute_neighbors(
+							    i,
+							    j,
+							    k,
+							    FTLE_CartMesh.XRes,
+							    FTLE_CartMesh.YRes,
+							    FTLE_CartMesh.ZRes
+							    );
+			      }
+			    }
+			  }
+			}
+			
 
 			//else
 			printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);

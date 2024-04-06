@@ -861,6 +861,10 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
 	    
 	    index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
 	    global_search_success[i][j][k].searched = 1; // record that this point saw a global search
+	    if (index < -1){
+	      FatalError("Incorrect Index (likely overflow): Index = %d \n", index);
+	    };
+	    
 	    if(index >= 0){
 	      global_search_success[i][j][k].found =1;
 	      

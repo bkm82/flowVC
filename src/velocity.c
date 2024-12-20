@@ -480,7 +480,8 @@ void GetVelocity_Unstructured(const double tq, LagrangianPoint *pt, double *dXdt
     double r, s, t, d;
     double V;
     double tloc;
-    
+
+
     if(pt->ElementIndex == -1)
         FatalError("Attempting to interpolate velocity at point with Element_Index = -1");
     

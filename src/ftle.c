@@ -29,6 +29,7 @@
 void InitializeFTLEArray(void) {
 	
   int ss, i, j, k, seed = -1, index = -1, found = 0, guess = -1, iguess = -1, jguess = -1, count = 0 ,count_report =0;
+  int percentage = 0;
   //int foundGS = 0, percentage = 0 ;
 	double Xseed[3];
 	//double FTLE_outside = -1.0; /* Used to mask FTLE values outside of domain */
@@ -73,6 +74,7 @@ void InitializeFTLEArray(void) {
 					FTLE_MeshPt[i][j][k].HaveFTLE = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomain = 0;
 					FTLE_MeshPt[i][j][k].Pt.LeftDomainTime = 0.0;
+					FTLE_MeshPt[i][j][k].Pt.ElementIndex = -1;
 
 					global_search_success[i][j][k].searched = 0;
 					global_search_success[i][j][k].found = 0;
@@ -114,7 +116,8 @@ void InitializeFTLEArray(void) {
 			      if(!FTLE_MeshPt[i][j][k].Pt.LeftDomain) {
 				count++;
 
-				//todo wrap this into a #ifdef DEBUG_3
+				#ifdef DEBUG_1
+				// If debugging, print the status every 1000 points 
 				if (count>count_report){
 				  printf(
 					 "found: %d, searched:%d total to search %d \n",
@@ -122,16 +125,17 @@ void InitializeFTLEArray(void) {
 					 count,
 					 FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
 				  fflush(stdout);
-				  count_report+=100;
+				  count_report+=1000;
 				}
+				#endif
 
 				// Original report in 10% increments
-				/* if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) { */
-				/*   printf("  %d%%", percentage); */
-				/*   fflush(stdout); */
-				/*   percentage = percentage + 10; */
-				/* } */
-				// 
+				if(100 * count / (FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes) > percentage) {
+				  printf("  %d%%", percentage);
+				  fflush(stdout);
+				  percentage = percentage + 10;
+				}
+				
 				
 				index = -1;
 				//if we dont have a seed yet, try a global search
@@ -157,7 +161,10 @@ void InitializeFTLEArray(void) {
 				if(index < 0 && seed >=0) {
 				  index = Get_Element_Local_Search(FTLE_MeshPt[i][j][k].Pt.X, seed);
 				}
-				
+
+				if (index < -1){
+				  FatalError("Incorrect Index (likely overflow): Index = %d \n", index);
+				};
 		
 				//If we found a point
 				if (index >= 0){
@@ -188,8 +195,30 @@ void InitializeFTLEArray(void) {
 			
 			/* // Try a global search for points next to found points */
 			if(LocalSearchChecking){
-			  global_search_check(10000, 100, &found,global_search_success);
+			  global_search_check(100000, 100000, &found,global_search_success);
+			  
 			}
+			//
+
+			//Dont compute the FTLE for any points (or neighbors) that were not found
+			for(i = 0; i < FTLE_CartMesh.XRes; i++) {
+			  for(j = 0; j < FTLE_CartMesh.YRes; j++) {
+			    for(k = 0; k < FTLE_CartMesh.ZRes; k++) {
+			      if(global_search_success[i][j][k].found != 1) {
+				FTLE_dont_compute(i,j,k);
+				FTLE_dont_compute_neighbors(
+							    i,
+							    j,
+							    k,
+							    FTLE_CartMesh.XRes,
+							    FTLE_CartMesh.YRes,
+							    FTLE_CartMesh.ZRes
+							    );
+			      }
+			    }
+			  }
+			}
+			
 
 			//else
 			printf("  %d of %d located in domain\n", found, FTLE_CartMesh.XRes * FTLE_CartMesh.YRes * FTLE_CartMesh.ZRes);
@@ -813,8 +842,8 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
   global_count_total =0;
   stop = 0;
   loops = 0;
-
-  
+  printf("Starting Global Search Checking \n");
+    
   while (stop==0){
     global_count = 0;
     loops++;
@@ -824,6 +853,7 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
       for(j = 1; j < FTLE_CartMesh.YRes-1; j++) {
 	for(k = 1; k < FTLE_CartMesh.ZRes-1; k++) {
 	  count++;
+	  #ifdef DEBUG_1
 	  if (count>count_report){
 	    printf(
 		   "found: %d, from local: %d: this loop: %d, searched:%d total to search %d \n",
@@ -835,6 +865,7 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
 	    fflush(stdout);
 	    count_report+=count_report_interval;
 	  }
+	  #endif
 	  
 	  //If my point has not had a global search
 	  me = global_search_success[i][j][k].searched;
@@ -854,6 +885,10 @@ void global_search_check(int max_loops, int count_report_interval, int *found, S
 	    
 	    index = Get_Element_Global_Search(FTLE_MeshPt[i][j][k].Pt.X);
 	    global_search_success[i][j][k].searched = 1; // record that this point saw a global search
+	    if (index < -1){
+	      FatalError("Incorrect Index (likely overflow): Index = %d \n", index);
+	    };
+	    
 	    if(index >= 0){
 	      global_search_success[i][j][k].found =1;
 	      

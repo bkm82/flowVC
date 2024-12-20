@@ -39,4 +39,16 @@
 #define SHORTSTRING 100
 #define LONGSTRING  200 
 
+#ifdef DEBUG_LEVEL
+#if DEBUG_LEVEL >= 3
+#define DEBUG_3
+#endif
+#if DEBUG_LEVEL >= 2
+#define DEBUG_2
+#endif
+#if DEBUG_LEVEL >= 1
+#define DEBUG_1
+#endif
+#endif
+
 #endif

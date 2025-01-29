@@ -36,10 +36,10 @@ LFLAG= -lm
 
 # Set build mode
 ifeq ($(mode),debug)
-   CFLAGS = -g -Wall -O0 -I. -I$(PATHU) -I$(PATHS) -DTEST -DDEBUG_LEVEL=1
+   CFLAGS = -g -Wall -O0 -I. -I$(PATHU) -I$(PATHS) -DTEST -DUNITY_INCLUDE_CONFIG_H -DDEBUG_LEVEL=1
 else
    mode = release
-   CFLAGS = -Wall -O3 -I. -I$(PATHU) -I$(PATHS) -DTEST
+   CFLAGS = -Wall -O3 -I. -I$(PATHU) -I$(PATHS) -DTEST -DUNITY_INCLUDE_CONFIG_H
 endif
 
 

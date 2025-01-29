@@ -97,8 +97,8 @@ test: $(BUILD_PATHS) $(RESULTS)
 $(PATHR)%.txt: $(PATHB)%.$(TARGET_EXTENSION)
 	-./$< > $@ 2>&1
 
-$(PATHB)Test%.$(TARGET_EXTENSION): $(PATHO)Test%.o $(PATHO)%.o $(PATHO)unity.o
-	$(LINK) -o $@ $^
+$(PATHB)Test%.$(TARGET_EXTENSION): $(PATHO)Test%.o $(PATHO)%.o $(PATHO)unity.o build/objs/io.o
+	$(LINK) -o $@ $^ $(LFLAG)
 
 $(PATHO)%.o:: $(PATHT)%.c
 	$(COMPILE) $(CFLAGS) $< -o $@

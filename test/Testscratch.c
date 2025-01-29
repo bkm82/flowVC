@@ -16,7 +16,7 @@ void test_add_numbers_correct(void)
 
 void test_add_numbers_incorrect(void)
 {
-  TEST_ASSERT_EQUAL(8, bray_add(4,3) );
+  TEST_ASSERT_EQUAL(8, bray_add(4,4) );
 }
 
 

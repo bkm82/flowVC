@@ -1,12 +1,11 @@
-flowVC
-======
+* flowVC
 
-Flow Visualization Code
+Flow Visualization Code forked from FlowPhysics/flowVC
 
 [[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/actions/workflows/tests.yml/badge.svg]]
 [[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
 
-Forked from FlowPhysics/flowVC
+
 Copyright 2013 Shadden Research Group. All rights reserved.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
@@ -16,3 +15,26 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+** Installation
+*** Binaries
+Currently this project does not have any pre-build binaries, so the code must be build from scratch. Reference the Development section below.
+*** Development
+
+This project is tested and built using [[Ceedling][https://github.com/ThrowTheSwitch/Ceedling]] which requires  [[Ruby][https://www.ruby-lang.org/en/]] > 3
+
+1. Install ruby
+
+2. Install Ceedling gem from the RubyGems repository
+   
+   #+begin_src shell
+     gem install geedling
+   #+end_src
+
+
+
+
+
+#+begin_src shell
+
+#+end_src

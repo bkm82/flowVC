@@ -239,13 +239,13 @@
   :report_task: FALSE             # Disabled dedicated report generation task (this enables automatic report generation)
   :utilities:
     - gcovr           # Use gcovr to create the specified reports (default).
-    - ReportGenerator # Use ReportGenerator to create the specified reports.
+    #- ReportGenerator # Use ReportGenerator to create the specified reports.
   :reports: # Specify one or more reports to generate.
     # Make an HTML summary report.
     - HtmlBasic
     # - HtmlDetailed
     # - Text
-    # - Cobertura
+    - Cobertura
     # - SonarQube
     # - JSON
     # - HtmlInline
@@ -261,7 +261,7 @@
     # - TeamCitySummary
     # - lcov
     # - Xml
-    - XmlSummary
+    # - XmlSummary
   :gcovr:
     # :html_artifact_filename: TestCoverageReport.html
     # :html_title: Test Coverage Report

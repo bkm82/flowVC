@@ -19,5 +19,6 @@ jobs:
       run: gem install ceedling
     - name: Install gcovr
       uses: threeal/gcovr-action@v1.1.0
+      run: ceedling gcov:all
     - name: Run Unit tests
       run: ceedling gcov:all

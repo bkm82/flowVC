@@ -7,7 +7,7 @@
 #include "mock_mesh.h"
 #include "structs.h"
 #include "mock_tracers.h"
-
+#include "velocity.h"
 #include "strainrate.h"
 
 void setUp(void) {

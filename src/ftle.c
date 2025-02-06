@@ -1,7 +1,8 @@
 /*
  *  ftle.c
  *  flowVC
- *
+ *  forked from FlowPhysics/flowVC
+ *  Modified by Bray Moll
  *  Created by Shawn Shadden.
  *  Copyright 2010 Flow Physics Group. All rights reserved.
  *

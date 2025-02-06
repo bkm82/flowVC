@@ -32,7 +32,7 @@ gcovr: a code coverage reporter
 
 2. Install Ceedling gem from the RubyGems repository
     #+begin_src shell
-     gem install geedling
+     gem install ceedling
    #+end_src
 3. Install gcovr
    #+begin_src shell
@@ -55,9 +55,3 @@ gcovr: a code coverage reporter
    this will create the ./build/release/flowVC.out executable
    
 
-
-
-
-#+begin_src shell
-
-#+end_src

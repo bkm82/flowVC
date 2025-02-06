@@ -1,6 +1,7 @@
+#ifdef TEST
 #include "unity.h"
 #include "mymath.h"
-
+#include "mock_io.h"
 
 
 void setUp(void) {
@@ -99,17 +100,18 @@ void test_GetMaxEigenvalue(void) {
     TEST_ASSERT_DOUBLE_WITHIN(0.01, expected, result); 
 }
 
-int main(void)
-{
-UNITY_BEGIN();
- RUN_TEST(test_vdot);
- RUN_TEST(test_cross);
- RUN_TEST(test_dist);
- RUN_TEST(test_vdiff);
- RUN_TEST(test_distline);
- RUN_TEST(test_TwoVectorMean);
- RUN_TEST(test_ThreeVectorMean);
- RUN_TEST(test_GetMaxEigenvalue);
+/* int main(void) */
+/* { */
+/* UNITY_BEGIN(); */
+/*  RUN_TEST(test_vdot); */
+/*  RUN_TEST(test_cross); */
+/*  RUN_TEST(test_dist); */
+/*  RUN_TEST(test_vdiff); */
+/*  RUN_TEST(test_distline); */
+/*  RUN_TEST(test_TwoVectorMean); */
+/*  RUN_TEST(test_ThreeVectorMean); */
+/*  RUN_TEST(test_GetMaxEigenvalue); */
 
-return UNITY_END();
-}
+/* return UNITY_END(); */
+/* } */
+#endif // TEST

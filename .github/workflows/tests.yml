@@ -22,7 +22,7 @@ jobs:
     - name: Run Unit tests
       run: ceedling gcov:all
     - name: check for coverage report
-      run: ls -l ../build/artifacts/gcov/gcovr/
+      run: ls -l ./build/artifacts/gcov/gcovr/
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v5
       with:

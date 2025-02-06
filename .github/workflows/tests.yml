@@ -20,11 +20,8 @@ jobs:
     - name: Install gcovr
       run: pip install gcovr
     - name: Run Unit tests
-      run: ceedling gcov:all
-    - name: check for coverage report
-      run: ls -l ./build/artifacts/gcov/gcovr/
+      run: ceedling test:all
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        gcov_include: ./src

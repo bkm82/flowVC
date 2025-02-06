@@ -18,5 +18,4 @@ jobs:
     - name: Install Ceedling
       run: gem install ceedling
     - name: Run Unit tests
-      run: |
-	ceedling test:all
+      run: ceedling test:all

@@ -14,7 +14,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: '3.0'
     - name: Install Ceedling
       run: gem install ceedling
     - name: Run Unit tests

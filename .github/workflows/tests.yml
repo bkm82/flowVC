@@ -24,5 +24,4 @@ jobs:
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v5
       with:
-        files: ./build/artifacts/gcov/gcovr/GcovCoverageCobertura.xml
         token: ${{ secrets.CODECOV_TOKEN }}

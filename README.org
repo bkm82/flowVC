@@ -3,6 +3,8 @@ flowVC
 
 Flow Visualization Code
 
+[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/actions/workflows/tests.yml/badge.svg]]
+[[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
 
 Forked from FlowPhysics/flowVC
 Copyright 2013 Shadden Research Group. All rights reserved.

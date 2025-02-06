@@ -18,19 +18,42 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ** Installation
 *** Binaries
-Currently this project does not have any pre-build binaries, so the code must be build from scratch. Reference the Development section below.
+Currently this project does not have any pre-build binaries, so the code must be build from source. Reference the Development section below.
 *** Development
+**** Dependencies
+[[https://www.ruby-lang.org/en/][Ruby]] > v 3.0: A programing language used for Ceedling
 
-This project is tested and built using [[Ceedling][https://github.com/ThrowTheSwitch/Ceedling]] which requires  [[Ruby][https://www.ruby-lang.org/en/]] > 3
+[[https://github.com/ThrowTheSwitch/Ceedling][Ceedling]] : A collection of tools for C project including Unity and CMock for testing
 
-1. Install ruby
+gcovr: a code coverage reporter
+
+**** Instalation
+1. Install [[https://www.ruby-lang.org/en/][Ruby]]
 
 2. Install Ceedling gem from the RubyGems repository
-   
-   #+begin_src shell
+    #+begin_src shell
      gem install geedling
    #+end_src
+3. Install gcovr
+   #+begin_src shell
+     sudo apt install gcovr
+   #+end_src
+4. Clone the repository
+   #+begin_src shell
+     https://github.com/bkm82/flowVC.git
+     cd flowVC
+   #+end_src
+5. To compile and run all of the tests, run
+   #+begin_src shell
+     ceedling test:all
+   #+end_src
+6. To build the relese run
 
+   #+begin_src shell
+     ceedling release
+   #+end_src
+   this will create the ./build/release/flowVC.out executable
+   
 
 
 

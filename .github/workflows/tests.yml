@@ -20,7 +20,7 @@ jobs:
     - name: Install gcovr
       run: pip install gcovr
     - name: Run Unit tests
-      run: ceedling test:all
+      run: ceedling gcov:all
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v5
       with:

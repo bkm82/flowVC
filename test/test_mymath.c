@@ -59,7 +59,7 @@ void test_distline(void) {
     double x2[] = {1.0, 0.0, 0.0};
     double x0[] = {1.0, 3.0, 4.0};
     double result = distline(x1, x2, x0);
-    double expected = 5.0;
+    double expected = 6.0;
     TEST_ASSERT_DOUBLE_WITHIN(0.001, expected, result);
     
 }

@@ -1,5 +1,3 @@
-#/.github/workflows/ci.yaml
----
 name: CI
 
 on:
@@ -21,6 +19,7 @@ jobs:
       - name: Run all Tests using Docker
         run: |
           docker run \
+	  --interactive \
           --rm \
           -u $(id -u):$(id -g) \
           --volume .:/home/dev/project \

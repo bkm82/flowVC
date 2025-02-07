@@ -61,9 +61,7 @@ jobs:
           ceedling release
 
       - name: Publish GitHub Release
-        if: steps.semantic.outputs.new_release_published == 'true'
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'ref/tags/')
         with:
-          tag_name: ${{ steps.semantic.outputs.new_release_git_tag }}
-          files: |
-            .build/release/flowVC.out
+          files: ./build/release/flowVC.out

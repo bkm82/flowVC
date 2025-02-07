@@ -61,6 +61,7 @@ jobs:
           ceedling release
 
       - name: Publish GitHub Release
+        if: steps.semantic.outputs.new_release_published == 'true'
         uses: softprops/action-gh-release@v0.1.15
         with:
           tag_name: ${{ steps.semantic.outputs.new_release_git_tag }}

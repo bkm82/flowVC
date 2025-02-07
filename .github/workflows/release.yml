@@ -40,6 +40,6 @@ jobs:
           ceedling release
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
-	with:
-	  name: flowVC.out
-	  path: ./build/artifacts/release/flowVC.out
+        with:
+          name: flowVC.out
+          path: ./build/artifacts/release/flowVC.out

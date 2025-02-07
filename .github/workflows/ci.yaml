@@ -25,7 +25,7 @@ jobs:
           docker run \
           --interactive \
           --rm \
-	  -u $(id -u):$(id -g) \
+	  --u $(id -u):$(id -g) \
           --volume .:/home/dev/project \
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling test:all

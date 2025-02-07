@@ -6,6 +6,8 @@ on:
   # Manually triggered testing
   workflow_dispatch:
 
+  
+  push:
   # Check every PR to main
   pull_request:
     branches:

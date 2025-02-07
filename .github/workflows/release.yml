@@ -49,16 +49,13 @@ jobs:
       - name: Determine Release Info
         id: release
         uses: Fresa/trunk-based-release-versioning@main
-      - run: echo "Release version: ${{ steps.release.outputs.version }}"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.ORG_GH_ACCESS_TOKEN }}
           tag_name: ${{ steps.release.outputs.version }}
-          files: |
-            ./build/release/flowVC.out
+          files: ./build/release/flowVC.out
           draft: true
           prerelease: true
           generate_release_notes: true
-

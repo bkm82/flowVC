@@ -57,7 +57,7 @@ jobs:
           token: ${{ secrets.ORG_GH_ACCESS_TOKEN }}
           tag_name: ${{ steps.release.outputs.version }}
           files: |
-	    ./build/release/flowVC.out
+            ./build/release/flowVC.out
           draft: true
           prerelease: true
           generate_release_notes: true

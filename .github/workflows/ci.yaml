@@ -20,29 +20,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build locally
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: .
-          file: Dockerfile.ubuntu
-          platforms: linux/amd64
-          push: false
-          load: true
-          tags: ${{ github.repo }}:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
       - name: Run all Tests using Docker
         run: |
           docker run \
           --interactive \
           --rm \
-          --volume ./project-demo:/project \
-          ${{ github.repo }}:${{ github.sha }} \
+          --volume .:/home/dev/project \
+          throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling test:all

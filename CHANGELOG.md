@@ -1,3 +1,10 @@
+## [0.0.3](https://github.com/bkm82/flowVC/compare/v0.0.2...v0.0.3) (2025-02-07)
+
+
+### Bug Fixes
+
+* **devtools:** Try another gh action build ([#15](https://github.com/bkm82/flowVC/issues/15)) ([3fae177](https://github.com/bkm82/flowVC/commit/3fae1776860b9ba8ee9ab7bf5ad1df0bfcf9d7d2))
+
 ## [0.0.2](https://github.com/bkm82/flowVC/compare/v0.0.1...v0.0.2) (2025-02-07)
 
 

@@ -51,3 +51,18 @@ jobs:
           echo ${{ steps.semantic.outputs.new_release_major_version }}
           echo ${{ steps.semantic.outputs.new_release_minor_version }}
           echo ${{ steps.semantic.outputs.new_release_patch_version }}
+          echo ${{ steps.semantic.outputs.new_release_git_tag }}
+          docker run \
+          --interactive \
+          --rm \
+          -u $(id -u):$(id -g) \
+          --volume .:/home/dev/project \
+          throwtheswitch/madsciencelab-plugins:1.0.0 \
+          ceedling release
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          tag_name: ${{ steps.semantic.outputs.new_release_git_tag }}
+          files: |
+            .build/release/flowVC.out

@@ -1,0 +1,45 @@
+name: CD
+
+on:
+  # Publish on every approved PR
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+  packages: write
+
+jobs:
+  check:
+    name: check pr status
+    runs-on: ubuntu-latest
+    steps:
+      - name: check if PR is merged
+        uses: zmynx/github-actions/.github/actions/git/check-merge@feature/gha
+
+  cd:
+    name: continuous-delivery
+    needs: [check]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate Release using Docker
+        run: |
+          docker run \
+          --interactive \
+          --rm \
+          -u $(id -u):$(id -g) \
+          --volume .:/home/dev/project \
+          throwtheswitch/madsciencelab-plugins:1.0.0 \
+          ceedling release
+      - name Upload Artifact
+        uses actions/upload-artifact@v3
+	with:
+	  name: flowVC.out
+	  path: ./build/artifacts/release/flowVC.out

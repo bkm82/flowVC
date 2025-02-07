@@ -26,7 +26,7 @@ jobs:
           --volume .:/home/dev/project \
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling gcov:all
-          - name: Upload coverage report to Codecov
+         
       - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v5
         with:

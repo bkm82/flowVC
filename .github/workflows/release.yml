@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Generate Release using Docker
         run: |
@@ -43,11 +45,11 @@ jobs:
         with:
           name: flowVC.out
           path: ./build/artifacts/release/flowVC.out
-      - name: Bump version and push tag
-        id: semantic
-        uses: mathieudutour/github-tab-action@v6.1
-        with:
-          github_token: ${{ secrets.ORG_GH_ACCESS_TOKEN}}
+
+      - name: Determine Release Info
+        id: release
+        uses: Fresa/trunk-based-release-versioning@main
+      - run: echo "Release version: ${{ steps.release.outputs.version }}"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

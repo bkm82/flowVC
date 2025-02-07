@@ -5,8 +5,6 @@ name: CI
 on:
   # Manually triggered testing
   workflow_dispatch:
-
-  
   push:
   # Check every PR to main
   pull_request:
@@ -25,7 +23,7 @@ jobs:
           docker run \
           --interactive \
           --rm \
-	  --u $(id -u):$(id -g) \
+          --u $(id -u):$(id -g) \
           --volume .:/home/dev/project \
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling test:all

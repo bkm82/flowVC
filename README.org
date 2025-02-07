@@ -18,7 +18,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ** Installation
 *** Binaries
-Currently this project does not have any pre-build binaries, so the code must be build from source. Reference the Development section below.
+Currently this project does not have any pre-build binaries, so the code must be build from source. Reference the Development section below. The intent is to implement trunk based development.
 *** Development
 **** Dependencies
 [[https://www.ruby-lang.org/en/][Ruby]] > v 3.0: A programing language used for Ceedling

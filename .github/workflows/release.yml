@@ -38,8 +38,8 @@ jobs:
           --volume .:/home/dev/project \
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling release
-      - name Upload Artifact
-        uses actions/upload-artifact@v3
-	with:
-	  name: flowVC.out
-	  path: ./build/artifacts/release/flowVC.out
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: flowVC.out
+          path: ./build/artifacts/release/flowVC.out

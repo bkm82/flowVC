@@ -1,14 +1,14 @@
-plugins:
-  - "@semantic-release/commit-analyzer"
-  - "@semantic-release/release-notes-generator"
-  - "@semantic-release/changelog"
-  - "@semantic-release/git"
-  - "@semantic-release/github"
-    - assets:
-      -path: ./build/release/flowVC.out
-      -label: flowVC.out
-
-branches:
-  - "+([0-9])?(.{+([0-9]),x}).x"
-  - main
-  - remove_docker
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/github",
+      {
+        "assets": ["build/release/flowVC.out"]
+      }
+    ],
+    "@semantic-release/git"
+  ]
+}

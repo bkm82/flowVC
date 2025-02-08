@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - remove_docker
+      - alpha
 
 jobs:
   semantic-release:

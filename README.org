@@ -18,8 +18,10 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ** Installation
+
+*** TODO Automated Release
 *** Binaries
-This project has a pre-compiled binary for linux in the releases.
+a pre-compiled binary for linux in the releases.
 
 *** Development
 **** Dependencies

@@ -9,6 +9,8 @@ branches:
   - main
   - name: dev/*
     prerelease: '${name.replace(/^dev\//g, "dev-")}'
+  - name: remove_docker/*
+    prerelease: '${name.replace(/^remove_docker\//g, "remove_docker-")}'
   - name: feature/*
     prerelease: '${name.replace(/^feature\//g, "feature-")}'
   - name: hotfix/*

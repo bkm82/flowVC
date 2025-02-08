@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev/*
-      - feature/*
-      - hotfix/*
 
 jobs:
   semantic-release:
@@ -60,8 +57,20 @@ jobs:
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling release
 
+      - name: Generate Release using Docker
+        run: |
+          docker run \
+          --interactive \
+          --rm \
+          -u $(id -u):$(id -g) \
+          --volume .:/home/dev/project \
+          throwtheswitch/madsciencelab-plugins:1.0.0 \
+          ceedling release
+	  
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'ref/tags/')
         with:
+          tag_name: ${{ steps.semantic.outputs.new_release_git_tag }}
+          draft: true
+          prerelease: true
           files: ./build/release/flowVC.out

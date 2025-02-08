@@ -1,11 +1,11 @@
 ---
-name: Semantic Release
+name: CD
 
 on:
   push:
     branches:
       - main
-      - remove_docker
+      - alpha
 
 jobs:
   semantic-release:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Prepare prerelease semantic
         if: github.ref != 'refs/heads/main'
-        run: mv .releaserc.prerelease.yaml .releaserc.yaml
+        run: mv .releaserc.prerelease.json .releaserc.json
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4

@@ -10,5 +10,9 @@
       }
     ],
     "@semantic-release/git"
-  ]
+  ],
+    "branches": [
+	"main",
+	"alpha"
+    ]
 }

@@ -1,3 +1,10 @@
+## [0.0.4](https://github.com/bkm82/flowVC/compare/v0.0.3...v0.0.4) (2025-02-08)
+
+
+### Bug Fixes
+
+* remove token and use default ([#18](https://github.com/bkm82/flowVC/issues/18)) ([21b8c7f](https://github.com/bkm82/flowVC/commit/21b8c7fc8386f10d3a87d1f93acc3c16d1d025df))
+
 ## [0.0.3](https://github.com/bkm82/flowVC/compare/v0.0.2...v0.0.3) (2025-02-07)
 
 

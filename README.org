@@ -20,12 +20,18 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ** Usage
 This code is used to perform flow visualization post processing. It can be used to calculate the Finite Time Lyoponove Exponent (FTLE) field
 *** Quick Start
+1. Ensure your simulation results for a tetrahedral mesh. If they are not, interpolate them onto a tetrahedral mesh using something like paraview. Save them into evenly spaced time steps in a directory using a name_xxxxx.vtu file format.
+2. Use the vtu_2_bin section [[https://github.com/bkm82/flowVC-utils][flowVC-Utils]] python project to convert the .vtu to a binary format
+3. Use the inigenerator section [[https://github.com/bkm82/flowVC-utils][flowVC-Utils]] python project to create a settings file (.ini)
+
+   
 #+begin_src shell
 ./flowvc.out settings_file
 #+end_src
 
 *** Data Files
-To run the [[id:f888271a-2f1f-47b3-8a3c-482c0df3e64c][flowVC]] code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. Refer to https://shaddenlab.berkeley.edu/uploads/releasenotes.pdf for a more detailed description of each of these files.
+
+To run the [[id:f888271a-2f1f-47b3-8a3c-482c0df3e64c][flowVC]] code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. Refer to https://shaddenlab.berkeley.edu/uploads/releasenotes.pdf for a more detailed description of each of these files. 
 ***** Cordinates File
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 \begin{equation} 
@@ -146,3 +152,5 @@ Where the type determines the version updates.
 Valid types are fix, feat, BREAKING CHANGE, build, chore, ci, docs, style, refactor, perf, test
 
 
+* Planned Updates
+** TODO Add an example settings file

@@ -45,7 +45,16 @@ jobs:
         uses: cycjimmy/semantic-release-action@v4
         id: semantic  # Need an `id` for output variables
         with:
-          semantic_version: 17
+          semantic_version: 24.2.1
+          branches: |
+            [
+              '+([0-9])?(.{+([0-9]),x}).x',
+              'main'
+              {
+                name: 'remove_docker'
+                prerelease: true
+              }
+            ]
           extra_plugins: |
             @semantic-release/changelog@5
             @semantic-release/exec@5
@@ -62,5 +71,3 @@ jobs:
           echo ${{ steps.semantic.outputs.new_release_minor_version }}
           echo ${{ steps.semantic.outputs.new_release_patch_version }}
           echo ${{ steps.semantic.outputs.new_release_git_tag }}
-
-

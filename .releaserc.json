@@ -1,24 +1,7 @@
 {
-    "plugins": [
-
-	["semantic-release-unsquash", {
-	    "commitAnalyzerConfig": {
-		"preset": "angular",
-		"parserOpts": {
-		    "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
-		}
-	    },
-	    "notesGeneratorConfig": {
-		"preset": "angular",
-		"parserOpts": {
-		    "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
-		},
-		"writerOpts": {
-		    "commitsSort": ["subject", "scope"]
-		}
-	    }
-	}],
-
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
       "@semantic-release/github",

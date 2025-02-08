@@ -46,11 +46,6 @@ jobs:
         id: semantic  # Need an `id` for output variables
         with:
           semantic_version: 17
-          branches: |
-            [
-              'main',
-              'remove_docker"
-            ]
           extra_plugins: |
             @semantic-release/changelog@5
             @semantic-release/exec@5

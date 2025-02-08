@@ -1,9 +1,11 @@
+---
 name: Semantic Release
 
 on:
   push:
     branches:
       - main
+      - remove_docker
 
 jobs:
   semantic-release:
@@ -31,7 +33,7 @@ jobs:
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
-        id: semantic # Need an `id` for output variables
+        id: semantic  # Need an `id` for output variables
         with:
           semantic_version: 17
           extra_plugins: |
@@ -66,7 +68,7 @@ jobs:
           --volume .:/home/dev/project \
           throwtheswitch/madsciencelab-plugins:1.0.0 \
           ceedling release
-	  
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:

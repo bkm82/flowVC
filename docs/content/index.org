@@ -2,8 +2,8 @@
 #+INCLUDE: "./header.org"
 * Welcome
 Welcome to the flowVC documentation.
-* [[./vtu_2bin.org][Input Data Files]]
-#+INCLUDE: "./vtu_2bin.org::vtu_2bin"
+* Input Data Files
+#+INCLUDE: "./vtu_2bin.org::Data Format"
 
 
 * Setting File

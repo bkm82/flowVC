@@ -52,53 +52,53 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org769aedb">Pages</a></li>
-<li><a href="#org09a71dd">Welcome</a></li>
-<li><a href="#org94b7fa5">Simulation Data</a>
+<li><a href="#org93b8502">Pages</a></li>
+<li><a href="#org9e99110">Welcome</a></li>
+<li><a href="#orga222307">Simulation Data</a>
 <ul>
-<li><a href="#orgddb2c57">vtu_2bin</a>
+<li><a href="#org8908c86">vtu_2bin</a>
 <ul>
-<li><a href="#org4e92600">Cordinates File</a></li>
-<li><a href="#orgb384ba5">Connectivity</a></li>
-<li><a href="#org207350c">Adjacency</a></li>
+<li><a href="#org6330c63">Cordinates File</a></li>
+<li><a href="#orgaae9ceb">Connectivity</a></li>
+<li><a href="#orgcd92b16">Adjacency</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org7f4f0db">Setting File</a></li>
+<li><a href="#org612d458">Setting File</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org769aedb" class="outline-2">
-<h2 id="org769aedb">Pages</h2>
-<div class="outline-text-2" id="text-org769aedb">
+<div id="outline-container-org93b8502" class="outline-2">
+<h2 id="org93b8502">Pages</h2>
+<div class="outline-text-2" id="text-org93b8502">
 <p>
 <a href="./index.html">Home</a>  <a href="./vtu_2bin.html">Data Format</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org09a71dd" class="outline-2">
-<h2 id="org09a71dd">Welcome</h2>
-<div class="outline-text-2" id="text-org09a71dd">
+<div id="outline-container-org9e99110" class="outline-2">
+<h2 id="org9e99110">Welcome</h2>
+<div class="outline-text-2" id="text-org9e99110">
 <p>
 Welcome to the flowVC documentation.
 </p>
 </div>
 </div>
-<div id="outline-container-org94b7fa5" class="outline-2">
-<h2 id="org94b7fa5"><a href="./vtu_2bin.html">Simulation Data</a></h2>
-<div class="outline-text-2" id="text-org94b7fa5">
+<div id="outline-container-orga222307" class="outline-2">
+<h2 id="orga222307"><a href="./vtu_2bin.html">Simulation Data</a></h2>
+<div class="outline-text-2" id="text-orga222307">
 </div>
-<div id="outline-container-orgddb2c57" class="outline-3">
-<h3 id="orgddb2c57">vtu_2bin</h3>
-<div class="outline-text-3" id="text-orgddb2c57">
+<div id="outline-container-org8908c86" class="outline-3">
+<h3 id="org8908c86">vtu_2bin</h3>
+<div class="outline-text-3" id="text-org8908c86">
 <p>
 To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
 </p>
 </div>
-<div id="outline-container-org4e92600" class="outline-4">
-<h4 id="org4e92600">Cordinates File</h4>
-<div class="outline-text-4" id="text-org4e92600">
+<div id="outline-container-org6330c63" class="outline-4">
+<h4 id="org6330c63">Cordinates File</h4>
+<div class="outline-text-4" id="text-org6330c63">
 <p>
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 </p>
@@ -108,8 +108,8 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 </div>
 
 <ul class="org-ul">
-<li><a id="orgf250aa5"></a>Data Type<br />
-<div class="outline-text-5" id="text-orgf250aa5">
+<li><a id="org811ca5c"></a>Data Type<br />
+<div class="outline-text-5" id="text-org811ca5c">
 <p>
 n(int): the number of points in the data set
 \(x_i, y_i, z_i\)(double): The cordinates of each node
@@ -119,9 +119,9 @@ n(int): the number of points in the data set
 </ul>
 </div>
 
-<div id="outline-container-orgb384ba5" class="outline-4">
-<h4 id="orgb384ba5">Connectivity</h4>
-<div class="outline-text-4" id="text-orgb384ba5">
+<div id="outline-container-orgaae9ceb" class="outline-4">
+<h4 id="orgaae9ceb">Connectivity</h4>
+<div class="outline-text-4" id="text-orgaae9ceb">
 <p>
 The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
 </p>
@@ -132,8 +132,8 @@ The _connectivity.bin file contains the nodes that make up each element. For a t
 </div>
 
 <ul class="org-ul">
-<li><a id="orge136579"></a>Data Type<br />
-<div class="outline-text-5" id="text-orge136579">
+<li><a id="org2354492"></a>Data Type<br />
+<div class="outline-text-5" id="text-org2354492">
 <p>
 e(int): The number of elements in the data set
 \(i_i^j\) (int): The index of the jth point making ith element in the dataset
@@ -143,9 +143,9 @@ e(int): The number of elements in the data set
 </ul>
 </div>
 
-<div id="outline-container-org207350c" class="outline-4">
-<h4 id="org207350c">Adjacency</h4>
-<div class="outline-text-4" id="text-org207350c">
+<div id="outline-container-orgcd92b16" class="outline-4">
+<h4 id="orgcd92b16">Adjacency</h4>
+<div class="outline-text-4" id="text-orgcd92b16">
 <p>
 The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
 </p>
@@ -156,8 +156,8 @@ The _adjacency.bin file contains the indices of the adacent elements that share 
 </div>
 
 <ul class="org-ul">
-<li><a id="orga333674"></a>Data Type<br />
-<div class="outline-text-5" id="text-orga333674">
+<li><a id="org6320753"></a>Data Type<br />
+<div class="outline-text-5" id="text-org6320753">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
@@ -170,8 +170,18 @@ e(int): The number of elements in the data set
 </div>
 
 
-<div id="outline-container-org7f4f0db" class="outline-2">
-<h2 id="org7f4f0db">Setting File</h2>
+<div id="outline-container-org612d458" class="outline-2">
+<h2 id="org612d458">Setting File</h2>
+<div class="outline-text-2" id="text-org612d458">
+<p>
+The input settings are controlled using a settings.in file
+</p>
+
+
+<p>
+For an example input file <a href="./FTLE_example.html">Click Here</a>
+</p>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">

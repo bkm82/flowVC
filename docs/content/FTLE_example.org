@@ -1,0 +1,353 @@
+#+SETUPFILE: ../org-themes/theme-readtheorg.setup
+#+INCLUDE: "./header.org"
+* Input File
+
+#+begin_src shell :tangle ../../examples/inputfile.in 
+
+################################# flowVC INPUT FILE #####################################
+#	
+# NOTE: Order of parameters listed must be maintained for proper parsing of input file
+#	Comment lines begin with #, comments can be added or removed as desired
+#	Comments cannot occur on lines containing variable declartations
+#	Standard format: VARIABLE_NAME = VALUE
+#
+#######################################################################################
+
+# Path_Data: String, Directory containing data files, e.g. velocity data, etc. 
+# Can be set to pwd (i.e. present working directory) 
+Path_Data = ../bin/	
+	
+# Path_Output: String, Directory where output files will be written 
+# Can be set to pwd (i.e. present working directory)
+Path_Output = ../output/
+
+# Dimensions: Integer, Specifies if velocity data is 2D or 3D
+Dimensions = 2
+
+# Data_MeshType: Integer, Specifies mesh type of velocity data
+# 0: Cartesian 
+#    You will need files Data_InFilePrefix_vel.*.bin and Data_InFilePrefix_Cartesian.bin
+# 1: Unstructured (tetrahedral for 3D and triangular for 2D)
+#    You will need files Data_InFilePrefix_vel.*.bin and Data_InFilePrefix_coordinates.bin, 
+#    Data_InFilePrefix_connectivity.bin and Data_InFilePrefix_adjacency.bin
+Data_MeshType = 0
+
+# Data_InFilePrefix: String, common prefix for input velocity files (see minimum files needed above)
+Data_InFilePrefix = dg
+
+# Data_SuffixTMin: Integer, number appended to the name of first velocity data file 
+# Assumes naming convention of Data_InFilePrefix_vel.N.bin, where Data_InFilePrefix is
+# specified above and N varies from Data_SuffixTMin to (Data_SuffixTMin + Data_SuffixTDelta * Data_SuffixTRes)
+Data_SuffixTMin = 0
+	
+# Data_SuffixTDelta: Integer, Increment between successive velocity data files 
+Data_SuffixTDelta = 1
+
+# Data_SuffixTRes: Integer, number of velocity data files 
+Data_TRes = 51
+
+# Data_TDelta: (Positive) Float, actual time spacing between successive velocity data files
+# Assumes time spacing between velocity data files is constant
+Data_TDelta = 0.02
+
+# Data_TMin: Float, actual time assigned to first velocity data file 
+# Choice is arbitrary, but it usually makes sense to set this to 0.0, which would
+# imply that the first velocity data file specifies the velocity at time 0.0
+Data_TMin = 0.0
+
+# Data_TPeriodic: Binary flag, Specifies if data is periodic in time
+# 0: Not periodic
+# 1: Periodic (make sure first and last data file correspond to same point in cycle)
+Data_TPeriodic = 1
+
+# Data_XPeriodic: Binary flag, Specifies if data is periodic in space
+# 0: Not periodic
+# 1: Periodic 
+Data_XPeriodic = 0
+
+# Data_MeshBounds.XMin, ..., Data_MeshBounds.ZMax: Specifies bounding box of velocity data
+# Setting these bounds LARGER than the actual velocity domain will NOT affect the results
+# Setting these bounds SMALLER than the actual velocity domain WILL limit the velocity data considered
+Data_MeshBounds.XMin = 0.0
+Data_MeshBounds.XMax = 2.0
+Data_MeshBounds.YMin = 0.0
+Data_MeshBounds.YMax = 1.0
+Data_MeshBounds.ZMin = 0.0
+Data_MeshBounds.ZMax = 0.0
+
+# Fluid_Density: Float, specifies fluid density (use consistent units) 
+# Valid only if Particle_Radius > 0
+Fluid_Density = 1.0
+
+# Fluid_Viscosity: Float, specifies fluid viscosity (use consistent units) 
+# Valid only if Particle_Radius > 0
+Fluid_Viscosity = 1.0
+
+# Output_TStart: Float, initial time to start simulation and begin writing output	
+# If FTLE_Compute = 1: Specifies time at which first FTLE field is computed AND output
+# If Trace_Compute = 1: Specifies start time to begin computing tracer trajectories AND outputting positions to file
+Output_TStart = 0.0
+
+# Output_TRes: (Positive) Integer, Number of output times
+# If FTLE_Compute: Specifies number of time instances when the FTLE field will be computed AND output
+# If Trace_Compute: Specifies number of time instances that tracer positions will be output to file  
+Output_TRes = 11
+
+# Output_TDelta: (Positive) Float, Time between successive output 
+# If FTLE_Compute: How often the FTLE field will be computed AND output
+# If Trace_Compute: How often the tracer positions will be output to file
+Output_TDelta =	 0.1
+
+# Int_Type: Integer, specified integration routine used
+# 0: Euler
+# 1: 4th order Runge Kutta 
+# 2: Runge Kutta Fehlberg (adaptive time stepping)
+Int_Type = 1
+
+# Int_TimeStep: (Positive) Float, Time step used for integration Euler or RK4 routines (i.e. Int_Type = 0 or 1)
+# Valid only for Int_Type = 0 or 1
+Int_TimeStep = 0.001
+
+# Int_Accuracy: (Positive) Float, Absolute error tolorance (between RK4 and RK5)
+# Valid only for Int_Type = 2
+Int_Accuracy = 0.001
+
+# Int_MinTimeStep: (Positive) Float, Minimum allowable time step used in RKF routine
+# Once this time step is reached, RK4 approximation automatically accepted
+# Valid only for Int_Type = 2
+Int_MinTimeStep	= 0.00001
+
+# Int_MaxTimeStep: (Positive) Float, Maximum allowable time step used in RKF routine
+# Time step will not be increased beyond this limit even if error between RK4 and RK5 is less than Int_Accuracy
+# Valid only for Int_Type = 2
+Int_MaxTimeStep	= 0.1
+
+# Int_TimeDirection: Integer, Should be set to 1 or -1
+#  1: Advect particles forward in time
+# -1: Advect particles backward in time (used to compute backward time FTLE field)
+Int_TimeDirection = 1
+
+# Int_NormalFlow: Binary flag
+# 0: Do not impose inward flow on no-slip boundaries  
+# 1: Replace no-slip condition on boundaries with inward velocity (magnitude specified by NormalFlowScaling below)
+#    Requires the file Data_InFilePrefix_normals.bin generated from program GetNormals.exe
+# Currently valid only for Data_MeshType = 1 
+Int_NormalFlow = 0
+
+# Int_NormalFlowScaling: Float, Scaling for inward pointing boundary velocity (to prevent tracers from crossing
+# no-slip boundaries), Need to set the number negative if file contains outward normals
+# Valid only for Data_MeshType = 1, Int_NormalFlow = 1
+Int_NormalFlowScaling = 1.0
+
+# Int_Extrapolate: Integer, allows particles to be integrated outside of domain of data by extrapolation of data set 
+# 0: End integration once particle leaves domain (or subset defined by Data_MeshBounds above). 
+#    Computes FTLE for such points (and neighbors) early.
+# 1: Extrapolate velocity outside domain by continuing particle with exit velocity (usually better than below)
+# 2: Linear extrapolation of entire data set (NOT recommended unless you know what you're doing)
+Int_Extrapolate = 0
+
+# Particle_Radius: Float, Radius of all things treated as Lagrangian points
+# Set to zero if you want points to behave as perfect tracers (recommended unless you know what you're doing)
+Particle_Radius = 0.0
+
+# Particle_Density: Float, Mass density of all things treated as Lagrangian points
+# Respectively, set =, >, or < fluid density for neutrally buoyant, aerosols, or bubbles
+# Only valid if Particle_Radius > 0
+Particle_Density = 1.0
+
+# Particle_ICType: Int, Specified type of initial condition assigned to particles
+# 0: Start particles from rest
+# 1: Start particles with velocity equal to fluid velocity at particle release location (recommended)
+# Valid only if Particle_Radius > 0
+Particle_ICType = 1
+
+# Gravity_Vector[i]: Floats, Specifies components of gravity vector (use consistent units)
+# Valid only if Particle_Radius > 0
+Gravity_Vector[0] = 0.0
+Gravity_Vector[1] = 0.0
+Gravity_Vector[2] = 0.0
+
+# Local_Search_Checking: Binary flag
+# 0: Only use local search protocol to determine elements containing initial location of points 
+#    where velocity will need to be interpolated (recommended)
+# 1: Use global search to check failures of local search protocol (safest, but can be painfully slow
+#    if you're not careful)
+# Valid only if Data_MeshType = 1
+LocalSearchChecking = 0
+
+# FTLE_Compute: Binary flag
+# 0: Do not compute FTLE fields
+# 1: Compute FTLE fields (Trace_Compute MUST be 0)
+FTLE_Compute = 1
+
+# FTLE_GenerateMesh: Binary flag
+# 0: Read in FTLE mesh data from file FTLE_ICFile (this file created by running flowVC with FTLE_GenerateMesh = 1)
+# 1: Generate a Cartesian mesh over which FTLE will be computed (mesh parameters specified below, resulting data  
+#    saved to file FTLE_ICFile)
+# Valid only if FTLE_Compute = 1 
+FTLE_GenerateMesh = 1
+
+# FTLE_ICFile: String, Name of file storing FTLE mesh information
+# If FTLE_GenerateMesh = 0, this file should be located in Path_Work directory
+# If FTLE_GenerateMesh = 0, this file will be written to Path_Work directory
+# Valid only if FTLE_Compute = 1 
+FTLE_ICFile = dg_FTLEgrid
+
+# FTLE_MeshBounds.XMin, ..., FTLE_MeshBounds.ZRes: Specifies structured grid over which FTLE is computed
+# Valid only if FTLE_Compute = 1
+FTLE_MeshBounds.XMin = 0.0
+FTLE_MeshBounds.XMax = 2.0
+FTLE_MeshBounds.YMin = 0.0
+FTLE_MeshBounds.YMax = 1.0
+FTLE_MeshBounds.ZMin = 0.0
+FTLE_MeshBounds.ZMax = 0.0
+FTLE_MeshBounds.XRes = 201
+FTLE_MeshBounds.YRes = 101
+FTLE_MeshBounds.ZRes = 1
+
+# FTLE_IntTLength: (Positive) Float, Integration time used to compute FTLE
+# Valid only if FTLE_Compute = 1
+FTLE_IntTLength = 1.0
+
+# FTLE_ComputeVariation: Binary flag, Used to help determine appropriate integration time by ah hoc means
+# 0: Compute FTLE at each output time with integration time set to FTLE_IntTimeLength (nominally, can be reduced when a tracer leaves early)
+# 1: Compute variation of FTLE with integration time
+# Output_TRes MUST be 1 if FTLE_ComputeVariation = 1 
+# Valid only if FTLE_Compute = 1
+FTLE_ComputeVariation = 0
+
+# FTLE_VariationOutFreq: (Positive) Integer, controls how often FTLE is output when computing variation of FTLE with
+# integration time
+# If set to 1, output is generated at every time instance that velocity data is defined, if set to, e.g., 5, then output   
+# is generated at 1/5 of that rate (i.e. every 5 velocity data frames) 
+# Valid only if FTLE_ComputeVariation = 1
+FTLE_VariationOutFreq = 1
+
+# FTLE_OutFilePrefix: String, Filename prefix where FTLE output data is written
+# A separate file is generated for each output time (e.g. dg_forFTLE.0.bin, ..., dg_forFTLE.10.bin if Output_TRes = 11)
+# NOTE: Two types of output files are generated, one set with the 1/T scaling in the definition of FTLE (*_noT.bin files), and ones with the scaling
+# Valid only if FTLE_Compute = 1
+FTLE_OutFilePrefix = dg_forwardFTLE	
+
+
+# Trace_Compute: Binary flag
+# 0: Do not compute tracer trajectories
+# 1: Compute tracer trajectories (FTLE_Compute MUST be 0)
+Trace_Compute = 0
+
+Trace_ReleaseStrategy = 0
+Trace_ReleaseTMax = 0.000755
+
+
+# Trace_GenerateMesh: Binary Flag
+# 0: Read in tracer initial positions from a file (specified by Trace_InFile)
+# 1: Generate a Cartesian grid of tracers to integrate (mesh parameters specified below)
+# Valid only if Trace_Compute = 1
+Trace_GenerateMesh = 1
+
+# Trace_InFile: String, Name of File containing tracer initial positions
+# Valid only if Trace_Compute = 1 and Trace_GenerateMesh = 0
+Trace_InFile = tracer_grid.bin
+
+# Trace_MultipleInFiles: Binary Flag
+# 0: Default
+# 1: Tracer initial conditions change over time and are specified by multiple files
+Trace_MultipleInFiles = 0
+
+# Trace_InFileFormat: Integer, specifies format of Trace_InFile
+# 0: Use this if you want to reuse the .IC file that is generated from flowVC (use with care)
+# 1: ASCII file, first line lists the number of tracers and subsequent lines list the x,y,z coordinates 
+# 2: ASCII legacy VTK polydata mesh format	
+# 3: ASCII legacy VTK unstructured mesh format
+# 4: Binary file, first entry (int) lists the number of tracers and subsequent entries (doubles) list the x,y,z coordinates (binary version of format 1)	
+# Valid only if Compute_Tracers = 1 and Trace_GenerateMesh = 0
+Trace_InFileFormat = 4
+
+# Trace_OutFile: String, Prefix for files where tracer position data will be written
+# Tracer positions written to separate files for each output time
+# Valid only if Trace_Compute = 1
+Trace_OutFilePrefix = dg_tracer-positions
+
+# Trace_NumLaunchTimes: (Positive) Integer, Number of times to release tracers from initial positions
+# If Trace_MultipleInFiles = 1, then this should be number of files
+# Valid only if Trace_Compute = 1 
+Trace_NumLaunchTimes = 1
+
+# Trace_LaunchTimeSpacing: (Positive) Float, Time between successive release of tracers from initial positions
+# Valid only if Trace_Compute = 1 and Trace_NumLaunchTimes > 1 
+Trace_LaunchTimeSpacing = 0.1
+
+# Trace_IntTLength: (Positive) Float, Can be used to limit amount of time any tracer will be integrated
+# Recommended to set this to some value larger than (Output_TRes x Output_TDelta) unless you know what you're doing
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_IntTLength = 100
+
+# Trace_AlwaysOutput: Binary Flag
+# 0: Do not write out tracer position to file once it has left the domain
+# 1: Always write out tracer position to file, even if it left the domain
+# Valid only if Trace_Compute = 1	
+Trace_AlwaysOutput = 0
+
+# Trace_CartMesh.XMin, ..., Trace_CartMesh.ZRes: Specifies Cartesian mesh of tracers to be intergrated
+# Valid only if Trace_Compute = 1 AND Trace_GenerateMesh = 1
+Trace_CartMesh.XMin = 0.0
+Trace_CartMesh.XMax = 2.0
+Trace_CartMesh.YMin = 0.0
+Trace_CartMesh.YMax = 0.1
+Trace_CartMesh.ZMin = 0.0
+Trace_CartMesh.ZMax = 0.0
+Trace_CartMesh.XRes = 201
+Trace_CartMesh.YRes = 101
+Trace_CartMesh.ZRes = 1
+
+# TODO Fill in this documentation
+# These are required but their functionality is not
+Trace_VorticityCompute	=	         0
+Trace_APCompute		=	         0
+Trace_CETCompute	=	         0
+Trace_CETAuxillaryMesh	=	         0
+Trace_CETMeshPrefix	=	 specified
+Trace_CETSubsteps	=	         0
+Trace_RTCompute		=	         0
+Trace_RTOutFilePrefix	=	     dg_tracer-rt
+
+# VelOut_Compute: Binary flag, Used to generate interpolated velocity fields
+# 0: Do not generate interpolated velocity fields
+# 1: Generate interploated velocity fields 
+VelOut_Compute = 0
+
+# VelOut_GenerateMesh: Binary flag
+# 0: Read interpolation locations from file specified by VelOut_InFile 
+# 1: Generate a Cartesian mesh of positions where velocity will be interpolated (mesh parameters specified below)
+# Valid only for VelOut_Compute = 1
+VelOut_GenerateMesh = 1
+
+# VelOut_InFile: String, filename containing locations of points for interpolation
+# Valid only for VelOut_Compute = 1 and VelOut_GenerateMesh = 0
+VelOut_InFile = interpolation-positions.vtk
+
+# VelOut_InFileFormat, Integer, specified format of VelOut_InFile
+# 1: ASCII file, first line lists the number of locations and subsequent lines list the coordinates 
+# 3: ASCII legacy VTK polydata mesh format (as output from Paraview)	
+# 4: ASCII legacy VTK unstructured mesh format (as output from Paraview)	
+# Valid only if VelOut_Compute = 1 AND VelOut_GenerateMesh = 0
+VelOut_InFileFormat = 1
+
+# VelOut_FilePrefix: String, Filename prefix for files that interpolated velocity is data is written to
+# Velocity output written to separate files, one per output time 
+# Valid only if VelOut_Compute = 1
+VelOut_FilePrefix = dg-interpolated 
+
+# VelOut_CartMesh.XMin, ..., VelOut_CartMesh.ZRes: Specifies Cartesian mesh of interpolation positions
+# Valid only if VelOut_Compute = 1
+VelOut_CartMesh.XMin = 0.0
+VelOut_CartMesh.XMax = 2.0
+VelOut_CartMesh.YMin = 0.0
+VelOut_CartMesh.YMax = 1.0
+VelOut_CartMesh.ZMin = 0.0
+VelOut_CartMesh.ZMax = 0.0
+VelOut_CartMesh.XRes = 21
+VelOut_CartMesh.YRes = 11
+VelOut_CartMesh.ZRes = 1
+#+end_src
+

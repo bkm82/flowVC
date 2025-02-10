@@ -30,9 +30,15 @@ You cannot compute FTLE and particle trajectories at the same time. The feature 
 #+end_quote
   
 
-** Usage
+** Documenatation
+#+begin_quote
+[!TIP]
 For more information, check out the Docs [[https://bkm82.github.io/flowVC/][flowVC Docs]]
+#+end_quote
 
+
+** Usage
+flowVC is a command line program
 This code is used to perform flow visualization post processing. It can be used to calculate the Finite Time Lyoponove Exponent (FTLE) field
 
 

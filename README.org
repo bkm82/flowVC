@@ -1,15 +1,19 @@
 * flowVC
 
-Flow Visualization Code forked from FlowPhysics/flowVC
-#+begin_quote
-[!Note]
-Check out the Docs [[https://bkm82.github.io/flowVC/][flowVC Docs]]
-#+end_quote
+
+
 
 [[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CI/badge.svg]]
 [[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CD/badge.svg]]
+[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/Docs/badge.svg]]
 [[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
 
+Flow Visualization Code forked from FlowPhysics/flowVC
+
+#+begin_quote
+[!TIP]
+Check out the [[https://bkm82.github.io/flowVC/][Docs]]
+#+end_quote
 
 Copyright 2013 Shadden Research Group. All rights reserved.
 
@@ -36,34 +40,41 @@ You cannot compute FTLE and particle trajectories at the same time. The feature 
 
 ** Usage
 *** Quick Start
-1. Create the input data files
+**** Create the input data files
    #+begin_quote
    [!Note]
    For the Input Data Files Format reference the [[https://bkm82.github.io/flowVC/][Docs]]
-   
-   For unstructured tetrahedral data in a .vtu format, the vtu_2bin utility function in [[https://github.com/bkm82/flowVC-utils][flowVC-utils]] might be helpful!
    #+end_quote
    
-2. Create a settings.in file. [[./examples/inputfile.in][Example Input File]]
+   #+begin_quote
+   [!TIP]
+   For 3d Tetrahedral Data, the vtu_2bin in [[https://github.com/bkm82/flowVC-utils][flowVC-utils]] might be helpful!
+   #+end_quote
    
-3. Download or Build the Latest Verison
+**** Create a settings.in file. 
+   #+begin_quote
+   [!TIP]
+   [[./examples/inputfile.in][Example Input File]]
+   #+end_quote
+
+   
+**** Download or Build the Latest Verison
+
    #+begin_quote
    [!Note]
    For linux, get the pre-compiled binary [[https://github.com/bkm82/flowVC/releases/latest][here]]
    For windos and mac, see below how to compile the code from source 
    #+end_quote   
    
-4. Run the code
+**** Run the code
 #+begin_src shell
 ./flowvc.out settings_file
 #+end_src
 
-5. If there are issues with the code or with following the documentation, report and issue so we can make it better for everyone!
+**** Report any Issues
+[[https://github.com/bkm82/flowVC/issues][Issues]]
 
 ** Installation
-
-*** Automated Release
-If you are on ubuntu, the code here can be ran directly using the binary compiled and included with each [[https://github.com/bkm82/flowVC/releases/latest][release]]. This is built using our CI/CD automation. 
 
 *** Build From Source
 If you are not on ubuntu, or you want to edit / modify the code, there are various ways to compile the code from source.
@@ -81,23 +92,23 @@ If you are not on ubuntu, or you want to edit / modify the code, there are vario
 [[https://github.com/ThrowTheSwitch/Ceedling][Ceedling]]: Ceedling is a Test-Centered Build System for C. It utilizes a collection of tools for testing (Unity) and mocking (CMock) 
 
 ***** Instalation
-1. Install [[https://www.ruby-lang.org/en/][Ruby]] by refering to the ruby documentation for your operating system.
+****** Install [[https://www.ruby-lang.org/en/][Ruby]] by refering to the ruby documentation for your operating system.
 
-2. Install Ceedling gem from the RubyGems repository
+****** Install Ceedling gem from the RubyGems repository
     #+begin_src shell
      gem install ceedling
    #+end_src
 
-4. Clone the repository
+****** Clone the repository
    #+begin_src shell
      https://github.com/bkm82/flowVC.git
      cd flowVC
    #+end_src
-5. To compile and run all of the tests, run
+****** To compile and run all of the tests, run
    #+begin_src shell
      ceedling test:all
    #+end_src
-6. To build the relese run
+****** To build the relese run
 
    #+begin_src shell
      ceedling release
@@ -109,18 +120,18 @@ If you are not on ubuntu, or you want to edit / modify the code, there are vario
 Alternatly, there is a docker image has the tooling installed.
 
 
-1. Install docker (outside the scope of this documentation)
-2. Clone the repository
+***** Install [[https://docs.docker.com/engine/install/][Docker]]
+***** Clone the repository
    #+begin_src shell
      https://github.com/bkm82/flowVC.git
      cd flowVC
    #+end_src
    
-3. Pull the docker image from docker hub [[https://hub.docker.com/r/throwtheswitch/madsciencelab][madsciencelab]] 
+***** Pull the docker image from docker hub [[https://hub.docker.com/r/throwtheswitch/madsciencelab][madsciencelab]] 
    #+begin_src shell
      docker pull throwtheswitch/madsciencelab:latest
    #+end_src
-4. Run the tests: if you are in the flowVC directory
+***** Run the tests: if you are in the flowVC directory
    #+begin_src shell
      docker run -it --rm -v <local project path>:/home/dev/project throwtheswitch/madsciencelab:latest
      ceedling test:all
@@ -128,16 +139,17 @@ Alternatly, there is a docker image has the tooling installed.
 
    #+begin_quote
    [!Note]
-   you can replace the <local project path> with a "." (without the quotes)
+   If you are in the flowVC directory, you can replace the <local project path> with a "." (without the quotes)
    #+end_quote
-5. Build the executable
+***** Build the executable
    #+begin_src shell
      docker run -it --rm -v <local project path>:/home/dev/project throwtheswitch/madsciencelab:latest
      ceedling release     
    #+end_src
-6. This will create the ./build/release/flowVC.out executable.
-    #+begin_quote
-   [!Warn]
+***** This will create the ./build/release/flowVC.out executable.
+  
+  #+begin_quote
+   [!Warning]
    This method compiles the code using a linux (Ubuntu) docker container, if you you are on another operating system, you might need to run the program through that docker container
    #+end_quote
 

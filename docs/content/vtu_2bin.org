@@ -40,5 +40,4 @@ e(int): The number of elements in the data set
 $e_i^j$ (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
 
 
-** Include
-#+INCLUDE: ~/roamnotes/20250129142527-cholesky_decomposition.org::Code
+

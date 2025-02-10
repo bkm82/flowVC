@@ -19,18 +19,27 @@
 ;; Define the publishing project
 (setq org-publish-project-alist
       (list
-       (list "my-org-site"
+       '("my-org-site"
              :recursive t
              :base-directory "./content"
              :publishing-directory "./public"
-	     :publishing-function 'org-html-publish-to-html
+	     :base-extension "org"
+	     :publishing-function org-html-publish-to-html
 	     :with-author nil           ;; Don't include author name
              :with-creator t            ;; Emacs and Org versions in footer
 
              :with-toc t                ;; Include a table of contents
              :section-numbers nil       ;; Don't include section numbers
              :time-stamp-file nil       ;; Don't include time stamp in file
-	     )))    
+	     )
+             '("org-static"
+             :base-directory "./content"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :publishing-directory "./public"
+             :recursive t
+             :publishing-function org-publish-attachment
+             )
+       ))    
 ;; Remove validate ling at bottom
 (setq org-html-validation-link nil            ;; Dont show validation link
       org-html-head-include-scripts nil       ;; Use our own scripts

@@ -52,27 +52,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb73d45f">Pages</a></li>
-<li><a href="#orgbcaecfb">vtu_2bin</a>
+<li><a href="#org9b4a8b0">Pages</a></li>
+<li><a href="#org01f04f0">vtu_2bin</a>
 <ul>
-<li><a href="#orgc6a0039">Cordinates File</a>
+<li><a href="#org7525671">Cordinates File</a>
 <ul>
-<li><a href="#org204ffb8">Data Type</a></li>
+<li><a href="#orgcb2623f">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#org41ba2cd">Connectivity</a>
+<li><a href="#org9f2b735">Connectivity</a>
 <ul>
-<li><a href="#org1c6e533">Data Type</a></li>
+<li><a href="#orgea2a836">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#orgae59e94">Adjacency</a>
+<li><a href="#org92905f3">Adjacency</a>
 <ul>
-<li><a href="#orgb3deaf3">Data Type</a></li>
-</ul>
-</li>
-<li><a href="#org38aeb09">Include</a>
-<ul>
-<li><a href="#org56b3e81">Code</a></li>
+<li><a href="#org12d0f78">Data Type</a></li>
 </ul>
 </li>
 </ul>
@@ -80,9 +75,9 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb73d45f" class="outline-2">
-<h2 id="orgb73d45f">Pages</h2>
-<div class="outline-text-2" id="text-orgb73d45f">
+<div id="outline-container-org9b4a8b0" class="outline-2">
+<h2 id="org9b4a8b0">Pages</h2>
+<div class="outline-text-2" id="text-org9b4a8b0">
 <p>
 <a href="./index.html">Home</a>  <a href="./vtu_2bin.html">Data Format</a>
 </p>
@@ -91,16 +86,16 @@
 
 
 
-<div id="outline-container-orgbcaecfb" class="outline-2">
-<h2 id="orgbcaecfb">vtu_2bin</h2>
-<div class="outline-text-2" id="text-orgbcaecfb">
+<div id="outline-container-org01f04f0" class="outline-2">
+<h2 id="org01f04f0">vtu_2bin</h2>
+<div class="outline-text-2" id="text-org01f04f0">
 <p>
 To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
 </p>
 </div>
-<div id="outline-container-orgc6a0039" class="outline-3">
-<h3 id="orgc6a0039">Cordinates File</h3>
-<div class="outline-text-3" id="text-orgc6a0039">
+<div id="outline-container-org7525671" class="outline-3">
+<h3 id="org7525671">Cordinates File</h3>
+<div class="outline-text-3" id="text-org7525671">
 <p>
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 </p>
@@ -109,9 +104,9 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 \end{equation}
 </div>
 
-<div id="outline-container-org204ffb8" class="outline-4">
-<h4 id="org204ffb8">Data Type</h4>
-<div class="outline-text-4" id="text-org204ffb8">
+<div id="outline-container-orgcb2623f" class="outline-4">
+<h4 id="orgcb2623f">Data Type</h4>
+<div class="outline-text-4" id="text-orgcb2623f">
 <p>
 n(int): the number of points in the data set
 \(x_i, y_i, z_i\)(double): The cordinates of each node
@@ -120,9 +115,9 @@ n(int): the number of points in the data set
 </div>
 </div>
 
-<div id="outline-container-org41ba2cd" class="outline-3">
-<h3 id="org41ba2cd">Connectivity</h3>
-<div class="outline-text-3" id="text-org41ba2cd">
+<div id="outline-container-org9f2b735" class="outline-3">
+<h3 id="org9f2b735">Connectivity</h3>
+<div class="outline-text-3" id="text-org9f2b735">
 <p>
 The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
 </p>
@@ -132,9 +127,9 @@ The _connectivity.bin file contains the nodes that make up each element. For a t
 \end{equation}
 </div>
 
-<div id="outline-container-org1c6e533" class="outline-4">
-<h4 id="org1c6e533">Data Type</h4>
-<div class="outline-text-4" id="text-org1c6e533">
+<div id="outline-container-orgea2a836" class="outline-4">
+<h4 id="orgea2a836">Data Type</h4>
+<div class="outline-text-4" id="text-orgea2a836">
 <p>
 e(int): The number of elements in the data set
 \(i_i^j\) (int): The index of the jth point making ith element in the dataset
@@ -143,9 +138,9 @@ e(int): The number of elements in the data set
 </div>
 </div>
 
-<div id="outline-container-orgae59e94" class="outline-3">
-<h3 id="orgae59e94">Adjacency</h3>
-<div class="outline-text-3" id="text-orgae59e94">
+<div id="outline-container-org92905f3" class="outline-3">
+<h3 id="org92905f3">Adjacency</h3>
+<div class="outline-text-3" id="text-org92905f3">
 <p>
 The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
 </p>
@@ -155,9 +150,9 @@ The _adjacency.bin file contains the indices of the adacent elements that share 
 \end{equation}
 </div>
 
-<div id="outline-container-orgb3deaf3" class="outline-4">
-<h4 id="orgb3deaf3">Data Type</h4>
-<div class="outline-text-4" id="text-orgb3deaf3">
+<div id="outline-container-org12d0f78" class="outline-4">
+<h4 id="org12d0f78">Data Type</h4>
+<div class="outline-text-4" id="text-org12d0f78">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
@@ -165,115 +160,10 @@ e(int): The number of elements in the data set
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-org38aeb09" class="outline-3">
-<h3 id="org38aeb09">Include</h3>
-<div class="outline-text-3" id="text-org38aeb09">
-</div>
-<div id="outline-container-org56b3e81" class="outline-4">
-<h4 id="org56b3e81">Code</h4>
-<div class="outline-text-4" id="text-org56b3e81">
-</div>
-<ul class="org-ul">
-<li><a id="org6b8798f"></a>Implementaton<br />
-<div class="outline-text-5" id="text-org6b8798f">
-<p>
-An implementation of the Cholesky Decomposition using python is as follows
-</p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="font-weight: bold;">import</span> numpy <span style="font-weight: bold;">as</span> np
-<span style="font-weight: bold;">import</span> logging
-<span style="font-weight: bold; font-style: italic;">logger</span> = logging.getLogger(<span style="font-weight: bold;">__name__</span>)
-<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">cholesky_decomposition</span>(A):
-    <span style="font-style: italic;">"""Calculate the Cholesky decomposition of a positve definite matrix A</span>
-
-<span style="font-style: italic;">    Parameters</span>
-<span style="font-style: italic;">    ----------</span>
-<span style="font-style: italic;">    A : (n, n) ndarray</span>
-<span style="font-style: italic;">        A positive definite matrix</span>
-
-<span style="font-style: italic;">    Returns</span>
-<span style="font-style: italic;">    ----------</span>
-<span style="font-style: italic;">    L : (n, n) ndarray</span>
-<span style="font-style: italic;">        A lower triangular matrix such that L L.Transpose = A</span>
-
-<span style="font-style: italic;">    Example</span>
-<span style="font-style: italic;">    ----------</span>
-<span style="font-style: italic;">    A = np.array([[4,2,6], [2,2,5], [6,5,22]], dtype=float)</span>
-<span style="font-style: italic;">    L = cholesky_decomposition(A)</span>
-<span style="font-style: italic;">    """</span>
-    <span style="font-weight: bold; font-style: italic;">n</span> = A.shape[0]
-    <span style="font-weight: bold; font-style: italic;">L</span> = np.zeros_like(A)
-
-    <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(n):
-        <span style="font-weight: bold;">for</span> j <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(i+1):
-            <span style="font-weight: bold;">if</span> i == j:
-                <span style="font-weight: bold; font-style: italic;">L</span>[<span style="font-weight: bold; font-style: italic;">i</span>,<span style="font-weight: bold; font-style: italic;">j</span>] = np.sqrt(A[i,i] - np.dot(L[i, :i],L[i,:i] ))
-            <span style="font-weight: bold;">else</span>:
-                <span style="font-weight: bold; font-style: italic;">L</span>[<span style="font-weight: bold; font-style: italic;">i</span>, <span style="font-weight: bold; font-style: italic;">j</span>] = (A[i, j] - np.dot(L[i, :j], L[j, :j])) / L[j, j]
-    <span style="font-weight: bold;">return</span> L
-
-</pre>
-</div>
-
-<p>
-The implementation can be tested by ensuring  \(\textbf{L} \textbf{L}^T = \textbf{A}\)
-</p>
-</div>
-</li>
-<li><a id="org148302e"></a>Test Case<br />
-<div class="outline-text-5" id="text-org148302e">
-<div class="org-src-container">
-<pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">test_cholesky_decomposition</span>():
-    <span style="font-weight: bold; font-style: italic;">A</span> = np.array([[4, 2, 6], [2, 2, 5], [6, 5, 22]], dtype=<span style="font-weight: bold;">float</span>)
-    <span style="font-weight: bold; font-style: italic;">L</span> = cholesky_decomposition(A)
-    logger.info(f<span style="font-style: italic;">"L: </span><span style="font-weight: bold; text-decoration: underline;">\n</span><span style="font-style: italic;"> </span>{L}<span style="font-style: italic;"> </span><span style="font-weight: bold; text-decoration: underline;">\n\n</span><span style="font-style: italic;"> A reconstructed:</span><span style="font-weight: bold; text-decoration: underline;">\n</span><span style="font-style: italic;"> </span>{L @ L.T}<span style="font-style: italic;">"</span>)
-    np.testing.assert_array_almost_equal(L @ L.T, A, decimal=5)
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-bash">pytest --log-cli-level INFO --log-format <span style="font-style: italic;">"%(levelname)s %(message)s"</span> $<span style="font-weight: bold; font-style: italic;">python_file_path</span>
-</pre>
-</div>
-<p>
-<code>===========================</code> test session starts <code>============================</code>
-platform linux &#x2013; Python 3.10.12, pytest-7.3.0, pluggy-1.2.0
-rootdir: /home/bkm82/roamnotes
-plugins: anyio-4.3.0, cov-4.1.0, mock-3.12.0
-collected 1 item
-</p>
-
-<p>
-homework/code/cholesky_decomposition.py::test_cholesky_decomposition 
----------------------------&#x2013;&#x2014; live log call ----------------------------&#x2013;&#x2014;
-INFO L: 
- [[2. 0. 0.]
- [1. 1. 0.]
- [3. 2. 3.]] 
-</p>
-
-<p>
- A reconstructed:
- [[ 4.  2.  6.]
- [ 2.  2.  5.]
- [ 6.  5. 22.]]
-PASSED                                                                   <code>[100%]</code>
-</p>
-
-<p>
-<code>============================</code> 1 passed in 0.06s <code>=============================</code>
-</p>
-</div>
-</li>
-</ul>
-</div>
-</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

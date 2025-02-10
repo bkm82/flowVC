@@ -17,8 +17,22 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+** Capabilities
+flowVC is capable of reading in 2D or 3D velocity data and
+
+- Computing Finite Time Lyoponove Exponent (FTLE) fields
+- Computing tracer/partile tragectories
+- Interpolating the velocity onto another mesh
+
+  [!NOTE]
+  You cannot compute FTLE and particle trajectories at the same time. The feature to interpolate velocity data onto another mesh is mainly useful to check if the program is reading in and interpolating your velocity data correctly. The velocity data must be defined on a Cartesian OR tetrahedral (3D) / triangular (2D) mesh.
+
 ** Usage
+For more information, check out the Docs [[https://bkm82.github.io/flowVC/][flowVC Docs]]
+
 This code is used to perform flow visualization post processing. It can be used to calculate the Finite Time Lyoponove Exponent (FTLE) field
+
+
 *** Quick Start
 1. Ensure your simulation results for a tetrahedral mesh. If they are not, interpolate them onto a tetrahedral mesh using something like paraview. Save them into evenly spaced time steps in a directory using a name_xxxxx.vtu file format.
 2. Use the vtu_2_bin section [[https://github.com/bkm82/flowVC-utils][flowVC-Utils]] python project to convert the .vtu to a binary format

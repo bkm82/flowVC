@@ -24,8 +24,11 @@ flowVC is capable of reading in 2D or 3D velocity data and
 - Computing tracer/partile tragectories
 - Interpolating the velocity onto another mesh
 
-  [!NOTE]
-  You cannot compute FTLE and particle trajectories at the same time. The feature to interpolate velocity data onto another mesh is mainly useful to check if the program is reading in and interpolating your velocity data correctly. The velocity data must be defined on a Cartesian OR tetrahedral (3D) / triangular (2D) mesh.
+#+begin_quote
+[!Note]
+You cannot compute FTLE and particle trajectories at the same time. The feature to interpolate velocity data onto another mesh is mainly useful to check if the program is reading in and interpolating your velocity data correctly. The velocity data must be defined on a Cartesian OR tetrahedral (3D) / triangular (2D) mesh.
+#+end_quote
+  
 
 ** Usage
 For more information, check out the Docs [[https://bkm82.github.io/flowVC/][flowVC Docs]]

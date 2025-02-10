@@ -63,3 +63,6 @@ settings_script_controlled.in
 
 
 /ltximg/
+
+# packaged directory
+.packages/

@@ -62,4 +62,8 @@ dkms.conf
 settings_script_controlled.in
 
 
-/ltximg/
+**ltximg**
+
+# packaged directory
+.packages/
+/docs/public/

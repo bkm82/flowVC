@@ -1,11 +1,19 @@
 * flowVC
 
-Flow Visualization Code forked from FlowPhysics/flowVC
+
+
 
 [[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CI/badge.svg]]
 [[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CD/badge.svg]]
+[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/Docs/badge.svg]]
 [[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
 
+Flow Visualization Code forked from FlowPhysics/flowVC
+
+#+begin_quote
+[!TIP]
+Check out the [[https://bkm82.github.io/flowVC/][Docs]]
+#+end_quote
 
 Copyright 2013 Shadden Research Group. All rights reserved.
 
@@ -17,131 +25,148 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+** Capabilities
+flowVC is capable of reading in 2D or 3D velocity data and
+
+- Computing Finite Time Lyoponove Exponent (FTLE) fields
+- Computing tracer/partile tragectories
+- Interpolating the velocity onto another mesh
+
+#+begin_quote
+[!Note]
+You cannot compute FTLE and particle trajectories at the same time. The feature to interpolate velocity data onto another mesh is mainly useful to check if the program is reading in and interpolating your velocity data correctly. The velocity data must be defined on a Cartesian OR tetrahedral (3D) / triangular (2D) mesh.
+#+end_quote
+  
+
 ** Usage
-This code is used to perform flow visualization post processing. It can be used to calculate the Finite Time Lyoponove Exponent (FTLE) field
 *** Quick Start
-1. Ensure your simulation results for a tetrahedral mesh. If they are not, interpolate them onto a tetrahedral mesh using something like paraview. Save them into evenly spaced time steps in a directory using a name_xxxxx.vtu file format.
-2. Use the vtu_2_bin section [[https://github.com/bkm82/flowVC-utils][flowVC-Utils]] python project to convert the .vtu to a binary format
-3. Use the inigenerator section [[https://github.com/bkm82/flowVC-utils][flowVC-Utils]] python project to create a settings file (.ini)
+**** Create the input data files
+   #+begin_quote
+   [!Note]
+   For the Input Data Files Format reference the [[https://bkm82.github.io/flowVC/][Docs]]
+   #+end_quote
+   
+   #+begin_quote
+   [!TIP]
+   For 3d Tetrahedral Data, the vtu_2bin in [[https://github.com/bkm82/flowVC-utils][flowVC-utils]] might be helpful!
+   #+end_quote
+   
+**** Create a settings.in file. 
+   #+begin_quote
+   [!TIP]
+   [[./examples/inputfile.in][Example Input File]]
+   #+end_quote
 
    
+**** Download or Build the Latest Verison
+
+   #+begin_quote
+   [!Note]
+   For linux, get the pre-compiled binary [[https://github.com/bkm82/flowVC/releases/latest][here]]
+   For windos and mac, see below how to compile the code from source 
+   #+end_quote   
+   
+**** Run the code
 #+begin_src shell
 ./flowvc.out settings_file
 #+end_src
 
-*** Data Files
-
-To run the [[id:f888271a-2f1f-47b3-8a3c-482c0df3e64c][flowVC]] code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. Refer to https://shaddenlab.berkeley.edu/uploads/releasenotes.pdf for a more detailed description of each of these files. 
-***** Cordinates File
-For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
-\begin{equation} 
-n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
-\end{equation}
-
-****** Data Type
-n(int): the number of points in the data set
-$x_i, y_i, z_i$(double): The cordinates of each node
-
-***** Connectivity
-The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
-
- \begin{equation} 
-    e\; \underbrace{i_0^0\; i_0^1\; i_0^2\; i_0^3}_{\text{element 0}} \underbrace{i_1^0\; i_1^1\; i_1^2\; i_1^3}_{\text{element 1}} ... \underbrace{i_{e-1}^0\; i_{e-1}^1\; i_{e-1}^2\; i_{e-1}^3}_{\text{element e-1}} 
- \end{equation}
-
-****** Data Type
-e(int): The number of elements in the data set
-$i_i^j$ (int): The index of the jth point making ith element in the dataset
-
-***** Adjacency
-The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
-
- \begin{equation} 
-    e\; \underbrace{e_0^0\; e_0^1\; e_0^2\; e_0^3}_{\text{element 0}} \underbrace{e_1^0\; e_1^1\; e_1^2\; e_1^3}_{\text{element 1}} ... \underbrace{e_{e-1}^0\; e_{e-1}^1\; e_{e-1}^2\; e_{e-1}^3}_{\text{element e-1}} 
- \end{equation}
-
-****** Data Type
-e(int): The number of elements in the data set
-$e_i^j$ (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
-
-
-
-
-
+**** Report any Issues
+[[https://github.com/bkm82/flowVC/issues][Issues]]
 
 ** Installation
 
-*** Automated Release
-If you are on ubuntu, the code here can be ran directly using the compiled binary in the latest release. Otherwise follow the instructions below for building the source code from the source code .
-
 *** Build From Source
-To build the code from source the there are two options. The first option involved installing Ceedling and its dependencies. Alternativly, if you have docker, you can download the docker image with the dependencies all bundeled together. 
+If you are not on ubuntu, or you want to edit / modify the code, there are various ways to compile the code from source.
 
 **** Ceedling
+
+#+begin_quote
+[!Note]
+[[https://github.com/ThrowTheSwitch/Ceedling][Ceedling]] is a test-centered build system for C. It is how we test and build the release versions. It bundles some tools (Unity, CMock) together and provides a testing interface.
+#+end_quote
+
 ***** Dependencies
 [[https://www.ruby-lang.org/en/][Ruby]] > v 3.0: A programing language used for Ceedling
 
-[[https://github.com/ThrowTheSwitch/Ceedling][Ceedling]] : Ceedling is a Test-Centered Build System for C. It utilizes a collection of tools for testing (Unity) and mocking (CMock) 
+[[https://github.com/ThrowTheSwitch/Ceedling][Ceedling]]: Ceedling is a Test-Centered Build System for C. It utilizes a collection of tools for testing (Unity) and mocking (CMock) 
 
 ***** Instalation
-1. Install [[https://www.ruby-lang.org/en/][Ruby]] by refering to the ruby documentation for your operating system.
+****** Install [[https://www.ruby-lang.org/en/][Ruby]] by refering to the ruby documentation for your operating system.
 
-2. Install Ceedling gem from the RubyGems repository
+****** Install Ceedling gem from the RubyGems repository
     #+begin_src shell
      gem install ceedling
    #+end_src
 
-4. Clone the repository
+****** Clone the repository
    #+begin_src shell
      https://github.com/bkm82/flowVC.git
      cd flowVC
    #+end_src
-5. To compile and run all of the tests, run
+****** To compile and run all of the tests, run
    #+begin_src shell
      ceedling test:all
    #+end_src
-6. To build the relese run
+****** To build the relese run
 
    #+begin_src shell
      ceedling release
    #+end_src
    
-   this will create the ./build/release/flowVC.out executable that you can run.
+   this will create the executable in the ./build/release/flowVC.out path.
 
 **** Docker
-Alternatly, if you dont want to install the tooling and would prefer to use a docker container you can do that
+Alternatly, there is a docker image has the tooling installed.
 
-1. Install docker (outside the scope of this documentation)
-2. Clone the repository
+
+***** Install [[https://docs.docker.com/engine/install/][Docker]]
+***** Clone the repository
    #+begin_src shell
      https://github.com/bkm82/flowVC.git
      cd flowVC
    #+end_src
    
-3. Pull the docker image from docker hub [[https://hub.docker.com/r/throwtheswitch/madsciencelab][madsciencelab]] 
+***** Pull the docker image from docker hub [[https://hub.docker.com/r/throwtheswitch/madsciencelab][madsciencelab]] 
    #+begin_src shell
      docker pull throwtheswitch/madsciencelab:latest
    #+end_src
-4. Run the tests: if you are in the flowVC directory you can replace the <local project path> with a "." (without the quotes)
+***** Run the tests: if you are in the flowVC directory
    #+begin_src shell
      docker run -it --rm -v <local project path>:/home/dev/project throwtheswitch/madsciencelab:latest
      ceedling test:all
    #+end_src
-5. Build the executable
+
+   #+begin_quote
+   [!Note]
+   If you are in the flowVC directory, you can replace the <local project path> with a "." (without the quotes)
+   #+end_quote
+***** Build the executable
    #+begin_src shell
      docker run -it --rm -v <local project path>:/home/dev/project throwtheswitch/madsciencelab:latest
      ceedling release     
    #+end_src
-6. This will create the ./build/release/flowVC.out executable. NOTE: as this was compiled using a linux (Ubuntu) docker container, this might not work if you are on another operating system. In that case you can run the command through the docker container (i.e.)
+***** This will create the ./build/release/flowVC.out executable.
+  
+  #+begin_quote
+   [!Warning]
+   This method compiles the code using a linux (Ubuntu) docker container, if you you are on another operating system, you might need to run the program through that docker container
+   #+end_quote
+
    #+begin_src shell
      docker run -it --rm -v .:/home/dev/project throwtheswitch/madsciencelab:latest
      .build/release/flowVC.out <input file>  
    #+end_src
+
    
 **** Make
-The third option is to compile the source code using the provided Make file, however this file is not currently part of the CI/CD pipeline so there may be compilation bugs. Issue reports and/or contributions are welcome
-*** Development Guidlines
-**** Semantic Versioning:
+The third option is to compile the source code using the provided Make file, however this file is not currently part of the CI/CD. Issues or contributions are welcome!
+
+** Contributing
+Contributions or fixes to issues are welcome.
+
+
+*** Semantic Versioning:
 This project intends to use a Trunk-Based Release with semantic versioning. Commit messages should follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
 #+begin_src shell
 <type>[optional scope]: <description>
@@ -152,5 +177,5 @@ Where the type determines the version updates.
 Valid types are fix, feat, BREAKING CHANGE, build, chore, ci, docs, style, refactor, perf, test
 
 
-* Planned Updates
-** TODO Add an example settings file
+*** Planned Updates
+**** TODO Add support for windows in the CI/CD pipeline

@@ -1,0 +1,13 @@
+#+SETUPFILE: ../org-themes/theme-readtheorg.setup
+#+INCLUDE: "./header.org"
+* Welcome
+Welcome to the flowVC documentation.
+* Input Data Files
+#+INCLUDE: "./vtu_2bin.org::Data Format"
+
+
+* Setting File
+The input settings are controlled using a settings.in file
+
+
+For an example input file [[./FTLE_example.org][Click Here]]

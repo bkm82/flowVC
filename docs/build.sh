@@ -1,2 +1,3 @@
 #!/bin/sh
-emacs -Q --script build-site.el
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+emacs -Q --script $SCRIPT_DIR/build-site.el

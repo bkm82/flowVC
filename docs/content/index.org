@@ -1,6 +1,7 @@
 #+SETUPFILE: ../org-themes/theme-readtheorg.setup
 #+INCLUDE: "./header.org"
-
+* Welcome
+Welcome to the flowVC documentation.
 * [[./vtu_2bin.org][Simulation Data]]
 #+INCLUDE: "./vtu_2bin.org::vtu_2bin"
 

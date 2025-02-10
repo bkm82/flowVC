@@ -52,22 +52,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf25a020">Pages</a></li>
-<li><a href="#orgffd54cd">vtu_2bin</a>
+<li><a href="#org74f1a33">Pages</a></li>
+<li><a href="#orgc99fee2">vtu_2bin</a>
 <ul>
-<li><a href="#orgeed504e">Cordinates File</a>
+<li><a href="#org149787c">Cordinates File</a>
 <ul>
-<li><a href="#org906b25e">Data Type</a></li>
+<li><a href="#org76327cb">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#orgbf90e2e">Connectivity</a>
+<li><a href="#orgf0ca2e8">Connectivity</a>
 <ul>
-<li><a href="#org9459012">Data Type</a></li>
+<li><a href="#orgc3b86ee">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#org095bdea">Adjacency</a>
+<li><a href="#orgc051cec">Adjacency</a>
 <ul>
-<li><a href="#org9f95f16">Data Type</a></li>
+<li><a href="#org4c8a088">Data Type</a></li>
 </ul>
 </li>
 </ul>
@@ -75,9 +75,9 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf25a020" class="outline-2">
-<h2 id="orgf25a020">Pages</h2>
-<div class="outline-text-2" id="text-orgf25a020">
+<div id="outline-container-org74f1a33" class="outline-2">
+<h2 id="org74f1a33">Pages</h2>
+<div class="outline-text-2" id="text-org74f1a33">
 <p>
 <a href="./index.html">Home</a>  <a href="./vtu_2bin.html">Data Format</a>
 </p>
@@ -86,16 +86,16 @@
 
 
 
-<div id="outline-container-orgffd54cd" class="outline-2">
-<h2 id="orgffd54cd">vtu_2bin</h2>
-<div class="outline-text-2" id="text-orgffd54cd">
+<div id="outline-container-orgc99fee2" class="outline-2">
+<h2 id="orgc99fee2">vtu_2bin</h2>
+<div class="outline-text-2" id="text-orgc99fee2">
 <p>
 To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
 </p>
 </div>
-<div id="outline-container-orgeed504e" class="outline-3">
-<h3 id="orgeed504e">Cordinates File</h3>
-<div class="outline-text-3" id="text-orgeed504e">
+<div id="outline-container-org149787c" class="outline-3">
+<h3 id="org149787c">Cordinates File</h3>
+<div class="outline-text-3" id="text-org149787c">
 <p>
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 </p>
@@ -104,9 +104,9 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 \end{equation}
 </div>
 
-<div id="outline-container-org906b25e" class="outline-4">
-<h4 id="org906b25e">Data Type</h4>
-<div class="outline-text-4" id="text-org906b25e">
+<div id="outline-container-org76327cb" class="outline-4">
+<h4 id="org76327cb">Data Type</h4>
+<div class="outline-text-4" id="text-org76327cb">
 <p>
 n(int): the number of points in the data set
 \(x_i, y_i, z_i\)(double): The cordinates of each node
@@ -115,9 +115,9 @@ n(int): the number of points in the data set
 </div>
 </div>
 
-<div id="outline-container-orgbf90e2e" class="outline-3">
-<h3 id="orgbf90e2e">Connectivity</h3>
-<div class="outline-text-3" id="text-orgbf90e2e">
+<div id="outline-container-orgf0ca2e8" class="outline-3">
+<h3 id="orgf0ca2e8">Connectivity</h3>
+<div class="outline-text-3" id="text-orgf0ca2e8">
 <p>
 The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
 </p>
@@ -127,9 +127,9 @@ The _connectivity.bin file contains the nodes that make up each element. For a t
 \end{equation}
 </div>
 
-<div id="outline-container-org9459012" class="outline-4">
-<h4 id="org9459012">Data Type</h4>
-<div class="outline-text-4" id="text-org9459012">
+<div id="outline-container-orgc3b86ee" class="outline-4">
+<h4 id="orgc3b86ee">Data Type</h4>
+<div class="outline-text-4" id="text-orgc3b86ee">
 <p>
 e(int): The number of elements in the data set
 \(i_i^j\) (int): The index of the jth point making ith element in the dataset
@@ -138,9 +138,9 @@ e(int): The number of elements in the data set
 </div>
 </div>
 
-<div id="outline-container-org095bdea" class="outline-3">
-<h3 id="org095bdea">Adjacency</h3>
-<div class="outline-text-3" id="text-org095bdea">
+<div id="outline-container-orgc051cec" class="outline-3">
+<h3 id="orgc051cec">Adjacency</h3>
+<div class="outline-text-3" id="text-orgc051cec">
 <p>
 The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
 </p>
@@ -150,9 +150,9 @@ The _adjacency.bin file contains the indices of the adacent elements that share 
 \end{equation}
 </div>
 
-<div id="outline-container-org9f95f16" class="outline-4">
-<h4 id="org9f95f16">Data Type</h4>
-<div class="outline-text-4" id="text-org9f95f16">
+<div id="outline-container-org4c8a088" class="outline-4">
+<h4 id="org4c8a088">Data Type</h4>
+<div class="outline-text-4" id="text-org4c8a088">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)

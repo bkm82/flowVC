@@ -1,4 +1,4 @@
-#+SETUPFILE: ~/projects/scratch/org-html-themes/org/theme-readtheorg-bray.setup
+#+SETUPFILE: ../org-themes/theme-readtheorg.setup
 #+INCLUDE: "./header.org"
 
 * [[./vtu_2bin.org][Simulation Data]]

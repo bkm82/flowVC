@@ -52,27 +52,27 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3c18475">Pages</a></li>
-<li><a href="#org78ab8b9">vtu_2bin</a>
+<li><a href="#org1e93d62">Pages</a></li>
+<li><a href="#org47fbfe9">vtu_2bin</a>
 <ul>
-<li><a href="#org53c047f">Cordinates File</a>
+<li><a href="#orgd24b319">Cordinates File</a>
 <ul>
-<li><a href="#org8bad6cd">Data Type</a></li>
+<li><a href="#org27aab3d">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#orgf77fed9">Connectivity</a>
+<li><a href="#org1adea15">Connectivity</a>
 <ul>
-<li><a href="#org2bb4406">Data Type</a></li>
+<li><a href="#org8e15cc1">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#org04527da">Adjacency</a>
+<li><a href="#org6b8dd6b">Adjacency</a>
 <ul>
-<li><a href="#org3ec7824">Data Type</a></li>
+<li><a href="#orgdb03d8e">Data Type</a></li>
 </ul>
 </li>
-<li><a href="#org92d99bc">Include</a>
+<li><a href="#orgcfcae81">Include</a>
 <ul>
-<li><a href="#org3995c24">Code</a></li>
+<li><a href="#org6bd6127">Code</a></li>
 </ul>
 </li>
 </ul>
@@ -80,24 +80,27 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org3c18475" class="outline-2">
-<h2 id="org3c18475">Pages</h2>
-<div class="outline-text-2" id="text-org3c18475">
+<div id="outline-container-org1e93d62" class="outline-2">
+<h2 id="org1e93d62">Pages</h2>
+<div class="outline-text-2" id="text-org1e93d62">
 <p>
 <a href="./index.html">Home</a>  <a href="./vtu_2bin.html">Data Format</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org78ab8b9" class="outline-2">
-<h2 id="org78ab8b9">vtu_2bin</h2>
-<div class="outline-text-2" id="text-org78ab8b9">
+
+
+
+<div id="outline-container-org47fbfe9" class="outline-2">
+<h2 id="org47fbfe9">vtu_2bin</h2>
+<div class="outline-text-2" id="text-org47fbfe9">
 <p>
 To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
 </p>
 </div>
-<div id="outline-container-org53c047f" class="outline-3">
-<h3 id="org53c047f">Cordinates File</h3>
-<div class="outline-text-3" id="text-org53c047f">
+<div id="outline-container-orgd24b319" class="outline-3">
+<h3 id="orgd24b319">Cordinates File</h3>
+<div class="outline-text-3" id="text-orgd24b319">
 <p>
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 </p>
@@ -106,9 +109,9 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 \end{equation}
 </div>
 
-<div id="outline-container-org8bad6cd" class="outline-4">
-<h4 id="org8bad6cd">Data Type</h4>
-<div class="outline-text-4" id="text-org8bad6cd">
+<div id="outline-container-org27aab3d" class="outline-4">
+<h4 id="org27aab3d">Data Type</h4>
+<div class="outline-text-4" id="text-org27aab3d">
 <p>
 n(int): the number of points in the data set
 \(x_i, y_i, z_i\)(double): The cordinates of each node
@@ -117,9 +120,9 @@ n(int): the number of points in the data set
 </div>
 </div>
 
-<div id="outline-container-orgf77fed9" class="outline-3">
-<h3 id="orgf77fed9">Connectivity</h3>
-<div class="outline-text-3" id="text-orgf77fed9">
+<div id="outline-container-org1adea15" class="outline-3">
+<h3 id="org1adea15">Connectivity</h3>
+<div class="outline-text-3" id="text-org1adea15">
 <p>
 The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
 </p>
@@ -129,9 +132,9 @@ The _connectivity.bin file contains the nodes that make up each element. For a t
 \end{equation}
 </div>
 
-<div id="outline-container-org2bb4406" class="outline-4">
-<h4 id="org2bb4406">Data Type</h4>
-<div class="outline-text-4" id="text-org2bb4406">
+<div id="outline-container-org8e15cc1" class="outline-4">
+<h4 id="org8e15cc1">Data Type</h4>
+<div class="outline-text-4" id="text-org8e15cc1">
 <p>
 e(int): The number of elements in the data set
 \(i_i^j\) (int): The index of the jth point making ith element in the dataset
@@ -140,9 +143,9 @@ e(int): The number of elements in the data set
 </div>
 </div>
 
-<div id="outline-container-org04527da" class="outline-3">
-<h3 id="org04527da">Adjacency</h3>
-<div class="outline-text-3" id="text-org04527da">
+<div id="outline-container-org6b8dd6b" class="outline-3">
+<h3 id="org6b8dd6b">Adjacency</h3>
+<div class="outline-text-3" id="text-org6b8dd6b">
 <p>
 The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
 </p>
@@ -152,9 +155,9 @@ The _adjacency.bin file contains the indices of the adacent elements that share 
 \end{equation}
 </div>
 
-<div id="outline-container-org3ec7824" class="outline-4">
-<h4 id="org3ec7824">Data Type</h4>
-<div class="outline-text-4" id="text-org3ec7824">
+<div id="outline-container-orgdb03d8e" class="outline-4">
+<h4 id="orgdb03d8e">Data Type</h4>
+<div class="outline-text-4" id="text-orgdb03d8e">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
@@ -164,17 +167,17 @@ e(int): The number of elements in the data set
 </div>
 
 
-<div id="outline-container-org92d99bc" class="outline-3">
-<h3 id="org92d99bc">Include</h3>
-<div class="outline-text-3" id="text-org92d99bc">
+<div id="outline-container-orgcfcae81" class="outline-3">
+<h3 id="orgcfcae81">Include</h3>
+<div class="outline-text-3" id="text-orgcfcae81">
 </div>
-<div id="outline-container-org3995c24" class="outline-4">
-<h4 id="org3995c24">Code</h4>
-<div class="outline-text-4" id="text-org3995c24">
+<div id="outline-container-org6bd6127" class="outline-4">
+<h4 id="org6bd6127">Code</h4>
+<div class="outline-text-4" id="text-org6bd6127">
 </div>
 <ul class="org-ul">
-<li><a id="orgf2ff5e3"></a>Implementaton<br />
-<div class="outline-text-5" id="text-orgf2ff5e3">
+<li><a id="org6d8c6a7"></a>Implementaton<br />
+<div class="outline-text-5" id="text-org6d8c6a7">
 <p>
 An implementation of the Cholesky Decomposition using python is as follows
 </p>
@@ -219,8 +222,8 @@ The implementation can be tested by ensuring  \(\textbf{L} \textbf{L}^T = \textb
 </p>
 </div>
 </li>
-<li><a id="orge448645"></a>Test Case<br />
-<div class="outline-text-5" id="text-orge448645">
+<li><a id="orge740e71"></a>Test Case<br />
+<div class="outline-text-5" id="text-orge740e71">
 <div class="org-src-container">
 <pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">test_cholesky_decomposition</span>():
     <span style="font-weight: bold; font-style: italic;">A</span> = np.array([[4, 2, 6], [2, 2, 5], [6, 5, 22]], dtype=<span style="font-weight: bold;">float</span>)

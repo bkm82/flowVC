@@ -23,15 +23,11 @@
              :recursive t
              :base-directory "./content"
              :publishing-directory "./public"
-             :publishing-function 'org-html-publish-to-html
+	     :publishing-function 'org-html-publish-to-html
 	     :with-author nil           ;; Don't include author name
              :with-creator t            ;; Emacs and Org versions in footer
 
              :with-toc t                ;; Include a table of contents
-	     :auto-sitemap t ;; generate sitemap.org automagically
-	     :sitemap-filename "sitemap.org"
-	     :sitemap-style "tree"
-	     
              :section-numbers nil       ;; Don't include section numbers
              :time-stamp-file nil       ;; Don't include time stamp in file
 	     )))    

@@ -178,6 +178,4 @@ Valid types are fix, feat, BREAKING CHANGE, build, chore, ci, docs, style, refac
 
 
 *** Planned Updates
-**** DONE Add an example settings file.
-**** DONE Create a documenation page.
 **** TODO Add support for windows in the CI/CD pipeline

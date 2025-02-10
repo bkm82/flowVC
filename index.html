@@ -52,19 +52,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6644189">Welcome</a></li>
-<li><a href="#org7037414">Input Data Files</a>
+<li><a href="#org7f7f9ed">Welcome</a></li>
+<li><a href="#org0cfa9ce">Input Data Files</a>
 <ul>
-<li><a href="#org75bedbd">Data Format</a>
+<li><a href="#org7f83abd">Data Format</a>
 <ul>
-<li><a href="#orgd8f86f2">Cordinates File</a></li>
-<li><a href="#org7560ef4">Connectivity</a></li>
-<li><a href="#org4aa1dac">Adjacency</a></li>
+<li><a href="#org41d06f5">Velocity</a></li>
+<li><a href="#org6cef3b7">Cartesian Mesh</a></li>
+<li><a href="#orgd4dc2f7">Unstructured Mesh</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org81cd80a">Setting File</a></li>
+<li><a href="#orgc530a57">Setting File</a></li>
 </ul>
 </div>
 </div>
@@ -83,87 +83,242 @@
 </tr>
 </tbody>
 </table>
-<div id="outline-container-org6644189" class="outline-2">
-<h2 id="org6644189">Welcome</h2>
-<div class="outline-text-2" id="text-org6644189">
+<div id="outline-container-org7f7f9ed" class="outline-2">
+<h2 id="org7f7f9ed">Welcome</h2>
+<div class="outline-text-2" id="text-org7f7f9ed">
 <p>
 Welcome to the flowVC documentation.
 </p>
 </div>
 </div>
-<div id="outline-container-org7037414" class="outline-2">
-<h2 id="org7037414">Input Data Files</h2>
-<div class="outline-text-2" id="text-org7037414">
+<div id="outline-container-org0cfa9ce" class="outline-2">
+<h2 id="org0cfa9ce">Input Data Files</h2>
+<div class="outline-text-2" id="text-org0cfa9ce">
 </div>
-<div id="outline-container-org75bedbd" class="outline-3">
-<h3 id="org75bedbd">Data Format</h3>
-<div class="outline-text-3" id="text-org75bedbd">
+<div id="outline-container-org7f83abd" class="outline-3">
+<h3 id="org7f83abd">Data Format</h3>
+<div class="outline-text-3" id="text-org7f83abd">
 <p>
-flowVC required the data input to be  _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
+To use flowVC, you'll need to supply velocity data in binary format. The velocity data typically requires separate files for the velocity field at each time point. A single (Cartesian) or  multiple (Unstructured) files define the mesh. These files all share a common prefix, which can be any name you choose and is referred to here as InFilePrefix.
 </p>
-</div>
-<div id="outline-container-orgd8f86f2" class="outline-4">
-<h4 id="orgd8f86f2">Cordinates File</h4>
-<div class="outline-text-4" id="text-orgd8f86f2">
-<p>
-For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
-</p>
-\begin{equation} 
-n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
-\end{equation}
 </div>
 
-<ul class="org-ul">
-<li><a id="orgeaf2c95"></a>Data Type<br />
-<div class="outline-text-5" id="text-orgeaf2c95">
+
+<div id="outline-container-org41d06f5" class="outline-4">
+<h4 id="org41d06f5">Velocity</h4>
+<div class="outline-text-4" id="text-org41d06f5">
 <p>
-n(int): the number of points in the data set
-\(x_i, y_i, z_i\)(double): The cordinates of each node
+If the velocity is defined discretely in time, each time instant should have its own separate file. The velocity data must be equally spaced in time. File names should follow the format InFilePrefix_vel.#.bin, where # is a unique index for each time instant. The difference between successive file time points must be consistent
 </p>
+
+<p>
+Each file's content should begin with a time stamp, followed by the velocity vectors at each node.
+</p>
+
+\begin{equation} 
+t_s \; \underbrace{u_0\; v_0\; w_0}_{\text{node 0}} \underbrace{u_1\;  v_1 \; w_1}_{\text{node 1}} ....\; \underbrace{u_{n-1} \; v_{n-1}\; w_{n-1}}_{\text{node n-1}}
+\end{equation}
+
+<ul class="org-ul">
+<li>Cartesian Data: the order should loop over the x-direction in the innermost loop, followed by y, and then z in the outer loop.</li>
+<li>Unstructured Data: The ordering must align with the nodes specified in the InFilePrefix coordinates.#.bin file.</li>
+<li>2D Data: you must still specify a third velocity component, \(w_i\), which can be set to 0.0.</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">t</td>
+<td class="org-left">double</td>
+</tr>
+
+<tr>
+<td class="org-left">u,v,w</td>
+<td class="org-left">double</td>
+</tr>
+</tbody>
+</table>
 </div>
-</li>
+</div>
+
+
+
+<div id="outline-container-org6cef3b7" class="outline-4">
+<h4 id="org6cef3b7">Cartesian Mesh</h4>
+<div class="outline-text-4" id="text-org6cef3b7">
+<p>
+To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
+</p>
+
+\begin{equation} 
+   x_{min} \;\; x_{max} \;\; x_{res} \;\; y_{min} \;\; y_{max}\;\; y_{res} \;\; z_{min} \;\; z_{max} \; \; z_{res} 
+\end{equation}
+
+<ul class="org-ul">
+<li>Resolution: Number of <b>nodes</b> in each direction (not intervals)</li>
+<li>2D: Set \(z_{min} = z_{max} = 0.0\) and \(z_{res}=1\)</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-center" />
+
+<col  class="org-center" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-center">Value</th>
+<th scope="col" class="org-center">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-center">min/max</td>
+<td class="org-center">double</td>
+</tr>
+
+<tr>
+<td class="org-center">res</td>
+<td class="org-center">int</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgd4dc2f7" class="outline-4">
+<h4 id="orgd4dc2f7">Unstructured Mesh</h4>
+<div class="outline-text-4" id="text-orgd4dc2f7">
+<p>
+The unstructured mesh is defined by three files:
+</p>
+<ul class="org-ul">
+<li>Coordinates File : InFilePrefix_coordinates.bin</li>
+<li>Connectivity File: InFilePrefix_connectivity.bin</li>
+<li>Adjacency File:    InFilePrefix_adjacency.bin</li>
 </ul>
 </div>
 
-<div id="outline-container-org7560ef4" class="outline-4">
-<h4 id="org7560ef4">Connectivity</h4>
-<div class="outline-text-4" id="text-org7560ef4">
+<ul class="org-ul">
+<li><a id="org2e33ba0"></a>Cordinates File<br />
+<div class="outline-text-5" id="text-org2e33ba0">
+\begin{equation} 
+n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
+\end{equation}
+
+<ul class="org-ul">
+<li>n: The the number of points in the data set</li>
+<li>\(x_i \; y_i \; z_i\): The cordinates of each node</li>
+<li>2D: set \(z_i = 0\)</li>
+</ul>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">n</td>
+<td class="org-left">int</td>
+</tr>
+
+<tr>
+<td class="org-left">\(x_i \; y_i \; z_i\)</td>
+<td class="org-left">double</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><a id="orgcb714d1"></a>Connectivity<br />
+<div class="outline-text-5" id="text-orgcb714d1">
 <p>
-The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
+The connectivity specifies the indices of the 4 nodes that make up each element. The index of each node is based on coordinates file ordering counting from 0.
 </p>
 
 \begin{equation} 
    e\; \underbrace{i_0^0\; i_0^1\; i_0^2\; i_0^3}_{\text{element 0}} \underbrace{i_1^0\; i_1^1\; i_1^2\; i_1^3}_{\text{element 1}} ... \underbrace{i_{e-1}^0\; i_{e-1}^1\; i_{e-1}^2\; i_{e-1}^3}_{\text{element e-1}} 
 \end{equation}
-</div>
 
 <ul class="org-ul">
-<li><a id="orgcf60421"></a>Data Type<br />
-<div class="outline-text-5" id="text-orgcf60421">
-<p>
-e(int): The number of elements in the data set
-\(i_i^j\) (int): The index of the jth point making ith element in the dataset
-</p>
+<li>e: The number of elements in the data set</li>
+<li>\(i_i^j\): The index of the j'th node making i'th element in the dataset</li>
+<li>2D: \(n_i^3 = -1\)</li>
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">e</td>
+<td class="org-left">int</td>
+</tr>
+
+<tr>
+<td class="org-left">\(i_i^j\)</td>
+<td class="org-left">int</td>
+</tr>
+</tbody>
+</table>
 </div>
 </li>
-</ul>
-</div>
 
-<div id="outline-container-org4aa1dac" class="outline-4">
-<h4 id="org4aa1dac">Adjacency</h4>
-<div class="outline-text-4" id="text-org4aa1dac">
+
+<li><a id="org93f6050"></a>Adjacency<br />
+<div class="outline-text-5" id="text-org93f6050">
 <p>
-The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
+The adjacency file contains the indices of the adacent elements that share a face with the current element. The index of each element is based on the order of the connectivity file.
 </p>
 
 \begin{equation} 
    e\; \underbrace{e_0^0\; e_0^1\; e_0^2\; e_0^3}_{\text{element 0}} \underbrace{e_1^0\; e_1^1\; e_1^2\; e_1^3}_{\text{element 1}} ... \underbrace{e_{e-1}^0\; e_{e-1}^1\; e_{e-1}^2\; e_{e-1}^3}_{\text{element e-1}} 
 \end{equation}
-</div>
 
 <ul class="org-ul">
-<li><a id="org99edba5"></a>Data Type<br />
-<div class="outline-text-5" id="text-org99edba5">
+<li>Boundary Elements: For faces not shared with other elements set \(e=-1\)</li>
+<li>2D: \(e_i^3=-1\)</li>
+<li>Ordering:</li>
+</ul>
+</div>
+<ul class="org-ul">
+<li><a id="orgc2acb6b"></a>Data Type<br />
+<div class="outline-text-6" id="text-orgc2acb6b">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
@@ -171,14 +326,16 @@ e(int): The number of elements in the data set
 </div>
 </li>
 </ul>
+</li>
+</ul>
 </div>
 </div>
 </div>
 
 
-<div id="outline-container-org81cd80a" class="outline-2">
-<h2 id="org81cd80a">Setting File</h2>
-<div class="outline-text-2" id="text-org81cd80a">
+<div id="outline-container-orgc530a57" class="outline-2">
+<h2 id="orgc530a57">Setting File</h2>
+<div class="outline-text-2" id="text-orgc530a57">
 <p>
 The input settings are controlled using a settings.in file
 </p>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb73d45f">Pages</a></li>
+<li><a href="#orgbcaecfb">vtu_2bin</a>
+<ul>
+<li><a href="#orgc6a0039">Cordinates File</a>
+<ul>
+<li><a href="#org204ffb8">Data Type</a></li>
+</ul>
+</li>
+<li><a href="#org41ba2cd">Connectivity</a>
+<ul>
+<li><a href="#org1c6e533">Data Type</a></li>
+</ul>
+</li>
+<li><a href="#orgae59e94">Adjacency</a>
+<ul>
+<li><a href="#orgb3deaf3">Data Type</a></li>
+</ul>
+</li>
+<li><a href="#org38aeb09">Include</a>
+<ul>
+<li><a href="#org56b3e81">Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb73d45f" class="outline-2">
+<h2 id="orgb73d45f">Pages</h2>
+<div class="outline-text-2" id="text-orgb73d45f">
+<p>
+<a href="./index.html">Home</a>  <a href="./vtu_2bin.html">Data Format</a>
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgbcaecfb" class="outline-2">
+<h2 id="orgbcaecfb">vtu_2bin</h2>
+<div class="outline-text-2" id="text-orgbcaecfb">
+<p>
+To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
+</p>
+</div>
+<div id="outline-container-orgc6a0039" class="outline-3">
+<h3 id="orgc6a0039">Cordinates File</h3>
+<div class="outline-text-3" id="text-orgc6a0039">
+<p>
+For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
+</p>
+\begin{equation} 
+n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
+\end{equation}
+</div>
+
+<div id="outline-container-org204ffb8" class="outline-4">
+<h4 id="org204ffb8">Data Type</h4>
+<div class="outline-text-4" id="text-org204ffb8">
+<p>
+n(int): the number of points in the data set
+\(x_i, y_i, z_i\)(double): The cordinates of each node
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org41ba2cd" class="outline-3">
+<h3 id="org41ba2cd">Connectivity</h3>
+<div class="outline-text-3" id="text-org41ba2cd">
+<p>
+The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
+</p>
+
+\begin{equation} 
+   e\; \underbrace{i_0^0\; i_0^1\; i_0^2\; i_0^3}_{\text{element 0}} \underbrace{i_1^0\; i_1^1\; i_1^2\; i_1^3}_{\text{element 1}} ... \underbrace{i_{e-1}^0\; i_{e-1}^1\; i_{e-1}^2\; i_{e-1}^3}_{\text{element e-1}} 
+\end{equation}
+</div>
+
+<div id="outline-container-org1c6e533" class="outline-4">
+<h4 id="org1c6e533">Data Type</h4>
+<div class="outline-text-4" id="text-org1c6e533">
+<p>
+e(int): The number of elements in the data set
+\(i_i^j\) (int): The index of the jth point making ith element in the dataset
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgae59e94" class="outline-3">
+<h3 id="orgae59e94">Adjacency</h3>
+<div class="outline-text-3" id="text-orgae59e94">
+<p>
+The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
+</p>
+
+\begin{equation} 
+   e\; \underbrace{e_0^0\; e_0^1\; e_0^2\; e_0^3}_{\text{element 0}} \underbrace{e_1^0\; e_1^1\; e_1^2\; e_1^3}_{\text{element 1}} ... \underbrace{e_{e-1}^0\; e_{e-1}^1\; e_{e-1}^2\; e_{e-1}^3}_{\text{element e-1}} 
+\end{equation}
+</div>
+
+<div id="outline-container-orgb3deaf3" class="outline-4">
+<h4 id="orgb3deaf3">Data Type</h4>
+<div class="outline-text-4" id="text-orgb3deaf3">
+<p>
+e(int): The number of elements in the data set
+\(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org38aeb09" class="outline-3">
+<h3 id="org38aeb09">Include</h3>
+<div class="outline-text-3" id="text-org38aeb09">
+</div>
+<div id="outline-container-org56b3e81" class="outline-4">
+<h4 id="org56b3e81">Code</h4>
+<div class="outline-text-4" id="text-org56b3e81">
+</div>
+<ul class="org-ul">
+<li><a id="org6b8798f"></a>Implementaton<br />
+<div class="outline-text-5" id="text-org6b8798f">
+<p>
+An implementation of the Cholesky Decomposition using python is as follows
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">import</span> numpy <span style="font-weight: bold;">as</span> np
+<span style="font-weight: bold;">import</span> logging
+<span style="font-weight: bold; font-style: italic;">logger</span> = logging.getLogger(<span style="font-weight: bold;">__name__</span>)
+<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">cholesky_decomposition</span>(A):
+    <span style="font-style: italic;">"""Calculate the Cholesky decomposition of a positve definite matrix A</span>
+
+<span style="font-style: italic;">    Parameters</span>
+<span style="font-style: italic;">    ----------</span>
+<span style="font-style: italic;">    A : (n, n) ndarray</span>
+<span style="font-style: italic;">        A positive definite matrix</span>
+
+<span style="font-style: italic;">    Returns</span>
+<span style="font-style: italic;">    ----------</span>
+<span style="font-style: italic;">    L : (n, n) ndarray</span>
+<span style="font-style: italic;">        A lower triangular matrix such that L L.Transpose = A</span>
+
+<span style="font-style: italic;">    Example</span>
+<span style="font-style: italic;">    ----------</span>
+<span style="font-style: italic;">    A = np.array([[4,2,6], [2,2,5], [6,5,22]], dtype=float)</span>
+<span style="font-style: italic;">    L = cholesky_decomposition(A)</span>
+<span style="font-style: italic;">    """</span>
+    <span style="font-weight: bold; font-style: italic;">n</span> = A.shape[0]
+    <span style="font-weight: bold; font-style: italic;">L</span> = np.zeros_like(A)
+
+    <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(n):
+        <span style="font-weight: bold;">for</span> j <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(i+1):
+            <span style="font-weight: bold;">if</span> i == j:
+                <span style="font-weight: bold; font-style: italic;">L</span>[<span style="font-weight: bold; font-style: italic;">i</span>,<span style="font-weight: bold; font-style: italic;">j</span>] = np.sqrt(A[i,i] - np.dot(L[i, :i],L[i,:i] ))
+            <span style="font-weight: bold;">else</span>:
+                <span style="font-weight: bold; font-style: italic;">L</span>[<span style="font-weight: bold; font-style: italic;">i</span>, <span style="font-weight: bold; font-style: italic;">j</span>] = (A[i, j] - np.dot(L[i, :j], L[j, :j])) / L[j, j]
+    <span style="font-weight: bold;">return</span> L
+
+</pre>
+</div>
+
+<p>
+The implementation can be tested by ensuring  \(\textbf{L} \textbf{L}^T = \textbf{A}\)
+</p>
+</div>
+</li>
+<li><a id="org148302e"></a>Test Case<br />
+<div class="outline-text-5" id="text-org148302e">
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">test_cholesky_decomposition</span>():
+    <span style="font-weight: bold; font-style: italic;">A</span> = np.array([[4, 2, 6], [2, 2, 5], [6, 5, 22]], dtype=<span style="font-weight: bold;">float</span>)
+    <span style="font-weight: bold; font-style: italic;">L</span> = cholesky_decomposition(A)
+    logger.info(f<span style="font-style: italic;">"L: </span><span style="font-weight: bold; text-decoration: underline;">\n</span><span style="font-style: italic;"> </span>{L}<span style="font-style: italic;"> </span><span style="font-weight: bold; text-decoration: underline;">\n\n</span><span style="font-style: italic;"> A reconstructed:</span><span style="font-weight: bold; text-decoration: underline;">\n</span><span style="font-style: italic;"> </span>{L @ L.T}<span style="font-style: italic;">"</span>)
+    np.testing.assert_array_almost_equal(L @ L.T, A, decimal=5)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">pytest --log-cli-level INFO --log-format <span style="font-style: italic;">"%(levelname)s %(message)s"</span> $<span style="font-weight: bold; font-style: italic;">python_file_path</span>
+</pre>
+</div>
+<p>
+<code>===========================</code> test session starts <code>============================</code>
+platform linux &#x2013; Python 3.10.12, pytest-7.3.0, pluggy-1.2.0
+rootdir: /home/bkm82/roamnotes
+plugins: anyio-4.3.0, cov-4.1.0, mock-3.12.0
+collected 1 item
+</p>
+
+<p>
+homework/code/cholesky_decomposition.py::test_cholesky_decomposition 
+---------------------------&#x2013;&#x2014; live log call ----------------------------&#x2013;&#x2014;
+INFO L: 
+ [[2. 0. 0.]
+ [1. 1. 0.]
+ [3. 2. 3.]] 
+</p>
+
+<p>
+ A reconstructed:
+ [[ 4.  2.  6.]
+ [ 2.  2.  5.]
+ [ 6.  5. 22.]]
+PASSED                                                                   <code>[100%]</code>
+</p>
+
+<p>
+<code>============================</code> 1 passed in 0.06s <code>=============================</code>
+</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>

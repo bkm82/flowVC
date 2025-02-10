@@ -5,37 +5,97 @@
 
 
 
-* Data Format 
-flowVC required the data input to be  _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
-** Cordinates File
-For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
+* Data Format
+To use flowVC, you'll need to supply velocity data in binary format. The velocity data typically requires separate files for the velocity field at each time point. A single (Cartesian) or  multiple (Unstructured) files define the mesh. These files all share a common prefix, which can be any name you choose and is referred to here as InFilePrefix.
+
+
+** Velocity
+If the velocity is defined discretely in time, each time instant should have its own separate file. The velocity data must be equally spaced in time. File names should follow the format InFilePrefix_vel.#.bin, where # is a unique index for each time instant. The difference between successive file time points must be consistent
+
+Each file's content should begin with a time stamp, followed by the velocity vectors at each node.
+
+\begin{equation} 
+t_s \; \underbrace{u_0\; v_0\; w_0}_{\text{node 0}} \underbrace{u_1\;  v_1 \; w_1}_{\text{node 1}} ....\; \underbrace{u_{n-1} \; v_{n-1}\; w_{n-1}}_{\text{node n-1}}
+\end{equation}
+
+- Cartesian Data: the order should loop over the x-direction in the innermost loop, followed by y, and then z in the outer loop.
+- Unstructured Data: The ordering must align with the nodes specified in the InFilePrefix coordinates.#.bin file.
+- 2D Data: you must still specify a third velocity component, $w_i$, which can be set to 0.0.
+#+ATTR_HTML: :width 100%
+| Value | Data Type |
+|-------+-----------|
+| t     | double    |
+| u,v,w | double    |
+
+
+
+** Cartesian Mesh
+To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
+
+ \begin{equation} 
+    x_{min} \;\; x_{max} \;\; x_{res} \;\; y_{min} \;\; y_{max}\;\; y_{res} \;\; z_{min} \;\; z_{max} \; \; z_{res} 
+ \end{equation}
+
+- Resolution: Number of *nodes* in each direction (not intervals)
+- 2D: Set $z_{min} = z_{max} = 0.0$ and $z_{res}=1$
+#+Latex: \hfill
+#+ATTR_HTML: :width 100%
+|   <c>   |  <c>   |
+|  Value  |  Type  |
+|---------+--------|
+| min/max | double |
+|   res   | int    |
+
+** Unstructured Mesh
+The unstructured mesh is defined by three files:
+- Coordinates File : InFilePrefix_coordinates.bin
+- Connectivity File: InFilePrefix_connectivity.bin
+- Adjacency File:    InFilePrefix_adjacency.bin
+  
+*** Cordinates File
 \begin{equation} 
 n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
 \end{equation}
 
-*** Data Type
-n(int): the number of points in the data set
-$x_i, y_i, z_i$(double): The cordinates of each node
+- n: The the number of points in the data set
+- $x_i \; y_i \; z_i$: The cordinates of each node
+- 2D: set $z_i = 0$
 
-** Connectivity
-The _connectivity.bin file contains the nodes that make up each element. For a tetrahedral mesh this results in 4 points per element.
+
+#+ATTR_HTML: :width 100%
+| Value               | Data Type |
+|---------------------+-----------|
+| n                   | int       |
+| $x_i \; y_i \; z_i$ | double    |
+*** Connectivity
+The connectivity specifies the indices of the 4 nodes that make up each element. The index of each node is based on coordinates file ordering counting from 0.
 
  \begin{equation} 
     e\; \underbrace{i_0^0\; i_0^1\; i_0^2\; i_0^3}_{\text{element 0}} \underbrace{i_1^0\; i_1^1\; i_1^2\; i_1^3}_{\text{element 1}} ... \underbrace{i_{e-1}^0\; i_{e-1}^1\; i_{e-1}^2\; i_{e-1}^3}_{\text{element e-1}} 
  \end{equation}
 
-*** Data Type
-e(int): The number of elements in the data set
-$i_i^j$ (int): The index of the jth point making ith element in the dataset
+ - e: The number of elements in the data set
+ - $i_i^j$: The index of the j'th node making i'th element in the dataset
+ - 2D: $n_i^3 = -1$
 
-** Adjacency
-The _adjacency.bin file contains the indices of the adacent elements that share a face with the current element. The number of the element is based on the order of the coordinates.bin file.
+ #+ATTR_HTML: :width 100%
+| Value   | Data Type |
+|---------+-----------|
+| e       | int       |
+| $i_i^j$ | int       |
+
+
+*** Adjacency
+The adjacency file contains the indices of the adacent elements that share a face with the current element. The index of each element is based on the order of the connectivity file.
 
  \begin{equation} 
     e\; \underbrace{e_0^0\; e_0^1\; e_0^2\; e_0^3}_{\text{element 0}} \underbrace{e_1^0\; e_1^1\; e_1^2\; e_1^3}_{\text{element 1}} ... \underbrace{e_{e-1}^0\; e_{e-1}^1\; e_{e-1}^2\; e_{e-1}^3}_{\text{element e-1}} 
  \end{equation}
 
-*** Data Type
+ - Boundary Elements: For faces not shared with other elements set $e=-1$
+ - 2D: $e_i^3=-1$
+ - Ordering:
+**** Data Type
 e(int): The number of elements in the data set
 $e_i^j$ (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
 

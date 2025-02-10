@@ -5,8 +5,8 @@
 
 
 
-* vtu_2bin
-To run the flowVC code the _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
+* 
+flowVC required the data input to be  _velocity.bin, _coordinates.bin, _connectivity.bin, and _adjacency.bin files need to be created from the velocity data. For each of these files, the full file name should incldue a file prefix before the _ to create a descriptive file name. 
 ** Cordinates File
 For an unstructured velocity data set, the _cordinates.bin is a binary file stored in the following order.
 \begin{equation} 

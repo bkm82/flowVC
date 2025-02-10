@@ -66,3 +66,4 @@ settings_script_controlled.in
 
 # packaged directory
 .packages/
+.public/

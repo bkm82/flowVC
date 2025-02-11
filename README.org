@@ -176,4 +176,4 @@ Valid types are fix, feat, BREAKING CHANGE, build, chore, ci, docs, style, refac
 
 
 *** Planned Updates
-**** TODO Add support for windows in the CI/CD pipeline
+

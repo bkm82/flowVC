@@ -6,7 +6,7 @@
     [
       "@semantic-release/github",
       {
-        "assets": ["build/release/flowVC.out"]
+          "assets": ["flowVC_Linux", "flowVC_Windows", "flowVC_macOS"]
       }
     ],
     "@semantic-release/git"

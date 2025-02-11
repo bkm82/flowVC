@@ -39,11 +39,11 @@ jobs:
 
     - name: Rename build binary
       shell: pwsh
-      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.${{ matrix.release_suffix}}
+      run: Move-Item -Path build/release/flowVC.out -Destination build/release/flowVC.${{ matrix.release_suffix}}
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ runner.os }}.flowVC.${{ matrix.release_suffix}}
-        path: build/release/${{ runner.os}}.flowVC.${{ matrix.release_suffix}}
+        name: flowVC_${{ runner.os }}
+        path: build/release/flowVC.${{ matrix.release_suffix}}
         overwrite: true

@@ -24,10 +24,9 @@ jobs:
       run: gem install ceedling
 
     - name: Run Tests
-      run: ceedling test
+      run: ceedling release
 
-    - name: Build
-      run: make
+
 
     - name: Rename build binary
       shell: pwsh

@@ -52,19 +52,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf5f91a6">Welcome</a></li>
-<li><a href="#org101da4b">Input Data Files</a>
+<li><a href="#orgfc13a11">Welcome</a></li>
+<li><a href="#org7ff5048">Input Data Files</a>
 <ul>
-<li><a href="#orgeabd8c2">Data Format</a>
+<li><a href="#org9dec71f">Data Format</a>
 <ul>
-<li><a href="#orgde426cf">Velocity</a></li>
-<li><a href="#orga9775b2">Cartesian Mesh</a></li>
-<li><a href="#orgafaa558">Unstructured Mesh</a></li>
+<li><a href="#org0ff59df">Velocity</a></li>
+<li><a href="#org4a1e527">Cartesian Mesh</a></li>
+<li><a href="#orgffbd298">Unstructured Mesh</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org79d65e0">Setting File</a></li>
+<li><a href="#org8445ea6">Setting File</a></li>
 </ul>
 </div>
 </div>
@@ -83,30 +83,30 @@
 </tr>
 </tbody>
 </table>
-<div id="outline-container-orgf5f91a6" class="outline-2">
-<h2 id="orgf5f91a6">Welcome</h2>
-<div class="outline-text-2" id="text-orgf5f91a6">
+<div id="outline-container-orgfc13a11" class="outline-2">
+<h2 id="orgfc13a11">Welcome</h2>
+<div class="outline-text-2" id="text-orgfc13a11">
 <p>
 Welcome to the flowVC documentation.
 </p>
 </div>
 </div>
-<div id="outline-container-org101da4b" class="outline-2">
-<h2 id="org101da4b">Input Data Files</h2>
-<div class="outline-text-2" id="text-org101da4b">
+<div id="outline-container-org7ff5048" class="outline-2">
+<h2 id="org7ff5048">Input Data Files</h2>
+<div class="outline-text-2" id="text-org7ff5048">
 </div>
-<div id="outline-container-orgeabd8c2" class="outline-3">
-<h3 id="orgeabd8c2">Data Format</h3>
-<div class="outline-text-3" id="text-orgeabd8c2">
+<div id="outline-container-org9dec71f" class="outline-3">
+<h3 id="org9dec71f">Data Format</h3>
+<div class="outline-text-3" id="text-org9dec71f">
 <p>
 To use flowVC, you'll need to supply velocity data in binary format. The velocity data typically requires separate files for the velocity field at each time point. A single (Cartesian) or  multiple (Unstructured) files define the mesh. These files all share a common prefix, which can be any name you choose and is referred to here as InFilePrefix.
 </p>
 </div>
 
 
-<div id="outline-container-orgde426cf" class="outline-4">
-<h4 id="orgde426cf">Velocity</h4>
-<div class="outline-text-4" id="text-orgde426cf">
+<div id="outline-container-org0ff59df" class="outline-4">
+<h4 id="org0ff59df">Velocity</h4>
+<div class="outline-text-4" id="text-org0ff59df">
 <p>
 If the velocity is defined discretely in time, each time instant should have its own separate file. The velocity data must be equally spaced in time. File names should follow the format InFilePrefix_vel.#.bin, where # is a unique index for each time instant. The difference between successive file time points must be consistent
 </p>
@@ -155,9 +155,9 @@ t_s \; \underbrace{u_0\; v_0\; w_0}_{\text{node 0}} \underbrace{u_1\;  v_1 \; w_
 
 
 
-<div id="outline-container-orga9775b2" class="outline-4">
-<h4 id="orga9775b2">Cartesian Mesh</h4>
-<div class="outline-text-4" id="text-orga9775b2">
+<div id="outline-container-org4a1e527" class="outline-4">
+<h4 id="org4a1e527">Cartesian Mesh</h4>
+<div class="outline-text-4" id="text-org4a1e527">
 <p>
 To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
 </p>
@@ -199,9 +199,9 @@ To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
 </div>
 </div>
 
-<div id="outline-container-orgafaa558" class="outline-4">
-<h4 id="orgafaa558">Unstructured Mesh</h4>
-<div class="outline-text-4" id="text-orgafaa558">
+<div id="outline-container-orgffbd298" class="outline-4">
+<h4 id="orgffbd298">Unstructured Mesh</h4>
+<div class="outline-text-4" id="text-orgffbd298">
 <p>
 The unstructured mesh is defined by three files:
 </p>
@@ -213,8 +213,8 @@ The unstructured mesh is defined by three files:
 </div>
 
 <ul class="org-ul">
-<li><a id="org546d5c3"></a>Cordinates File<br />
-<div class="outline-text-5" id="text-org546d5c3">
+<li><a id="org593ba3d"></a>Cordinates File<br />
+<div class="outline-text-5" id="text-org593ba3d">
 \begin{equation} 
 n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
 \end{equation}
@@ -254,8 +254,8 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 </table>
 </div>
 </li>
-<li><a id="org92ec81e"></a>Connectivity<br />
-<div class="outline-text-5" id="text-org92ec81e">
+<li><a id="org49f0583"></a>Connectivity<br />
+<div class="outline-text-5" id="text-org49f0583">
 <p>
 The connectivity specifies the indices of the 4 nodes that make up each element. The index of each node is based on coordinates file ordering counting from 0.
 </p>
@@ -300,8 +300,8 @@ The connectivity specifies the indices of the 4 nodes that make up each element.
 </li>
 
 
-<li><a id="orgb788554"></a>Adjacency<br />
-<div class="outline-text-5" id="text-orgb788554">
+<li><a id="orgefe2ce2"></a>Adjacency<br />
+<div class="outline-text-5" id="text-orgefe2ce2">
 <p>
 The adjacency file contains the indices of the adacent elements that share a face with the current element. The index of each element is based on the order of the connectivity file.
 </p>
@@ -317,8 +317,8 @@ The adjacency file contains the indices of the adacent elements that share a fac
 </ul>
 </div>
 <ul class="org-ul">
-<li><a id="org1a19a5d"></a>Data Type<br />
-<div class="outline-text-6" id="text-org1a19a5d">
+<li><a id="orgf0d8e16"></a>Data Type<br />
+<div class="outline-text-6" id="text-orgf0d8e16">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
@@ -333,9 +333,9 @@ e(int): The number of elements in the data set
 </div>
 
 
-<div id="outline-container-org79d65e0" class="outline-2">
-<h2 id="org79d65e0">Setting File</h2>
-<div class="outline-text-2" id="text-org79d65e0">
+<div id="outline-container-org8445ea6" class="outline-2">
+<h2 id="org8445ea6">Setting File</h2>
+<div class="outline-text-2" id="text-org8445ea6">
 <p>
 The input settings are controlled using a settings.in file
 </p>

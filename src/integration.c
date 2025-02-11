@@ -517,21 +517,21 @@ double RK4(LagrangianPoint *pt, double tstart, double tend) {
         MP2.X[0] = pt->X[0] + 0.5 * k1[0] * h;
         MP2.X[1] = pt->X[1] + 0.5 * k1[1] * h;
         MP2.X[2] = pt->X[2] + 0.5 * k1[2] * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP2, &MP2.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP2, MP2.X);
         GetVelocity(tc + h/2, &MP2, k2);
         
         /* k3 */
         MP3.X[0] = pt->X[0] + 0.5 * k2[0] * h;
         MP3.X[1] = pt->X[1] + 0.5 * k2[1] * h;
         MP3.X[2] = pt->X[2] + 0.5 * k2[2] * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP3, &MP3.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP3, MP3.X);
         GetVelocity(tc + h/2, &MP3, k3);
         
         /* k4 */
         MP4.X[0] = pt->X[0] + k3[0] * h;
         MP4.X[1] = pt->X[1] + k3[1] * h;
         MP4.X[2] = pt->X[2] + k3[2] * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP4, &MP4.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP4, MP4.X);
         GetVelocity(tc + h, &MP4, k4);
         
         /* Update position, time, and (if needed) element index */
@@ -686,7 +686,7 @@ double RKF(LagrangianPoint *pt, double tstart, double tend) {
         MP2.X[0] = pt->X[0] + 0.25 * k1[0] * h;
         MP2.X[1] = pt->X[1] + 0.25 * k1[1] * h;
         MP2.X[2] = pt->X[2] + 0.25 * k1[2] * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP2, &MP2.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP2, MP2.X);
         ts = tc + 0.25 * h;
         GetVelocity(ts, &MP2, k2);
         
@@ -694,7 +694,7 @@ double RKF(LagrangianPoint *pt, double tstart, double tend) {
         MP3.X[0] = pt->X[0] + (a3 * k1[0] + b3 * k2[0]) * h;
         MP3.X[1] = pt->X[1] + (a3 * k1[1] + b3 * k2[1]) * h;
         MP3.X[2] = pt->X[2] + (a3 * k1[2] + b3 * k2[2]) * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP3, &MP3.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP3, MP3.X);
         ts = tc + 0.375 * h;
         GetVelocity(ts, &MP3, k3);
         
@@ -702,7 +702,7 @@ double RKF(LagrangianPoint *pt, double tstart, double tend) {
         MP4.X[0] = pt->X[0] + (a4 * k1[0] + b4 * k2[0] + c4 * k3[0]) * h;
         MP4.X[1] = pt->X[1] + (a4 * k1[1] + b4 * k2[1] + c4 * k3[1]) * h;
         MP4.X[2] = pt->X[2] + (a4 * k1[2] + b4 * k2[2] + c4 * k3[2]) * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP4, &MP4.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP4, MP4.X);
         ts = tc + (12.0 * h) / 13.0;
         GetVelocity(ts, &MP4, k4);
         
@@ -710,7 +710,7 @@ double RKF(LagrangianPoint *pt, double tstart, double tend) {
         MP5.X[0] = pt->X[0] + (a5 * k1[0] + b5 * k2[0] + c5 * k3[0] + d5 * k4[0]) * h;
         MP5.X[1] = pt->X[1] + (a5 * k1[1] + b5 * k2[1] + c5 * k3[1] + d5 * k4[1]) * h;
         MP5.X[2] = pt->X[2] + (a5 * k1[2] + b5 * k2[2] + c5 * k3[2] + d5 * k4[2]) * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP5, &MP5.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP5, MP5.X);
         ts = tc + h;
         GetVelocity(ts, &MP5, k5);
         
@@ -718,7 +718,7 @@ double RKF(LagrangianPoint *pt, double tstart, double tend) {
         MP6.X[0] = pt->X[0] + (a6 * k1[0] + b6 * k2[0] + c6 * k3[0] + d6 * k4[0] + e6 * k5[0]) * h;
         MP6.X[1] = pt->X[1] + (a6 * k1[1] + b6 * k2[1] + c6 * k3[1] + d6 * k4[1] + e6 * k5[1]) * h;
         MP6.X[2] = pt->X[2] + (a6 * k1[2] + b6 * k2[2] + c6 * k3[2] + d6 * k4[2] + e6 * k5[2]) * h;
-        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP6, &MP6.X);
+        if(Data_MeshType == CARTESIAN && Data_XPeriodic == SPATIALPERIODIC) ReMapPt(&MP6, MP6.X);
         ts = tc + 0.5 * h;
         GetVelocity(ts, &MP6, k6);
         

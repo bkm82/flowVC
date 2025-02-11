@@ -14,6 +14,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
+    name: Set output file extension
+    run: echo "OUTPUT_EXTENSION=$(if [ ${{ runner.os }} == 'Windows' ]; then echo 'exe'; else echo 'out'; fi)" >> $GITHUB_ENV
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup Ruby
@@ -27,14 +30,13 @@ jobs:
       run: ceedling release
 
 
-
     - name: Rename build binary
       shell: pwsh
-      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.out
+      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.$OUTPUT_EXTENSION
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ runner.os }}.flowVC.out
-        path: build/release/${{ runner.os}}.flowVC.out
+        name: ${{ runner.os }}.flowVC.$OUTPUT_EXTENSION
+        path: build/release/${{ runner.os}}.flowVC.$OUTPUT_EXTENSION
         overwrite: true

@@ -1,0 +1,38 @@
+---
+name: Build Project
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - windows_build
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows_latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
+    - name: Install Ceedling
+      run: gem install ceedling
+
+    - name: Build release
+      run: ceedling release
+
+    - name: Rename build binary
+      shell: pwsh
+      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.out
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}.flowVC.out
+        path: build/release/${{ runner.os}}.flowVC.out
+        overwrite: true

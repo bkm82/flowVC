@@ -3,9 +3,9 @@ name: Build Project
 
 on:
   workflow_call:
-  push:
+  pull_request:
     branches:
-      - windows_build
+      - main
 jobs:
   build:
     name: Build Release

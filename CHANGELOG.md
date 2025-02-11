@@ -1,3 +1,10 @@
+## [0.0.5](https://github.com/bkm82/flowVC/compare/v0.0.4...v0.0.5) (2025-02-11)
+
+
+### Bug Fixes
+
+* update ReMapPt function call correcting pointer type for MP#.X ([f001d52](https://github.com/bkm82/flowVC/commit/f001d520ec23b189d8c1bfa1734abe12a4d351b5))
+
 ## [0.0.4](https://github.com/bkm82/flowVC/compare/v0.0.3...v0.0.4) (2025-02-08)
 
 

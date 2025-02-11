@@ -1,3 +1,10 @@
+## [0.0.7](https://github.com/bkm82/flowVC/compare/v0.0.6...v0.0.7) (2025-02-11)
+
+
+### Bug Fixes
+
+* Add OS identifier to build artifact names for uniqueness. ([fe67c3c](https://github.com/bkm82/flowVC/commit/fe67c3c624b109c075165a3383cf1fd795105ba3))
+
 ## [0.0.6](https://github.com/bkm82/flowVC/compare/v0.0.5...v0.0.6) (2025-02-11)
 
 

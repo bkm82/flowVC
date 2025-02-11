@@ -1,3 +1,10 @@
+## [0.0.6](https://github.com/bkm82/flowVC/compare/v0.0.5...v0.0.6) (2025-02-11)
+
+
+### Bug Fixes
+
+* fix yaml formating ([fee167f](https://github.com/bkm82/flowVC/commit/fee167fa6fe60b5c8337dd351bce69e61302d19d))
+
 ## [0.0.5](https://github.com/bkm82/flowVC/compare/v0.0.4...v0.0.5) (2025-02-11)
 
 

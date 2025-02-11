@@ -8,8 +8,8 @@ on:
       - windows_build
 jobs:
   build:
-
-    runs-on: ${{ matrix.os }}
+    name: Build Release
+    
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -20,9 +20,12 @@ jobs:
             release_suffix: exe
           - os: macos-latest
             release_suffix: out
-
+    runs-on: ${{ matrix.os }}
+  
     steps:
+    - name: Checkout Code
     - uses: actions/checkout@v2
+ 
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -31,17 +34,17 @@ jobs:
     - name: Install Ceedling
       run: gem install ceedling
 
-    - name: Run Tests
+    - name: Build Release
       run: ceedling release
 
 
     - name: Rename build binary
       shell: pwsh
-      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.{{ matrix.release_suffix}}
+      run: Move-Item -Path build/release/flowVC.out -Destination build/release/${{ runner.os}}.flowVC.${{ matrix.release_suffix}}
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ runner.os }}.flowVC.{{ matrix.release_suffix}}
-        path: build/release/${{ runner.os}}.flowVC.{{ matrix.release_suffix}}
+        name: ${{ runner.os }}.flowVC.${{ matrix.release_suffix}}
+        path: build/release/${{ runner.os}}.flowVC.${{ matrix.release_suffix}}
         overwrite: true

@@ -8,6 +8,9 @@ on:
 
 
 jobs:
+  build-release:
+    uses: ./.github/workflows/build.yml
+
   semantic-release:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
@@ -27,8 +30,7 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Build Release
-        uses: ./.github/workflows/build.yml
+
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4

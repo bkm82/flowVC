@@ -4,13 +4,13 @@
 [[../../actions][../../workflows/CI/badge.svg]]
 [[../../actions][../../workflows/CD/badge.svg]]
 [[../../actions][../../workflows/Docs/badge.svg]]
-[[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
+
 
 Flow Visualization Code forked from FlowPhysics/flowVC
 
 #+begin_quote
 [!TIP]
-Check out the [[https://bkm82.github.io/flowVC/][Docs]]
+Check out the [[https://FlowPhysics.github.io/flowVC/][Docs]]
 #+end_quote
 
 Copyright 2013 Shadden Research Group. All rights reserved.
@@ -49,7 +49,7 @@ You cannot compute FTLE and particle trajectories at the same time. The feature 
 **** Create the input data files
    #+begin_quote
    [!Note]
-   For the Input Data Files Format reference the [[https://bkm82.github.io/flowVC/][Docs]]
+   For the Input Data Files Format reference the [[https://FlowPhysics.github.io/flowVC/][Docs]]
    #+end_quote
    
    #+begin_quote

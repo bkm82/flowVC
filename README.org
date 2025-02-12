@@ -1,11 +1,9 @@
 * flowVC
 
 
-
-
-[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CI/badge.svg]]
-[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/CD/badge.svg]]
-[[https://github.com/bkm82/flowVC/actions][https://github.com/bkm82/flowVC/workflows/Docs/badge.svg]]
+[[../../actions][../../workflows/CI/badge.svg]]
+[[../../actions][../../workflows/CD/badge.svg]]
+[[../../actions][../../workflows/Docs/badge.svg]]
 [[https://codecov.io/gh/bkm82/flowVC][https://codecov.io/gh/bkm82/flowVC/graph/badge.svg?token=1U1152BG8T]]
 
 Flow Visualization Code forked from FlowPhysics/flowVC
@@ -44,7 +42,7 @@ You cannot compute FTLE and particle trajectories at the same time. The feature 
 
    #+begin_quote
    [!Note]
-   Grab a pre-compiled binary for Windows Linux or macOS [[https://github.com/bkm82/flowVC/releases/latest][here]]
+   Grab a pre-compiled binary for Windows Linux or macOS [[../../releases/latest][here]]
    Alternatly build it from source as shown below
    #+end_quote   
    
@@ -72,7 +70,7 @@ You cannot compute FTLE and particle trajectories at the same time. The feature 
 #+end_src
 
 **** Report any Issues
-[[https://github.com/bkm82/flowVC/issues][Issues]]
+[[../../issues][Issues]]
 
 ** Installation
 
@@ -101,7 +99,7 @@ If you want to edit / modify the code, there are various ways to compile the cod
 
 ****** Clone the repository
    #+begin_src shell
-     https://github.com/bkm82/flowVC.git
+     git clone <repo-url>
      cd flowVC
    #+end_src
 ****** To compile and run all of the tests, run
@@ -126,7 +124,7 @@ Alternatly, there is a docker image has the tooling installed.
 ***** Install [[https://docs.docker.com/engine/install/][Docker]]
 ***** Clone the repository
    #+begin_src shell
-     https://github.com/bkm82/flowVC.git
+     git clone <repo-url>
      cd flowVC
    #+end_src
    

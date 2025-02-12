@@ -8,11 +8,16 @@ on:
 
 
 jobs:
+
+  run-tests:
+    uses: ./.github/workflows/ci.yml
+
   build-release:
     uses: ./.github/workflows/build.yml
 
   semantic-release:
-    needs: build-release
+    needs: [run-tests, build-release]
+
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     name: Semantic Release

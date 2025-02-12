@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -6,7 +7,13 @@ on:
 
   # Called from another work flow
   workflow_call:
+  #
+  pull_request:
+    - main
   push:
+    # Called from CD, prevents duplicate running
+    branches-ignore:
+      - main
 
 jobs:
   build:

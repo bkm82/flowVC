@@ -1,3 +1,10 @@
+## [0.0.8](https://github.com/bkm82/flowVC/compare/v0.0.7...v0.0.8) (2025-02-12)
+
+
+### Bug Fixes
+
+* Update README.org and tagging with fix to force a deployment ([f9e1fb5](https://github.com/bkm82/flowVC/commit/f9e1fb583f7751d32c31f915d9a100e2408ad337))
+
 ## [0.0.7](https://github.com/bkm82/flowVC/compare/v0.0.6...v0.0.7) (2025-02-11)
 
 

@@ -36,7 +36,7 @@ jobs:
         run: gem install ceedling
 
       - name: Run Tests
-        run: ceedling test:all
+        run: ceedling gcov:all
 
       - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v5

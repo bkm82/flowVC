@@ -3,30 +3,43 @@ name: CI
 on:
   # Manually triggered testing
   workflow_dispatch:
+
+  # Called from another work flow
+  workflow_call:
   push:
-  # Check every PR to main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  docker-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  build:
+    name: Run Tests
 
-      - name: Run all Tests using Docker
-        run: |
-          docker run \
-          --interactive \
-          --rm \
-          -u $(id -u):$(id -g) \
-          --volume .:/home/dev/project \
-          throwtheswitch/madsciencelab-plugins:1.0.0 \
-          ceedling gcov:all
-         
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            release_suffix: out
+          - os: windows-latest
+            release_suffix: exe
+          - os: macos-latest
+            release_suffix: out
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
+      - name: Install Ceedling
+        run: gem install ceedling
+
+      - name: Run Tests
+        run: ceedling test:all
+
       - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v5
+        if: matrix.os == 'ubuntu-latest'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

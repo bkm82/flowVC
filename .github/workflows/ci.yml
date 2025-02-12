@@ -7,9 +7,10 @@ on:
 
   # Called from another work flow
   workflow_call:
-  #
+
   pull_request:
-    - main
+    branches:
+      - main
   push:
     # Called from CD, prevents duplicate running
     branches-ignore:

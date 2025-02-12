@@ -11,10 +11,12 @@ on:
   pull_request:
     branches:
       - main
+      - master
   push:
     # Called from CD, prevents duplicate running
     branches-ignore:
       - main
+      - master
 
 jobs:
   build:

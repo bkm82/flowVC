@@ -52,15 +52,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4aea62a">Data Format</a>
+<li><a href="#org776d59e">Data Format</a>
 <ul>
-<li><a href="#org2589589">Velocity</a></li>
-<li><a href="#orgc0481f1">Cartesian Mesh</a></li>
-<li><a href="#org981d66b">Unstructured Mesh</a>
+<li><a href="#orge1df74a">Velocity</a></li>
+<li><a href="#org9330235">Cartesian Mesh</a></li>
+<li><a href="#org2ddf381">Unstructured Mesh</a>
 <ul>
-<li><a href="#org938544b">Cordinates File</a></li>
-<li><a href="#org44db5d7">Connectivity</a></li>
-<li><a href="#org12421b2">Adjacency</a></li>
+<li><a href="#org672cfa7">Cordinates File</a></li>
+<li><a href="#orgf2b0ec0">Connectivity</a></li>
+<li><a href="#org0365002">Adjacency</a></li>
 </ul>
 </li>
 </ul>
@@ -86,18 +86,18 @@
 
 
 
-<div id="outline-container-org4aea62a" class="outline-2">
-<h2 id="org4aea62a">Data Format</h2>
-<div class="outline-text-2" id="text-org4aea62a">
+<div id="outline-container-org776d59e" class="outline-2">
+<h2 id="org776d59e">Data Format</h2>
+<div class="outline-text-2" id="text-org776d59e">
 <p>
 To use flowVC, you'll need to supply velocity data in binary format. The velocity data typically requires separate files for the velocity field at each time point. A single (Cartesian) or  multiple (Unstructured) files define the mesh. These files all share a common prefix, which can be any name you choose and is referred to here as InFilePrefix.
 </p>
 </div>
 
 
-<div id="outline-container-org2589589" class="outline-3">
-<h3 id="org2589589">Velocity</h3>
-<div class="outline-text-3" id="text-org2589589">
+<div id="outline-container-orge1df74a" class="outline-3">
+<h3 id="orge1df74a">Velocity</h3>
+<div class="outline-text-3" id="text-orge1df74a">
 <p>
 If the velocity is defined discretely in time, each time instant should have its own separate file. The velocity data must be equally spaced in time. File names should follow the format InFilePrefix_vel.#.bin, where # is a unique index for each time instant. The difference between successive file time points must be consistent
 </p>
@@ -146,9 +146,9 @@ t_s \; \underbrace{u_0\; v_0\; w_0}_{\text{node 0}} \underbrace{u_1\;  v_1 \; w_
 
 
 
-<div id="outline-container-orgc0481f1" class="outline-3">
-<h3 id="orgc0481f1">Cartesian Mesh</h3>
-<div class="outline-text-3" id="text-orgc0481f1">
+<div id="outline-container-org9330235" class="outline-3">
+<h3 id="org9330235">Cartesian Mesh</h3>
+<div class="outline-text-3" id="text-org9330235">
 <p>
 To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
 </p>
@@ -190,9 +190,9 @@ To define a cartesian mesh, the mesh bounds and resolution needs to be defined.
 </div>
 </div>
 
-<div id="outline-container-org981d66b" class="outline-3">
-<h3 id="org981d66b">Unstructured Mesh</h3>
-<div class="outline-text-3" id="text-org981d66b">
+<div id="outline-container-org2ddf381" class="outline-3">
+<h3 id="org2ddf381">Unstructured Mesh</h3>
+<div class="outline-text-3" id="text-org2ddf381">
 <p>
 The unstructured mesh is defined by three files:
 </p>
@@ -203,9 +203,9 @@ The unstructured mesh is defined by three files:
 </ul>
 </div>
 
-<div id="outline-container-org938544b" class="outline-4">
-<h4 id="org938544b">Cordinates File</h4>
-<div class="outline-text-4" id="text-org938544b">
+<div id="outline-container-org672cfa7" class="outline-4">
+<h4 id="org672cfa7">Cordinates File</h4>
+<div class="outline-text-4" id="text-org672cfa7">
 \begin{equation} 
 n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}_{\text{node 1}} ....\; \underbrace{x_{n-1} \; y_{n-1}\; z_{n-1}}_{\text{node n-1}}
 \end{equation}
@@ -245,9 +245,9 @@ n \; \underbrace{x_0\; y_0\; z_0}_{\text{node 0}} \underbrace{x_1\;  y_1 \; z_1}
 </table>
 </div>
 </div>
-<div id="outline-container-org44db5d7" class="outline-4">
-<h4 id="org44db5d7">Connectivity</h4>
-<div class="outline-text-4" id="text-org44db5d7">
+<div id="outline-container-orgf2b0ec0" class="outline-4">
+<h4 id="orgf2b0ec0">Connectivity</h4>
+<div class="outline-text-4" id="text-orgf2b0ec0">
 <p>
 The connectivity specifies the indices of the 4 nodes that make up each element. The index of each node is based on coordinates file ordering counting from 0.
 </p>
@@ -292,9 +292,9 @@ The connectivity specifies the indices of the 4 nodes that make up each element.
 </div>
 
 
-<div id="outline-container-org12421b2" class="outline-4">
-<h4 id="org12421b2">Adjacency</h4>
-<div class="outline-text-4" id="text-org12421b2">
+<div id="outline-container-org0365002" class="outline-4">
+<h4 id="org0365002">Adjacency</h4>
+<div class="outline-text-4" id="text-org0365002">
 <p>
 The adjacency file contains the indices of the adacent elements that share a face with the current element. The index of each element is based on the order of the connectivity file.
 </p>
@@ -310,8 +310,8 @@ The adjacency file contains the indices of the adacent elements that share a fac
 </ul>
 </div>
 <ul class="org-ul">
-<li><a id="org847e988"></a>Data Type<br />
-<div class="outline-text-5" id="text-org847e988">
+<li><a id="org97414c1"></a>Data Type<br />
+<div class="outline-text-5" id="text-org97414c1">
 <p>
 e(int): The number of elements in the data set
 \(e_i^j\) (int): The index of the element that shares the j'th face for the ith element in the dataset. Note if the element face is not shared with another element (i.e. on the edge this is a -1)
